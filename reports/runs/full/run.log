@@ -1,0 +1,92 @@
+OMP: Warning #179: Function Can't set size of /tmp file failed:
+09:00:58 INFO telemetry.pipeline: [1/81] P-1 done {'baseline': 0.0, 'isolation_forest': 0.35, 'lstm': 88.1}
+09:02:05 INFO telemetry.pipeline: [2/81] S-1 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 67.08}
+09:03:15 INFO telemetry.pipeline: [3/81] E-1 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 69.85}
+09:04:03 INFO telemetry.pipeline: [4/81] E-2 done {'baseline': 0.0, 'isolation_forest': 0.38, 'lstm': 46.75}
+09:04:36 INFO telemetry.pipeline: [5/81] E-3 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 33.3}
+09:05:26 INFO telemetry.pipeline: [6/81] E-4 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 49.38}
+09:06:58 INFO telemetry.pipeline: [7/81] E-5 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 91.65}
+09:08:11 INFO telemetry.pipeline: [8/81] E-6 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 73.3}
+09:09:14 INFO telemetry.pipeline: [9/81] E-7 done {'baseline': 0.0, 'isolation_forest': 0.32, 'lstm': 61.75}
+09:09:50 INFO telemetry.pipeline: [10/81] E-8 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 36.04}
+09:10:26 INFO telemetry.pipeline: [11/81] E-9 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 35.71}
+09:11:33 INFO telemetry.pipeline: [12/81] E-10 done {'baseline': 0.0, 'isolation_forest': 0.3, 'lstm': 66.97}
+09:13:19 INFO telemetry.pipeline: [13/81] E-11 done {'baseline': 0.0, 'isolation_forest': 0.32, 'lstm': 105.1}
+09:15:29 INFO telemetry.pipeline: [14/81] E-12 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 130.42}
+09:16:39 INFO telemetry.pipeline: [15/81] E-13 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 69.34}
+09:17:01 INFO telemetry.pipeline: [16/81] A-1 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 21.65}
+09:18:09 INFO telemetry.pipeline: [17/81] D-1 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 68.04}
+09:19:19 INFO telemetry.pipeline: [18/81] P-2 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 69.13}
+09:20:11 INFO telemetry.pipeline: [19/81] P-3 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 51.61}
+09:20:33 INFO telemetry.pipeline: [20/81] D-2 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 22.23}
+09:21:26 INFO telemetry.pipeline: [21/81] D-3 done {'baseline': 0.0, 'isolation_forest': 0.32, 'lstm': 52.63}
+09:22:01 INFO telemetry.pipeline: [22/81] D-4 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 34.04}
+09:23:17 INFO telemetry.pipeline: [23/81] A-2 done {'baseline': 0.0, 'isolation_forest': 0.55, 'lstm': 75.78}
+09:24:30 INFO telemetry.pipeline: [24/81] A-3 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 72.63}
+09:25:43 INFO telemetry.pipeline: [25/81] A-4 done {'baseline': 0.0, 'isolation_forest': 0.32, 'lstm': 72.42}
+09:26:28 INFO telemetry.pipeline: [26/81] G-1 done {'baseline': 0.0, 'isolation_forest': 0.38, 'lstm': 45.21}
+09:27:03 INFO telemetry.pipeline: [27/81] G-2 done {'baseline': 0.0, 'isolation_forest': 0.35, 'lstm': 34.49}
+09:27:22 INFO telemetry.pipeline: [28/81] D-5 done {'baseline': 0.01, 'isolation_forest': 0.3, 'lstm': 18.49}
+09:28:16 INFO telemetry.pipeline: [29/81] D-6 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 53.43}
+09:28:46 INFO telemetry.pipeline: [30/81] D-7 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 30.05}
+09:30:16 INFO telemetry.pipeline: [31/81] F-1 done {'baseline': 0.0, 'isolation_forest': 0.33, 'lstm': 89.3}
+09:30:37 INFO telemetry.pipeline: [32/81] P-4 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 21.26}
+09:31:04 INFO telemetry.pipeline: [33/81] G-3 done {'baseline': 0.0, 'isolation_forest': 0.3, 'lstm': 26.31}
+09:33:06 INFO telemetry.pipeline: [34/81] T-1 done {'baseline': 0.0, 'isolation_forest': 0.48, 'lstm': 121.76}
+09:35:37 INFO telemetry.pipeline: [35/81] T-2 done {'baseline': 0.01, 'isolation_forest': 0.32, 'lstm': 150.18}
+09:35:56 INFO telemetry.pipeline: [36/81] D-8 done {'baseline': 0.01, 'isolation_forest': 0.23, 'lstm': 18.52}
+09:36:12 INFO telemetry.pipeline: [37/81] D-9 done {'baseline': 0.0, 'isolation_forest': 0.17, 'lstm': 16.47}
+09:37:19 INFO telemetry.pipeline: [38/81] F-2 done {'baseline': 0.0, 'isolation_forest': 0.21, 'lstm': 66.59}
+09:38:01 INFO telemetry.pipeline: [39/81] G-4 done {'baseline': 0.0, 'isolation_forest': 0.2, 'lstm': 41.67}
+09:38:40 INFO telemetry.pipeline: [40/81] T-3 done {'baseline': 0.0, 'isolation_forest': 0.19, 'lstm': 38.74}
+09:39:09 INFO telemetry.pipeline: [41/81] D-11 done {'baseline': 0.0, 'isolation_forest': 0.18, 'lstm': 28.51}
+/Users/hariharan/Desktop/claude/nasa-telemetry-anomaly-detection/.venv/lib/python3.11/site-packages/sklearn/ensemble/_iforest.py:343: UserWarning: max_samples (256) is greater than the total number of samples (201). max_samples will be set to n_samples for estimation.
+  warn(
+09:39:14 INFO telemetry.pipeline: [42/81] D-12 done {'baseline': 0.0, 'isolation_forest': 0.16, 'lstm': 4.76}
+09:39:35 INFO telemetry.pipeline: [43/81] B-1 done {'baseline': 0.0, 'isolation_forest': 0.21, 'lstm': 20.86}
+09:39:59 INFO telemetry.pipeline: [44/81] G-6 done {'baseline': 0.0, 'isolation_forest': 0.19, 'lstm': 23.84}
+09:40:44 INFO telemetry.pipeline: [45/81] G-7 done {'baseline': 0.0, 'isolation_forest': 0.17, 'lstm': 45.15}
+09:41:40 INFO telemetry.pipeline: [46/81] P-7 done {'baseline': 0.0, 'isolation_forest': 0.19, 'lstm': 55.9}
+09:42:00 INFO telemetry.pipeline: [47/81] R-1 done {'baseline': 0.01, 'isolation_forest': 0.19, 'lstm': 19.2}
+09:42:04 INFO telemetry.pipeline: [48/81] A-5 done {'baseline': 0.0, 'isolation_forest': 0.18, 'lstm': 4.42}
+09:42:13 INFO telemetry.pipeline: [49/81] A-6 done {'baseline': 0.0, 'isolation_forest': 0.16, 'lstm': 9.0}
+09:43:10 INFO telemetry.pipeline: [50/81] A-7 done {'baseline': 0.0, 'isolation_forest': 0.2, 'lstm': 56.73}
+09:43:22 INFO telemetry.pipeline: [51/81] D-13 done {'baseline': 0.0, 'isolation_forest': 0.16, 'lstm': 11.59}
+09:43:39 INFO telemetry.pipeline: [52/81] A-8 done {'baseline': 0.01, 'isolation_forest': 0.39, 'lstm': 16.88}
+09:43:51 INFO telemetry.pipeline: [53/81] A-9 done {'baseline': 0.0, 'isolation_forest': 0.18, 'lstm': 11.59}
+09:44:27 INFO telemetry.pipeline: [54/81] F-3 done {'baseline': 0.0, 'isolation_forest': 0.18, 'lstm': 35.44}
+09:44:37 INFO telemetry.pipeline: [55/81] M-6 done {'baseline': 0.0, 'isolation_forest': 0.17, 'lstm': 10.37}
+09:45:19 INFO telemetry.pipeline: [56/81] M-1 done {'baseline': 0.0, 'isolation_forest': 0.16, 'lstm': 41.01}
+09:46:16 INFO telemetry.pipeline: [57/81] M-2 done {'baseline': 0.0, 'isolation_forest': 0.2, 'lstm': 57.62}
+09:46:27 INFO telemetry.pipeline: [58/81] S-2 done {'baseline': 0.0, 'isolation_forest': 0.2, 'lstm': 10.28}
+09:46:57 INFO telemetry.pipeline: [59/81] P-10 done {'baseline': 0.0, 'isolation_forest': 0.23, 'lstm': 29.6}
+09:47:47 INFO telemetry.pipeline: [60/81] T-4 done {'baseline': 0.0, 'isolation_forest': 0.22, 'lstm': 49.59}
+09:48:04 INFO telemetry.pipeline: [61/81] T-5 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 17.55}
+09:49:14 INFO telemetry.pipeline: [62/81] F-7 done {'baseline': 0.0, 'isolation_forest': 0.25, 'lstm': 69.29}
+09:50:52 INFO telemetry.pipeline: [63/81] M-3 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 98.02}
+09:51:42 INFO telemetry.pipeline: [64/81] M-4 done {'baseline': 0.0, 'isolation_forest': 0.66, 'lstm': 48.72}
+09:52:23 INFO telemetry.pipeline: [65/81] M-5 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 41.18}
+09:55:00 INFO telemetry.pipeline: [66/81] P-15 done {'baseline': 0.0, 'isolation_forest': 0.24, 'lstm': 156.46}
+09:55:58 INFO telemetry.pipeline: [67/81] C-1 done {'baseline': 0.0, 'isolation_forest': 0.25, 'lstm': 57.53}
+09:56:06 INFO telemetry.pipeline: [68/81] C-2 done {'baseline': 0.0, 'isolation_forest': 0.16, 'lstm': 8.43}
+09:56:23 INFO telemetry.pipeline: [69/81] T-12 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 16.01}
+09:56:29 INFO telemetry.pipeline: [70/81] T-13 done {'baseline': 0.01, 'isolation_forest': 0.19, 'lstm': 5.94}
+09:57:57 INFO telemetry.pipeline: [71/81] F-4 done {'baseline': 0.0, 'isolation_forest': 0.18, 'lstm': 88.37}
+09:58:20 INFO telemetry.pipeline: [72/81] F-5 done {'baseline': 0.0, 'isolation_forest': 0.18, 'lstm': 22.55}
+09:58:42 INFO telemetry.pipeline: [73/81] D-14 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 21.63}
+09:58:45 INFO telemetry.pipeline: [74/81] T-9 done {'baseline': 0.0, 'isolation_forest': 0.21, 'lstm': 3.06}
+09:59:07 INFO telemetry.pipeline: [75/81] P-14 done {'baseline': 0.0, 'isolation_forest': 0.21, 'lstm': 21.65}
+09:59:12 INFO telemetry.pipeline: [76/81] T-8 done {'baseline': 0.0, 'isolation_forest': 0.21, 'lstm': 4.65}
+09:59:55 INFO telemetry.pipeline: [77/81] P-11 done {'baseline': 0.0, 'isolation_forest': 0.19, 'lstm': 42.92}
+10:00:19 INFO telemetry.pipeline: [78/81] D-15 done {'baseline': 0.0, 'isolation_forest': 0.18, 'lstm': 23.39}
+10:00:30 INFO telemetry.pipeline: [79/81] D-16 done {'baseline': 0.0, 'isolation_forest': 0.17, 'lstm': 11.29}
+10:00:38 INFO telemetry.pipeline: [80/81] M-7 done {'baseline': 0.0, 'isolation_forest': 0.17, 'lstm': 7.4}
+10:01:07 INFO telemetry.pipeline: [81/81] F-8 done {'baseline': 0.0, 'isolation_forest': 0.17, 'lstm': 29.11}
+10:01:07 INFO telemetry.pipeline: Training finished in 3697.8s; failures: none
+Matplotlib is building the font cache; this may take a moment.
+10:01:21 INFO telemetry.evaluate: Evaluation written to /Users/hariharan/Desktop/claude/nasa-telemetry-anomaly-detection/reports/runs/full
+| method | precision | recall | f1 | fpr | accuracy | event_precision | event_recall | event_f1 | event_tp | event_fn | event_fp | roc_auc | pr_auc |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| baseline | 0.301 | 0.195 | 0.237 | 0.065 | 0.843 | 0.029 | 0.827 | 0.056 | 86 | 18 | 2881 | 0.603 | 0.221 |
+| isolation_forest | 0.268 | 0.299 | 0.283 | 0.117 | 0.810 | 0.034 | 0.692 | 0.065 | 72 | 32 | 2025 | 0.590 | 0.183 |
+| lstm | 0.269 | 0.688 | 0.387 | 0.267 | 0.727 | 0.052 | 0.933 | 0.099 | 97 | 7 | 1764 | 0.753 | 0.317 |

@@ -1,0 +1,2444 @@
+{
+ "run_name": "full",
+ "methods": [
+  "baseline",
+  "isolation_forest",
+  "lstm"
+ ],
+ "n_channels": 81,
+ "total_seconds": 3697.8,
+ "sum_method_seconds": 3696.0,
+ "channels": [
+  {
+   "chan_id": "P-1",
+   "spacecraft": "SMAP",
+   "train_len": 2872,
+   "test_len": 8505,
+   "split_idx": 2298,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.174912030654851,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005226480836236934
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6764797722556649,
+     "seconds": 0.35,
+     "val_flag_rate": 0.005226480836236934
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.37821535726557937,
+     "seconds": 88.1,
+     "val_flag_rate": 0.005226480836236934,
+     "best_epoch": 37,
+     "epochs_run": 44,
+     "best_val_mse": 0.14350955188274384
+    }
+   }
+  },
+  {
+   "chan_id": "S-1",
+   "spacecraft": "SMAP",
+   "train_len": 2818,
+   "test_len": 7331,
+   "split_idx": 2254,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 2.87966088339657,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005319148936170213
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5873829537063205,
+     "seconds": 0.31,
+     "val_flag_rate": 0.005319148936170213
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.8251110225676523,
+     "seconds": 67.08,
+     "val_flag_rate": 0.005319148936170213,
+     "best_epoch": 28,
+     "epochs_run": 35,
+     "best_val_mse": 0.6847473382949829
+    }
+   }
+  },
+  {
+   "chan_id": "E-1",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8516,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.850460615192661,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6832803072719714,
+     "seconds": 0.28,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.07396740769087448,
+     "seconds": 69.85,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 28,
+     "epochs_run": 35,
+     "best_val_mse": 0.0023043507244437933
+    }
+   }
+  },
+  {
+   "chan_id": "E-2",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8532,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 6.463998304480047,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6180377174977624,
+     "seconds": 0.38,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.12880767874705445,
+     "seconds": 46.75,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 16,
+     "epochs_run": 23,
+     "best_val_mse": 0.012588771060109138
+    }
+   }
+  },
+  {
+   "chan_id": "E-3",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8307,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.1669692587081593,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6863502010496519,
+     "seconds": 0.28,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.3167537713143581,
+     "seconds": 33.3,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 9,
+     "epochs_run": 16,
+     "best_val_mse": 0.013217591680586338
+    }
+   }
+  },
+  {
+   "chan_id": "E-4",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8354,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 7.1466616660253415,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6123253746669515,
+     "seconds": 0.28,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.10826906040547146,
+     "seconds": 49.38,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 17,
+     "epochs_run": 24,
+     "best_val_mse": 0.004979812540113926
+    }
+   }
+  },
+  {
+   "chan_id": "E-5",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8294,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.850460615192661,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6786670385609098,
+     "seconds": 0.29,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.05938905808385006,
+     "seconds": 91.65,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 39,
+     "epochs_run": 46,
+     "best_val_mse": 0.0011412440799176693
+    }
+   }
+  },
+  {
+   "chan_id": "E-6",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8300,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 6.999999999999999,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6944425747357577,
+     "seconds": 0.29,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.09663775558363889,
+     "seconds": 73.3,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 30,
+     "epochs_run": 37,
+     "best_val_mse": 0.003807921428233385
+    }
+   }
+  },
+  {
+   "chan_id": "E-7",
+   "spacecraft": "SMAP",
+   "train_len": 2769,
+   "test_len": 8310,
+   "split_idx": 2215,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 2.861377219555071,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005415162454873646
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.607275614125819,
+     "seconds": 0.32,
+     "val_flag_rate": 0.005415162454873646
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.6705250532238473,
+     "seconds": 61.75,
+     "val_flag_rate": 0.005415162454873646,
+     "best_epoch": 25,
+     "epochs_run": 32,
+     "best_val_mse": 0.39955076575279236
+    }
+   }
+  },
+  {
+   "chan_id": "E-8",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8532,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 6.14066685991911,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.614497941961537,
+     "seconds": 0.31,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.12446873369048843,
+     "seconds": 36.04,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 10,
+     "epochs_run": 17,
+     "best_val_mse": 0.008434776216745377
+    }
+   }
+  },
+  {
+   "chan_id": "E-9",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8302,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 4.735911490817771,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6332311770493565,
+     "seconds": 0.28,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.15286830009871744,
+     "seconds": 35.71,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 10,
+     "epochs_run": 17,
+     "best_val_mse": 0.015372266061604023
+    }
+   }
+  },
+  {
+   "chan_id": "E-10",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8505,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.863357242408545,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6670588187775289,
+     "seconds": 0.3,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.051785839405833825,
+     "seconds": 66.97,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 26,
+     "epochs_run": 33,
+     "best_val_mse": 0.0012190096313133836
+    }
+   }
+  },
+  {
+   "chan_id": "E-11",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8514,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.888798375095245,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6729055814366879,
+     "seconds": 0.32,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.047254424799673476,
+     "seconds": 105.1,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 45,
+     "epochs_run": 52,
+     "best_val_mse": 0.0014779460616409779
+    }
+   }
+  },
+  {
+   "chan_id": "E-12",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8512,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.850460615192661,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6830540414890245,
+     "seconds": 0.29,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.039359019172594885,
+     "seconds": 130.42,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 56,
+     "epochs_run": 60,
+     "best_val_mse": 0.0004586353315971792
+    }
+   }
+  },
+  {
+   "chan_id": "E-13",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8640,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 4.415242540223842,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6265995256782909,
+     "seconds": 0.31,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.24471092275334805,
+     "seconds": 69.34,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 26,
+     "epochs_run": 33,
+     "best_val_mse": 0.05008372291922569
+    }
+   }
+  },
+  {
+   "chan_id": "A-1",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8640,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6576277148090748,
+     "seconds": 0.28,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0012972177453151625,
+     "seconds": 21.65,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 2,
+     "epochs_run": 9,
+     "best_val_mse": 2.791614761576966e-08
+    }
+   }
+  },
+  {
+   "chan_id": "D-1",
+   "spacecraft": "SMAP",
+   "train_len": 2849,
+   "test_len": 8509,
+   "split_idx": 2279,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.460641782916641,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005263157894736842
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5901261676252678,
+     "seconds": 0.29,
+     "val_flag_rate": 0.005263157894736842
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.5149722456348789,
+     "seconds": 68.04,
+     "val_flag_rate": 0.005263157894736842,
+     "best_epoch": 23,
+     "epochs_run": 30,
+     "best_val_mse": 0.21991249918937683
+    }
+   }
+  },
+  {
+   "chan_id": "P-2",
+   "spacecraft": "SMAP",
+   "train_len": 2821,
+   "test_len": 8209,
+   "split_idx": 2257,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 2.4387940736841522,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005319148936170213
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.592044884995124,
+     "seconds": 0.31,
+     "val_flag_rate": 0.005319148936170213
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.9224280393396097,
+     "seconds": 69.13,
+     "val_flag_rate": 0.005319148936170213,
+     "best_epoch": 23,
+     "epochs_run": 30,
+     "best_val_mse": 0.5012288689613342
+    }
+   }
+  },
+  {
+   "chan_id": "P-3",
+   "spacecraft": "SMAP",
+   "train_len": 2855,
+   "test_len": 8493,
+   "split_idx": 2284,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.9867510844602463,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005253940455341506
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5605899217154791,
+     "seconds": 0.29,
+     "val_flag_rate": 0.005253940455341506
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.6969326464551829,
+     "seconds": 51.61,
+     "val_flag_rate": 0.005253940455341506,
+     "best_epoch": 14,
+     "epochs_run": 21,
+     "best_val_mse": 0.07232677191495895
+    }
+   }
+  },
+  {
+   "chan_id": "D-2",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8595,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.7967972666223007,
+     "seconds": 0.28,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0013161331966510636,
+     "seconds": 22.23,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 2,
+     "epochs_run": 9,
+     "best_val_mse": 4.7699650451704656e-08
+    }
+   }
+  },
+  {
+   "chan_id": "D-3",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8640,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 2.2139962039527443,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6560982513261353,
+     "seconds": 0.32,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.27749875978844424,
+     "seconds": 52.63,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 15,
+     "epochs_run": 22,
+     "best_val_mse": 0.01794210448861122
+    }
+   }
+  },
+  {
+   "chan_id": "D-4",
+   "spacecraft": "SMAP",
+   "train_len": 2833,
+   "test_len": 8473,
+   "split_idx": 2266,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 9.949874371066198,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005291005291005291
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6538729842031273,
+     "seconds": 0.27,
+     "val_flag_rate": 0.005291005291005291
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.5096342634603606,
+     "seconds": 34.04,
+     "val_flag_rate": 0.005291005291005291,
+     "best_epoch": 5,
+     "epochs_run": 12,
+     "best_val_mse": 0.052964191883802414
+    }
+   }
+  },
+  {
+   "chan_id": "A-2",
+   "spacecraft": "SMAP",
+   "train_len": 2648,
+   "test_len": 7914,
+   "split_idx": 2118,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.6582043694375648,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005660377358490566
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5580579769130812,
+     "seconds": 0.55,
+     "val_flag_rate": 0.005660377358490566
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.3778078904841187,
+     "seconds": 75.78,
+     "val_flag_rate": 0.005660377358490566,
+     "best_epoch": 30,
+     "epochs_run": 37,
+     "best_val_mse": 0.09528280794620514
+    }
+   }
+  },
+  {
+   "chan_id": "A-3",
+   "spacecraft": "SMAP",
+   "train_len": 2736,
+   "test_len": 8205,
+   "split_idx": 2189,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.8750884380207289,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005484460694698354
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5615076573848876,
+     "seconds": 0.31,
+     "val_flag_rate": 0.005484460694698354
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.3618066439093239,
+     "seconds": 72.63,
+     "val_flag_rate": 0.005484460694698354,
+     "best_epoch": 25,
+     "epochs_run": 32,
+     "best_val_mse": 0.06702005118131638
+    }
+   }
+  },
+  {
+   "chan_id": "A-4",
+   "spacecraft": "SMAP",
+   "train_len": 2690,
+   "test_len": 8080,
+   "split_idx": 2152,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.7966476407846397,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0055762081784386614
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5504292136477118,
+     "seconds": 0.32,
+     "val_flag_rate": 0.0055762081784386614
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.5228872332935993,
+     "seconds": 72.42,
+     "val_flag_rate": 0.0055762081784386614,
+     "best_epoch": 12,
+     "epochs_run": 19,
+     "best_val_mse": 0.13334369659423828
+    }
+   }
+  },
+  {
+   "chan_id": "G-1",
+   "spacecraft": "SMAP",
+   "train_len": 2820,
+   "test_len": 8469,
+   "split_idx": 2256,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.9546242828199927,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005319148936170213
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6315232538135959,
+     "seconds": 0.38,
+     "val_flag_rate": 0.005319148936170213
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.40166588986261215,
+     "seconds": 45.21,
+     "val_flag_rate": 0.005319148936170213,
+     "best_epoch": 4,
+     "epochs_run": 11,
+     "best_val_mse": 0.1293429285287857
+    }
+   }
+  },
+  {
+   "chan_id": "G-2",
+   "spacecraft": "SMAP",
+   "train_len": 2478,
+   "test_len": 7361,
+   "split_idx": 1982,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6868043846598483,
+     "seconds": 0.35,
+     "val_flag_rate": 0.006048387096774193
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0014283324340847614,
+     "seconds": 34.49,
+     "val_flag_rate": 0.006048387096774193,
+     "best_epoch": 3,
+     "epochs_run": 10,
+     "best_val_mse": 8.114285066085358e-08
+    }
+   }
+  },
+  {
+   "chan_id": "D-5",
+   "spacecraft": "SMAP",
+   "train_len": 2561,
+   "test_len": 7628,
+   "split_idx": 2049,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 0.036205480396747584,
+     "seconds": 0.01,
+     "val_flag_rate": 0.005859375
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6205731984692288,
+     "seconds": 0.3,
+     "val_flag_rate": 0.005859375
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0012790146111956089,
+     "seconds": 18.49,
+     "val_flag_rate": 0.005859375,
+     "best_epoch": 1,
+     "epochs_run": 8,
+     "best_val_mse": 2.6295901989215054e-07
+    }
+   }
+  },
+  {
+   "chan_id": "D-6",
+   "spacecraft": "SMAP",
+   "train_len": 2594,
+   "test_len": 7884,
+   "split_idx": 2075,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.9328542390660015,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005780346820809248
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.59879067330042,
+     "seconds": 0.29,
+     "val_flag_rate": 0.005780346820809248
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.18878154199219654,
+     "seconds": 53.43,
+     "val_flag_rate": 0.005780346820809248,
+     "best_epoch": 12,
+     "epochs_run": 19,
+     "best_val_mse": 0.008167495019733906
+    }
+   }
+  },
+  {
+   "chan_id": "D-7",
+   "spacecraft": "SMAP",
+   "train_len": 2583,
+   "test_len": 7642,
+   "split_idx": 2066,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.7582480397899638,
+     "seconds": 0.31,
+     "val_flag_rate": 0.005802707930367505
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.000570509886297925,
+     "seconds": 30.05,
+     "val_flag_rate": 0.005802707930367505,
+     "best_epoch": 4,
+     "epochs_run": 11,
+     "best_val_mse": 2.8839028942684308e-08
+    }
+   }
+  },
+  {
+   "chan_id": "F-1",
+   "spacecraft": "SMAP",
+   "train_len": 2869,
+   "test_len": 8584,
+   "split_idx": 2295,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.867378343579008,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005226480836236934
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5890231743532517,
+     "seconds": 0.33,
+     "val_flag_rate": 0.005226480836236934
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.5803742219130947,
+     "seconds": 89.3,
+     "val_flag_rate": 0.005226480836236934,
+     "best_epoch": 26,
+     "epochs_run": 33,
+     "best_val_mse": 0.22420881688594818
+    }
+   }
+  },
+  {
+   "chan_id": "P-4",
+   "spacecraft": "SMAP",
+   "train_len": 2609,
+   "test_len": 7783,
+   "split_idx": 2087,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6673932218608156,
+     "seconds": 0.28,
+     "val_flag_rate": 0.0038314176245210726
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.001023219631645381,
+     "seconds": 21.26,
+     "val_flag_rate": 0.005747126436781609,
+     "best_epoch": 2,
+     "epochs_run": 9,
+     "best_val_mse": 6.819808362479307e-08
+    }
+   }
+  },
+  {
+   "chan_id": "G-3",
+   "spacecraft": "SMAP",
+   "train_len": 2624,
+   "test_len": 7907,
+   "split_idx": 2099,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5437603862992139,
+     "seconds": 0.3,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.04747170104293842,
+     "seconds": 26.31,
+     "val_flag_rate": 0.005714285714285714,
+     "best_epoch": 1,
+     "epochs_run": 8,
+     "best_val_mse": 0.0005549921770580113
+    }
+   }
+  },
+  {
+   "chan_id": "T-1",
+   "spacecraft": "SMAP",
+   "train_len": 2875,
+   "test_len": 8612,
+   "split_idx": 2300,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 2.421266295879061,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0052173913043478265
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6042601012210317,
+     "seconds": 0.48,
+     "val_flag_rate": 0.0052173913043478265
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.07200613267725384,
+     "seconds": 121.76,
+     "val_flag_rate": 0.0052173913043478265,
+     "best_epoch": 38,
+     "epochs_run": 45,
+     "best_val_mse": 0.004326480440795422
+    }
+   }
+  },
+  {
+   "chan_id": "T-2",
+   "spacecraft": "SMAP",
+   "train_len": 2855,
+   "test_len": 8625,
+   "split_idx": 2284,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 2.430136375237504,
+     "seconds": 0.01,
+     "val_flag_rate": 0.005253940455341506
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5991368363723478,
+     "seconds": 0.32,
+     "val_flag_rate": 0.005253940455341506
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.07981374335836748,
+     "seconds": 150.18,
+     "val_flag_rate": 0.005253940455341506,
+     "best_epoch": 37,
+     "epochs_run": 44,
+     "best_val_mse": 0.004468030761927366
+    }
+   }
+  },
+  {
+   "chan_id": "D-8",
+   "spacecraft": "SMAP",
+   "train_len": 2602,
+   "test_len": 7874,
+   "split_idx": 2082,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.01,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.38906955015817546,
+     "seconds": 0.23,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0005339525060544308,
+     "seconds": 18.52,
+     "val_flag_rate": 0.0057692307692307696,
+     "best_epoch": 4,
+     "epochs_run": 11,
+     "best_val_mse": 1.0554375506899305e-07
+    }
+   }
+  },
+  {
+   "chan_id": "D-9",
+   "spacecraft": "SMAP",
+   "train_len": 2583,
+   "test_len": 7406,
+   "split_idx": 2066,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.40346852135708733,
+     "seconds": 0.17,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.00037659008487550083,
+     "seconds": 16.47,
+     "val_flag_rate": 0.005802707930367505,
+     "best_epoch": 3,
+     "epochs_run": 10,
+     "best_val_mse": 1.0665016425548401e-08
+    }
+   }
+  },
+  {
+   "chan_id": "F-2",
+   "spacecraft": "SMAP",
+   "train_len": 2861,
+   "test_len": 8626,
+   "split_idx": 2289,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.9177192701874715,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005244755244755245
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6125243753746822,
+     "seconds": 0.21,
+     "val_flag_rate": 0.005244755244755245
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.9111509956559267,
+     "seconds": 66.59,
+     "val_flag_rate": 0.005244755244755245,
+     "best_epoch": 34,
+     "epochs_run": 41,
+     "best_val_mse": 0.575175940990448
+    }
+   }
+  },
+  {
+   "chan_id": "G-4",
+   "spacecraft": "SMAP",
+   "train_len": 2551,
+   "test_len": 7632,
+   "split_idx": 2041,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.9395630337539334,
+     "seconds": 0.0,
+     "val_flag_rate": 0.00392156862745098
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6563001646918067,
+     "seconds": 0.2,
+     "val_flag_rate": 0.00392156862745098
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 1.1690747582564895,
+     "seconds": 41.67,
+     "val_flag_rate": 0.0058823529411764705,
+     "best_epoch": 21,
+     "epochs_run": 28,
+     "best_val_mse": 0.22162649035453796
+    }
+   }
+  },
+  {
+   "chan_id": "T-3",
+   "spacecraft": "SMAP",
+   "train_len": 2876,
+   "test_len": 8579,
+   "split_idx": 2301,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.6030184100129221,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0034782608695652175
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5535541026471794,
+     "seconds": 0.19,
+     "val_flag_rate": 0.0052173913043478265
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.11337411260291834,
+     "seconds": 38.74,
+     "val_flag_rate": 0.0052173913043478265,
+     "best_epoch": 16,
+     "epochs_run": 23,
+     "best_val_mse": 0.009123464114964008
+    }
+   }
+  },
+  {
+   "chan_id": "D-11",
+   "spacecraft": "SMAP",
+   "train_len": 2611,
+   "test_len": 7431,
+   "split_idx": 2089,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 9.2409447108439,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005747126436781609
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6470178275478808,
+     "seconds": 0.18,
+     "val_flag_rate": 0.005747126436781609
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 1.3684749411420596,
+     "seconds": 28.51,
+     "val_flag_rate": 0.005747126436781609,
+     "best_epoch": 10,
+     "epochs_run": 17,
+     "best_val_mse": 0.895789384841919
+    }
+   }
+  },
+  {
+   "chan_id": "D-12",
+   "spacecraft": "SMAP",
+   "train_len": 312,
+   "test_len": 7918,
+   "split_idx": 250,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5000000000000006,
+     "seconds": 0.16,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.00018201395869255066,
+     "seconds": 4.76,
+     "val_flag_rate": 0.0,
+     "best_epoch": 3,
+     "epochs_run": 10,
+     "best_val_mse": 1.4648706692099722e-09
+    }
+   }
+  },
+  {
+   "chan_id": "B-1",
+   "spacecraft": "SMAP",
+   "train_len": 2435,
+   "test_len": 8044,
+   "split_idx": 1948,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.41678656259803526,
+     "seconds": 0.21,
+     "val_flag_rate": 0.002053388090349076
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.00011242181062698364,
+     "seconds": 20.86,
+     "val_flag_rate": 0.0,
+     "best_epoch": 2,
+     "epochs_run": 9,
+     "best_val_mse": 1.263866433731664e-08
+    }
+   }
+  },
+  {
+   "chan_id": "G-6",
+   "spacecraft": "SMAP",
+   "train_len": 2881,
+   "test_len": 8640,
+   "split_idx": 2305,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.7495283247703242,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6583212469625677,
+     "seconds": 0.19,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.3314494631409304,
+     "seconds": 23.84,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 5,
+     "epochs_run": 12,
+     "best_val_mse": 0.027407564222812653
+    }
+   }
+  },
+  {
+   "chan_id": "G-7",
+   "spacecraft": "SMAP",
+   "train_len": 2446,
+   "test_len": 8029,
+   "split_idx": 1957,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 7.000000000000001,
+     "seconds": 0.0,
+     "val_flag_rate": 0.00408997955010225
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6808102631537566,
+     "seconds": 0.17,
+     "val_flag_rate": 0.00408997955010225
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 1.0671911860554577,
+     "seconds": 45.15,
+     "val_flag_rate": 0.006134969325153374,
+     "best_epoch": 25,
+     "epochs_run": 32,
+     "best_val_mse": 1.0455970764160156
+    }
+   }
+  },
+  {
+   "chan_id": "P-7",
+   "spacecraft": "SMAP",
+   "train_len": 2853,
+   "test_len": 8071,
+   "split_idx": 2282,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 2.2553587307612752,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005253940455341506
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5532512982068382,
+     "seconds": 0.19,
+     "val_flag_rate": 0.005253940455341506
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.4389724477195763,
+     "seconds": 55.9,
+     "val_flag_rate": 0.005253940455341506,
+     "best_epoch": 20,
+     "epochs_run": 27,
+     "best_val_mse": 0.07174932211637497
+    }
+   }
+  },
+  {
+   "chan_id": "R-1",
+   "spacecraft": "SMAP",
+   "train_len": 2874,
+   "test_len": 7244,
+   "split_idx": 2299,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.01,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.4144003163830293,
+     "seconds": 0.19,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0009129642529119739,
+     "seconds": 19.2,
+     "val_flag_rate": 0.0017391304347826088,
+     "best_epoch": 4,
+     "epochs_run": 11,
+     "best_val_mse": 9.116010724063983e-10
+    }
+   }
+  },
+  {
+   "chan_id": "A-5",
+   "spacecraft": "SMAP",
+   "train_len": 705,
+   "test_len": 4693,
+   "split_idx": 564,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 0.042393583059311304,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0070921985815602835
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.7194758658389087,
+     "seconds": 0.18,
+     "val_flag_rate": 0.0070921985815602835
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0008287994511011742,
+     "seconds": 4.42,
+     "val_flag_rate": 0.0070921985815602835,
+     "best_epoch": 1,
+     "epochs_run": 8,
+     "best_val_mse": 3.3260201348639384e-07
+    }
+   }
+  },
+  {
+   "chan_id": "A-6",
+   "spacecraft": "SMAP",
+   "train_len": 682,
+   "test_len": 4453,
+   "split_idx": 546,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 10.691693020905355,
+     "seconds": 0.0,
+     "val_flag_rate": 0.007352941176470588
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.7454217468775403,
+     "seconds": 0.16,
+     "val_flag_rate": 0.007352941176470588
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 14.143833177883002,
+     "seconds": 9.0,
+     "val_flag_rate": 0.007352941176470588,
+     "best_epoch": 15,
+     "epochs_run": 22,
+     "best_val_mse": 51.95802688598633
+    }
+   }
+  },
+  {
+   "chan_id": "A-7",
+   "spacecraft": "SMAP",
+   "train_len": 2879,
+   "test_len": 8631,
+   "split_idx": 2303,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.0399617554244442,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6984210531720719,
+     "seconds": 0.2,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.25838221411643103,
+     "seconds": 56.73,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 28,
+     "epochs_run": 35,
+     "best_val_mse": 0.03196095675230026
+    }
+   }
+  },
+  {
+   "chan_id": "D-13",
+   "spacecraft": "SMAP",
+   "train_len": 1490,
+   "test_len": 7663,
+   "split_idx": 1192,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5000000000000008,
+     "seconds": 0.16,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0010246150195598602,
+     "seconds": 11.59,
+     "val_flag_rate": 0.0,
+     "best_epoch": 3,
+     "epochs_run": 10,
+     "best_val_mse": 7.662834491384274e-07
+    }
+   }
+  },
+  {
+   "chan_id": "A-8",
+   "spacecraft": "SMAP",
+   "train_len": 762,
+   "test_len": 8375,
+   "split_idx": 610,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 0.0026335164904576214,
+     "seconds": 0.01,
+     "val_flag_rate": 0.006578947368421052
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6160295448498706,
+     "seconds": 0.39,
+     "val_flag_rate": 0.006578947368421052
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.00034822033606406427,
+     "seconds": 16.88,
+     "val_flag_rate": 0.006578947368421052,
+     "best_epoch": 27,
+     "epochs_run": 34,
+     "best_val_mse": 1.2469236310153065e-08
+    }
+   }
+  },
+  {
+   "chan_id": "A-9",
+   "spacecraft": "SMAP",
+   "train_len": 762,
+   "test_len": 8434,
+   "split_idx": 610,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 0.18792066991329126,
+     "seconds": 0.0,
+     "val_flag_rate": 0.006578947368421052
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.608264286732879,
+     "seconds": 0.18,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.006334043016036351,
+     "seconds": 11.59,
+     "val_flag_rate": 0.006578947368421052,
+     "best_epoch": 15,
+     "epochs_run": 22,
+     "best_val_mse": 2.7121195671497844e-05
+    }
+   }
+  },
+  {
+   "chan_id": "F-3",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8376,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.7494636743518506,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6563347736657714,
+     "seconds": 0.18,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.312583167582354,
+     "seconds": 35.44,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 12,
+     "epochs_run": 19,
+     "best_val_mse": 0.022784987464547157
+    }
+   }
+  },
+  {
+   "chan_id": "M-6",
+   "spacecraft": "MSL",
+   "train_len": 1565,
+   "test_len": 2049,
+   "split_idx": 1252,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.7825555667881975,
+     "seconds": 0.17,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0012077511008285672,
+     "seconds": 10.37,
+     "val_flag_rate": 0.006389776357827476,
+     "best_epoch": 5,
+     "epochs_run": 12,
+     "best_val_mse": 3.3075318128794606e-07
+    }
+   }
+  },
+  {
+   "chan_id": "M-1",
+   "spacecraft": "MSL",
+   "train_len": 2209,
+   "test_len": 2277,
+   "split_idx": 1767,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 2.0007870192052666,
+     "seconds": 0.0,
+     "val_flag_rate": 0.006787330316742082
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.661525180919981,
+     "seconds": 0.16,
+     "val_flag_rate": 0.006787330316742082
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.3457901624257622,
+     "seconds": 41.01,
+     "val_flag_rate": 0.006787330316742082,
+     "best_epoch": 26,
+     "epochs_run": 33,
+     "best_val_mse": 0.12928971648216248
+    }
+   }
+  },
+  {
+   "chan_id": "M-2",
+   "spacecraft": "MSL",
+   "train_len": 2208,
+   "test_len": 2277,
+   "split_idx": 1766,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.568547401629469,
+     "seconds": 0.0,
+     "val_flag_rate": 0.006787330316742082
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.7775246545377023,
+     "seconds": 0.2,
+     "val_flag_rate": 0.004524886877828055
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.630705652697928,
+     "seconds": 57.62,
+     "val_flag_rate": 0.006787330316742082,
+     "best_epoch": 33,
+     "epochs_run": 40,
+     "best_val_mse": 0.29473745822906494
+    }
+   }
+  },
+  {
+   "chan_id": "S-2",
+   "spacecraft": "MSL",
+   "train_len": 926,
+   "test_len": 1827,
+   "split_idx": 741,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.7377196592781312,
+     "seconds": 0.2,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0009195568013535816,
+     "seconds": 10.28,
+     "val_flag_rate": 0.005405405405405406,
+     "best_epoch": 11,
+     "epochs_run": 18,
+     "best_val_mse": 3.9494562997788307e-07
+    }
+   }
+  },
+  {
+   "chan_id": "P-10",
+   "spacecraft": "MSL",
+   "train_len": 4308,
+   "test_len": 6100,
+   "split_idx": 3446,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.298136428465331,
+     "seconds": 0.0,
+     "val_flag_rate": 0.00580046403712297
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5373984746565574,
+     "seconds": 0.23,
+     "val_flag_rate": 0.00580046403712297
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 1.076417194409245,
+     "seconds": 29.6,
+     "val_flag_rate": 0.00580046403712297,
+     "best_epoch": 3,
+     "epochs_run": 10,
+     "best_val_mse": 1.0687599182128906
+    }
+   }
+  },
+  {
+   "chan_id": "T-4",
+   "spacecraft": "MSL",
+   "train_len": 2272,
+   "test_len": 2217,
+   "split_idx": 1818,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.829706557608767,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6387366481171118,
+     "seconds": 0.22,
+     "val_flag_rate": 0.006607929515418502
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.4490750812402869,
+     "seconds": 49.59,
+     "val_flag_rate": 0.006607929515418502,
+     "best_epoch": 20,
+     "epochs_run": 27,
+     "best_val_mse": 0.1963661015033722
+    }
+   }
+  },
+  {
+   "chan_id": "T-5",
+   "spacecraft": "MSL",
+   "train_len": 2272,
+   "test_len": 2218,
+   "split_idx": 1818,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.7579467319504805,
+     "seconds": 0.29,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.00042653086759836484,
+     "seconds": 17.55,
+     "val_flag_rate": 0.006607929515418502,
+     "best_epoch": 3,
+     "epochs_run": 10,
+     "best_val_mse": 9.085463403835092e-08
+    }
+   }
+  },
+  {
+   "chan_id": "F-7",
+   "spacecraft": "MSL",
+   "train_len": 2511,
+   "test_len": 5054,
+   "split_idx": 2009,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 2.93908315829988,
+     "seconds": 0.0,
+     "val_flag_rate": 0.00597609561752988
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6347855607718145,
+     "seconds": 0.25,
+     "val_flag_rate": 0.00597609561752988
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.9125103865466934,
+     "seconds": 69.29,
+     "val_flag_rate": 0.00597609561752988,
+     "best_epoch": 27,
+     "epochs_run": 34,
+     "best_val_mse": 0.43367913365364075
+    }
+   }
+  },
+  {
+   "chan_id": "M-3",
+   "spacecraft": "MSL",
+   "train_len": 2037,
+   "test_len": 2127,
+   "split_idx": 1630,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 12.742805975943757,
+     "seconds": 0.0,
+     "val_flag_rate": 0.007371007371007371
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6355785500035942,
+     "seconds": 0.31,
+     "val_flag_rate": 0.007371007371007371
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.2512255369546794,
+     "seconds": 98.02,
+     "val_flag_rate": 0.007371007371007371,
+     "best_epoch": 37,
+     "epochs_run": 44,
+     "best_val_mse": 0.014717482030391693
+    }
+   }
+  },
+  {
+   "chan_id": "M-4",
+   "spacecraft": "MSL",
+   "train_len": 2076,
+   "test_len": 2038,
+   "split_idx": 1661,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 10.894511147689482,
+     "seconds": 0.0,
+     "val_flag_rate": 0.007228915662650603
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.613732003467261,
+     "seconds": 0.66,
+     "val_flag_rate": 0.007228915662650603
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.4548830600963802,
+     "seconds": 48.72,
+     "val_flag_rate": 0.007228915662650603,
+     "best_epoch": 16,
+     "epochs_run": 23,
+     "best_val_mse": 0.04581868648529053
+    }
+   }
+  },
+  {
+   "chan_id": "M-5",
+   "spacecraft": "MSL",
+   "train_len": 2032,
+   "test_len": 2303,
+   "split_idx": 1626,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.1872120688368155,
+     "seconds": 0.0,
+     "val_flag_rate": 0.007389162561576354
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6300433029589366,
+     "seconds": 0.27,
+     "val_flag_rate": 0.007389162561576354
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.4011705027324172,
+     "seconds": 41.18,
+     "val_flag_rate": 0.007389162561576354,
+     "best_epoch": 17,
+     "epochs_run": 24,
+     "best_val_mse": 0.097516730427742
+    }
+   }
+  },
+  {
+   "chan_id": "P-15",
+   "spacecraft": "MSL",
+   "train_len": 3682,
+   "test_len": 2856,
+   "split_idx": 2946,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 6.6961833462621865,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005434782608695652
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.533586199530426,
+     "seconds": 0.24,
+     "val_flag_rate": 0.005434782608695652
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.2174879864698374,
+     "seconds": 156.46,
+     "val_flag_rate": 0.005434782608695652,
+     "best_epoch": 48,
+     "epochs_run": 55,
+     "best_val_mse": 0.011284563690423965
+    }
+   }
+  },
+  {
+   "chan_id": "C-1",
+   "spacecraft": "MSL",
+   "train_len": 2158,
+   "test_len": 2264,
+   "split_idx": 1726,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 4.391594237758239,
+     "seconds": 0.0,
+     "val_flag_rate": 0.006944444444444444
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6339173984343522,
+     "seconds": 0.25,
+     "val_flag_rate": 0.006944444444444444
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.12535456922561405,
+     "seconds": 57.53,
+     "val_flag_rate": 0.006944444444444444,
+     "best_epoch": 39,
+     "epochs_run": 46,
+     "best_val_mse": 0.003297148272395134
+    }
+   }
+  },
+  {
+   "chan_id": "C-2",
+   "spacecraft": "MSL",
+   "train_len": 764,
+   "test_len": 2051,
+   "split_idx": 611,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.7674420025121399,
+     "seconds": 0.16,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0017543412928160208,
+     "seconds": 8.43,
+     "val_flag_rate": 0.006535947712418301,
+     "best_epoch": 13,
+     "epochs_run": 20,
+     "best_val_mse": 7.102865993147134e-07
+    }
+   }
+  },
+  {
+   "chan_id": "T-12",
+   "spacecraft": "MSL",
+   "train_len": 1145,
+   "test_len": 2430,
+   "split_idx": 916,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.894837567783662,
+     "seconds": 0.0,
+     "val_flag_rate": 0.008733624454148471
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.649716629694361,
+     "seconds": 0.26,
+     "val_flag_rate": 0.008733624454148471
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.20997902102737015,
+     "seconds": 16.01,
+     "val_flag_rate": 0.008733624454148471,
+     "best_epoch": 10,
+     "epochs_run": 17,
+     "best_val_mse": 0.016229894012212753
+    }
+   }
+  },
+  {
+   "chan_id": "T-13",
+   "spacecraft": "MSL",
+   "train_len": 1145,
+   "test_len": 2430,
+   "split_idx": 916,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.895066441934702,
+     "seconds": 0.01,
+     "val_flag_rate": 0.008733624454148471
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6484958612708361,
+     "seconds": 0.19,
+     "val_flag_rate": 0.008733624454148471
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.44609028871315165,
+     "seconds": 5.94,
+     "val_flag_rate": 0.008733624454148471,
+     "best_epoch": 1,
+     "epochs_run": 8,
+     "best_val_mse": 0.03600449115037918
+    }
+   }
+  },
+  {
+   "chan_id": "F-4",
+   "spacecraft": "MSL",
+   "train_len": 2244,
+   "test_len": 3422,
+   "split_idx": 1795,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.551056750076611,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0066815144766146995
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5417124102103245,
+     "seconds": 0.18,
+     "val_flag_rate": 0.0066815144766146995
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.13929167835758746,
+     "seconds": 88.37,
+     "val_flag_rate": 0.0066815144766146995,
+     "best_epoch": 57,
+     "epochs_run": 60,
+     "best_val_mse": 0.010513744316995144
+    }
+   }
+  },
+  {
+   "chan_id": "F-5",
+   "spacecraft": "MSL",
+   "train_len": 2598,
+   "test_len": 3922,
+   "split_idx": 2078,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.0770129566007505,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0057692307692307696
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5070784612528696,
+     "seconds": 0.18,
+     "val_flag_rate": 0.0057692307692307696
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.1511102580631136,
+     "seconds": 22.55,
+     "val_flag_rate": 0.0057692307692307696,
+     "best_epoch": 8,
+     "epochs_run": 15,
+     "best_val_mse": 0.009005051106214523
+    }
+   }
+  },
+  {
+   "chan_id": "D-14",
+   "spacecraft": "MSL",
+   "train_len": 3675,
+   "test_len": 2625,
+   "split_idx": 2940,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6987732296623441,
+     "seconds": 0.28,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0009766404871410976,
+     "seconds": 21.63,
+     "val_flag_rate": 0.005442176870748299,
+     "best_epoch": 2,
+     "epochs_run": 9,
+     "best_val_mse": 1.9046866839289578e-07
+    }
+   }
+  },
+  {
+   "chan_id": "T-9",
+   "spacecraft": "MSL",
+   "train_len": 439,
+   "test_len": 1096,
+   "split_idx": 351,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 5.683821876795236,
+     "seconds": 0.0,
+     "val_flag_rate": 0.011363636363636364
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5818561953643404,
+     "seconds": 0.21,
+     "val_flag_rate": 0.011363636363636364
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.22257290777132732,
+     "seconds": 3.06,
+     "val_flag_rate": 0.011363636363636364,
+     "best_epoch": 6,
+     "epochs_run": 13,
+     "best_val_mse": 0.10193515568971634
+    }
+   }
+  },
+  {
+   "chan_id": "P-14",
+   "spacecraft": "MSL",
+   "train_len": 2880,
+   "test_len": 6100,
+   "split_idx": 2304,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 0.027051180601119995,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5279765749239629,
+     "seconds": 0.21,
+     "val_flag_rate": 0.005208333333333333
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.0005157910640180782,
+     "seconds": 21.65,
+     "val_flag_rate": 0.005208333333333333,
+     "best_epoch": 4,
+     "epochs_run": 11,
+     "best_val_mse": 1.3845949808910518e-07
+    }
+   }
+  },
+  {
+   "chan_id": "T-8",
+   "spacecraft": "MSL",
+   "train_len": 748,
+   "test_len": 1519,
+   "split_idx": 598,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 264.97113344790165,
+     "seconds": 0.0,
+     "val_flag_rate": 0.006666666666666667
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5715754758813099,
+     "seconds": 0.21,
+     "val_flag_rate": 0.006666666666666667
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.8596173984882656,
+     "seconds": 4.65,
+     "val_flag_rate": 0.006666666666666667,
+     "best_epoch": 4,
+     "epochs_run": 11,
+     "best_val_mse": 0.7155996561050415
+    }
+   }
+  },
+  {
+   "chan_id": "P-11",
+   "spacecraft": "MSL",
+   "train_len": 3969,
+   "test_len": 3535,
+   "split_idx": 3175,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 4.127007106155584,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005037783375314861
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5339889048689066,
+     "seconds": 0.19,
+     "val_flag_rate": 0.005037783375314861
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.5053182575776677,
+     "seconds": 42.92,
+     "val_flag_rate": 0.005037783375314861,
+     "best_epoch": 13,
+     "epochs_run": 20,
+     "best_val_mse": 0.1302005797624588
+    }
+   }
+  },
+  {
+   "chan_id": "D-15",
+   "spacecraft": "MSL",
+   "train_len": 2074,
+   "test_len": 2158,
+   "split_idx": 1659,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.94503236197341,
+     "seconds": 0.0,
+     "val_flag_rate": 0.004819277108433735
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6230005393284511,
+     "seconds": 0.18,
+     "val_flag_rate": 0.007228915662650603
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.6020258782656126,
+     "seconds": 23.39,
+     "val_flag_rate": 0.007228915662650603,
+     "best_epoch": 14,
+     "epochs_run": 21,
+     "best_val_mse": 0.24507637321949005
+    }
+   }
+  },
+  {
+   "chan_id": "D-16",
+   "spacecraft": "MSL",
+   "train_len": 1451,
+   "test_len": 2191,
+   "split_idx": 1161,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.5222129253901682,
+     "seconds": 0.17,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.13037388479232964,
+     "seconds": 11.29,
+     "val_flag_rate": 0.006896551724137931,
+     "best_epoch": 7,
+     "epochs_run": 14,
+     "best_val_mse": 0.005705330520868301
+    }
+   }
+  },
+  {
+   "chan_id": "M-7",
+   "spacecraft": "MSL",
+   "train_len": 1587,
+   "test_len": 2156,
+   "split_idx": 1270,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.3621598977910035,
+     "seconds": 0.17,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.08245692297869506,
+     "seconds": 7.4,
+     "val_flag_rate": 0.006309148264984227,
+     "best_epoch": 1,
+     "epochs_run": 8,
+     "best_val_mse": 0.003665975295007229
+    }
+   }
+  },
+  {
+   "chan_id": "F-8",
+   "spacecraft": "MSL",
+   "train_len": 3342,
+   "test_len": 2487,
+   "split_idx": 2674,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 6.781941695138156,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005988023952095809
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6740866330078812,
+     "seconds": 0.17,
+     "val_flag_rate": 0.005988023952095809
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.6831012665965421,
+     "seconds": 29.11,
+     "val_flag_rate": 0.005988023952095809,
+     "best_epoch": 9,
+     "epochs_run": 16,
+     "best_val_mse": 0.37794363498687744
+    }
+   }
+  }
+ ],
+ "failures": []
+}

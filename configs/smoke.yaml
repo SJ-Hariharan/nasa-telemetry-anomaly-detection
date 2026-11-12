@@ -1,0 +1,17 @@
+# Smoke-test configuration: a few channels, tiny model, few epochs.
+# Purpose: prove the pipeline runs end-to-end in ~1 minute. Its metrics are NOT meaningful results.
+inherit: default.yaml
+
+run_name: smoke
+
+data:
+  channels: [P-1, T-1, M-6]
+
+lstm:
+  hidden_size: 16
+  num_layers: 1
+  epochs: 2
+  max_train_windows: 500
+
+isolation_forest:
+  n_estimators: 50

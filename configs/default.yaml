@@ -1,0 +1,59 @@
+# Full experiment configuration.
+# Every number that affects results lives here so a run is reproducible from (code + config + seed).
+
+run_name: full
+seed: 42
+methods: [baseline, isolation_forest, lstm]
+
+data:
+  raw_dir: data/raw/telemanom          # where the downloaded benchmark lives
+  channels: all                        # "all" or an explicit list, e.g. [P-1, T-1]
+  spacecraft: all                      # "all", SMAP or MSL
+
+split:
+  # The benchmark ships a train file and a test file per channel. We never touch test labels
+  # during fitting/calibration. The *train* file is split chronologically:
+  # first (1 - val_fraction) for fitting, the last val_fraction for early stopping + thresholds.
+  val_fraction: 0.2
+
+baseline:                              # rolling z-score
+  window: 100                          # trailing window length (past points only)
+  min_std: 0.01                        # floor on rolling std, in scaled units (= train-std units, or raw units
+                                       # for constant-train channels where the scaler keeps std = 1)
+
+isolation_forest:
+  lags: 10                             # last-k raw values used as features
+  stat_window: 50                      # trailing window for rolling mean/std/min/max features
+  n_estimators: 200
+  max_samples: 256
+  contamination: auto                  # not used for thresholding (see threshold section)
+
+lstm:
+  window: 100                          # input sequence length (past timesteps)
+  hidden_size: 64
+  num_layers: 2
+  dropout: 0.3
+  batch_size: 128
+  epochs: 60                           # upper bound; early stopping usually ends sooner
+  learning_rate: 2.0e-3
+  patience: 6                          # early stopping on validation MSE
+  max_train_windows: 4000              # cap per channel (evenly strided) to bound CPU time
+  use_commands: true                   # feed one-hot command columns as extra inputs
+  smoothing_span: 30                   # EWMA span used to smooth absolute prediction errors
+  device: cpu
+
+threshold:
+  # Thresholds are calibrated per channel on the *validation* part of the train file only.
+  # threshold = quantile(validation_scores, q) * margin
+  method: quantile                     # quantile | mean_std
+  quantile: 0.995
+  margin: 1.0
+  k_std: 4.0                           # used only when method == mean_std
+
+postprocess:
+  min_event_length: 1                  # drop predicted runs shorter than this many points
+  merge_gap: 0                         # merge predicted runs separated by <= this many normal points
+
+output:
+  models_dir: models
+  reports_dir: reports/runs

@@ -1,0 +1,103 @@
+{
+ "run_name": "smoke",
+ "methods": [
+  "baseline",
+  "isolation_forest",
+  "lstm"
+ ],
+ "n_channels": 3,
+ "total_seconds": 2.8,
+ "channels": [
+  {
+   "chan_id": "P-1",
+   "spacecraft": "SMAP",
+   "train_len": 2872,
+   "test_len": 8505,
+   "split_idx": 2298,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 3.174912030654851,
+     "seconds": 0.0,
+     "val_flag_rate": 0.005226480836236934
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6708950497174431,
+     "seconds": 0.12,
+     "val_flag_rate": 0.005226480836236934
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 1.6166081227561981,
+     "seconds": 1.04,
+     "val_flag_rate": 0.005226480836236934,
+     "best_epoch": 1,
+     "epochs_run": 2,
+     "best_val_mse": 1.0533726215362549
+    }
+   }
+  },
+  {
+   "chan_id": "T-1",
+   "spacecraft": "SMAP",
+   "train_len": 2875,
+   "test_len": 8612,
+   "split_idx": 2300,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 2.421266295879061,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0052173913043478265
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.6028918434126368,
+     "seconds": 0.1,
+     "val_flag_rate": 0.0052173913043478265
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 1.328127107697073,
+     "seconds": 0.91,
+     "val_flag_rate": 0.0052173913043478265,
+     "best_epoch": 1,
+     "epochs_run": 2,
+     "best_val_mse": 0.7155396938323975
+    }
+   }
+  },
+  {
+   "chan_id": "M-6",
+   "spacecraft": "MSL",
+   "train_len": 1565,
+   "test_len": 2049,
+   "split_idx": 1252,
+   "methods": {
+    "baseline": {
+     "status": "ok",
+     "threshold": 1.1920928955078125e-07,
+     "seconds": 0.0,
+     "val_flag_rate": 0.0
+    },
+    "isolation_forest": {
+     "status": "ok",
+     "threshold": 0.792212491154979,
+     "seconds": 0.08,
+     "val_flag_rate": 0.0
+    },
+    "lstm": {
+     "status": "ok",
+     "threshold": 0.07322198768734661,
+     "seconds": 0.41,
+     "val_flag_rate": 0.006389776357827476,
+     "best_epoch": 1,
+     "epochs_run": 2,
+     "best_val_mse": 0.003982641268521547
+    }
+   }
+  }
+ ],
+ "failures": []
+}
