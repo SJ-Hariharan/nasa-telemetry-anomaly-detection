@@ -18,9 +18,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
+from scipy.stats import ks_2samp  # noqa: E402
 
-from src.evaluation.metrics import (event_counts, event_metrics, point_counts, point_metrics,  # noqa: E402
-                                    threshold_free)
+from src.evaluation.metrics import (event_counts, event_metrics, macro_auc, point_counts,  # noqa: E402
+                                    point_metrics, threshold_free)
 from src.models.persistence import METHODS  # noqa: E402
 from src.models.thresholds import apply_threshold, runs  # noqa: E402
 from src.utils.reproducibility import get_logger  # noqa: E402
@@ -40,6 +41,21 @@ def _sum(dicts: list[dict], keys) -> dict:
     return out
 
 
+def _aggregate(m: str, chans: list[str], per: dict) -> dict:
+    """Micro point/event metrics + macro (per-channel mean) AUCs + pooled AUC over ``chans``."""
+    P_KEYS, E_KEYS = ("tp", "fp", "tn", "fn"), ("event_tp", "event_fn", "event_fp")
+    rows = [per[c][m] for c in chans]
+    out = {**point_metrics(_sum([r["pc"] for r in rows], P_KEYS)), **event_metrics(_sum([r["ec"] for r in rows], E_KEYS))}
+    roc, pr = macro_auc([r["roc_auc"] for r in rows]), macro_auc([r["pr_auc"] for r in rows])
+    out.update(roc_auc_macro=roc["mean"], roc_auc_macro_ci=[roc["ci_low"], roc["ci_high"]],
+               pr_auc_macro=pr["mean"], pr_auc_macro_ci=[pr["ci_low"], pr["ci_high"]])
+    pooled = threshold_free(np.concatenate([r["y"] for r in rows]), np.concatenate([r["norm"] for r in rows]))
+    out.update(roc_auc_pooled=pooled["roc_auc"], pr_auc_pooled=pooled["pr_auc"], n_channels=len(chans))
+    # 'roc_auc' / 'pr_auc' name the PRIMARY (macro) figures; pooled values are kept under their own keys.
+    out["roc_auc"], out["pr_auc"] = out["roc_auc_macro"], out["pr_auc_macro"]
+    return out
+
+
 def evaluate_run(run_dir: Path) -> dict:
     run_dir = Path(run_dir)
     summary = json.loads((run_dir / "training_summary.json").read_text())
@@ -51,30 +67,54 @@ def evaluate_run(run_dir: Path) -> dict:
     excluded = sorted(set(ch_info) - set(common))
     if excluded:
         log.warning("Excluded from comparison (a method failed): %s", excluded)
+    # Channels whose training signal is constant (or whose validation scores have no spread) cannot be
+    # calibrated: their thresholds are reported but they are also evaluated separately (finding D1).
+    uncalibratable = {}
+    for c in common:
+        reasons = []
+        if ch_info[c].get("constant_train"):
+            reasons.append("constant training signal")
+        reasons += [f"{m}: degenerate validation scores" for m in methods
+                    if ch_info[c]["methods"][m].get("calibratable", True) is False]
+        if reasons:
+            uncalibratable[c] = reasons
+    calib = [c for c in common if c not in uncalibratable]
 
+    per: dict[str, dict] = {}
     per_channel, event_rows, fa_rows = [], [], []
-    pooled = {m: {"y": [], "s": []} for m in methods}
-    counts = {m: {"point": [], "event": [], "SMAP": [], "MSL": [], "SMAP_ev": [], "MSL_ev": []} for m in methods}
     sens = {m: {k: {"p": [], "e": []} for k in SENSITIVITY_MULTIPLIERS} for m in methods}
 
     for chan in common:
         t = pd.read_parquet(run_dir / "scores" / f"{chan}.parquet")
+        val_path = run_dir / "scores" / f"{chan}.val.parquet"
+        val = pd.read_parquet(val_path) if val_path.exists() else None
         y, sc = t["label"].to_numpy(), ch_info[chan]["spacecraft"]
+        per[chan] = {}
         for m in methods:
             thr = ch_info[chan]["methods"][m]["threshold"]
-            pc, ec = point_counts(y, t[f"{m}_pred"]), event_counts(seqs[chan], t[f"{m}_pred"].to_numpy())
-            counts[m]["point"].append(pc); counts[m]["event"].append(ec)
-            counts[m][sc].append(pc); counts[m][f"{sc}_ev"].append(ec)
-            pooled[m]["y"].append(y); pooled[m]["s"].append(t[f"{m}_score"].to_numpy() / thr)
+            scores, pred = t[f"{m}_score"].to_numpy(), t[f"{m}_pred"].to_numpy()
+            pc, ec = point_counts(y, pred), event_counts(seqs[chan], pred)
+            auc = threshold_free(y, scores)
+            norm = scores / thr
+            # Validation-vs-test score shift: KS distance between the finite validation scores (the data the
+            # threshold was calibrated on) and the finite test scores. 0 = same distribution, 1 = disjoint.
+            ks = None
+            if val is not None and f"{m}_score" in val:
+                v, w = val[f"{m}_score"].to_numpy(), scores
+                v, w = v[np.isfinite(v)], w[np.isfinite(w)]
+                if v.size and w.size:
+                    ks = float(ks_2samp(v, w).statistic)
+            per[chan][m] = {"pc": pc, "ec": ec, "y": y, "norm": norm, **auc}
             per_channel.append({"chan_id": chan, "spacecraft": sc, "method": m, "threshold": thr,
-                                **point_metrics(pc), **event_metrics(ec)})
+                                "calibratable": chan not in uncalibratable,
+                                "constant_train": bool(ch_info[chan].get("constant_train", False)),
+                                "val_len": ch_info[chan]["methods"][m].get("val_len"), "ks_val_test": ks,
+                                **point_metrics(pc), **event_metrics(ec), **auc})
             # Post-hoc diagnostic ONLY: how would results move if the calibrated threshold were scaled?
             for k in SENSITIVITY_MULTIPLIERS:
-                p = apply_threshold(t[f"{m}_score"].to_numpy(), thr * k)
+                p = apply_threshold(scores, thr * k)
                 sens[m][k]["p"].append(point_counts(y, p)); sens[m][k]["e"].append(event_counts(seqs[chan], p))
             # Error analysis rows
-            pred = t[f"{m}_pred"].to_numpy()
-            norm = t[f"{m}_score"].to_numpy() / thr
             for (s, e), cls in zip(seqs[chan], classes[chan]):
                 hits = np.flatnonzero(pred[s : e + 1])
                 event_rows.append({"chan_id": chan, "spacecraft": sc, "method": m, "start": s, "end": e,
@@ -89,32 +129,36 @@ def evaluate_run(run_dir: Path) -> dict:
     P_KEYS, E_KEYS = ("tp", "fp", "tn", "fn"), ("event_tp", "event_fn", "event_fp")
     results = {}
     for m in methods:
-        r = {"overall": {**point_metrics(_sum(counts[m]["point"], P_KEYS)),
-                         **event_metrics(_sum(counts[m]["event"], E_KEYS)),
-                         **threshold_free(np.concatenate(pooled[m]["y"]), np.concatenate(pooled[m]["s"]))}}
+        r = {"overall": _aggregate(m, common, per), "calibratable": _aggregate(m, calib, per) if calib else None}
         for sc in ("SMAP", "MSL"):
-            if counts[m][sc]:
-                r[sc] = {**point_metrics(_sum(counts[m][sc], P_KEYS)), **event_metrics(_sum(counts[m][f"{sc}_ev"], E_KEYS))}
-        r["sensitivity"] = [{"multiplier": k, "scale_comparable": m not in SENSITIVITY_NOT_COMPARABLE, **{f"point_{x}": v for x, v in point_metrics(_sum(sens[m][k]["p"], P_KEYS)).items()
-                                                  if x in ("precision", "recall", "f1", "fpr")},
+            chans_sc = [c for c in common if ch_info[c]["spacecraft"] == sc]
+            if chans_sc:
+                r[sc] = _aggregate(m, chans_sc, per)
+        r["sensitivity"] = [{"multiplier": k, "scale_comparable": m not in SENSITIVITY_NOT_COMPARABLE,
+                             **{f"point_{x}": v for x, v in point_metrics(_sum(sens[m][k]["p"], P_KEYS)).items()
+                                if x in ("precision", "recall", "f1", "fpr")},
                              **{x: v for x, v in event_metrics(_sum(sens[m][k]["e"], E_KEYS)).items()
                                 if x in ("event_precision", "event_recall", "event_f1")}}
                             for k in SENSITIVITY_MULTIPLIERS]
         results[m] = r
 
     events = pd.DataFrame(event_rows)
-    comp = pd.DataFrame([{"method": m, **{k: results[m]["overall"][k] for k in
-                          ("precision", "recall", "f1", "fpr", "fnr", "accuracy", "event_precision",
-                           "event_recall", "event_f1", "event_tp", "event_fn", "event_fp", "roc_auc", "pr_auc")}}
-                         for m in methods])
+    comp = _comparison(results, methods, "overall")
+    comp_cal = _comparison(results, methods, "calibratable") if calib else pd.DataFrame()
     by_class = (events.groupby(["method", "class"])["detected"].mean().unstack().round(3)
                 if len(events) else pd.DataFrame())
+    md = (f"All {len(common)} channels:\n\n" + _markdown(comp))
+    if calib:
+        md += (f"\n\n{len(calib)} calibratable channels (excluding {len(uncalibratable)} with a constant training "
+               f"signal / degenerate validation scores):\n\n" + _markdown(comp_cal))
     metrics = {"run_name": summary["run_name"], "n_channels_evaluated": len(common), "excluded_channels": excluded,
-               "training_failures": summary["failures"], "results": results,
+               "training_failures": summary["failures"], "n_calibratable_channels": len(calib),
+               "uncalibratable_channels": uncalibratable, "results": results,
                "event_recall_by_class": by_class.to_dict() if len(by_class) else {},
-               "comparison_markdown": _markdown(comp)}
+               "comparison_markdown": md}
     comp.to_csv(run_dir / "comparison.csv", index=False)
-    (run_dir / "comparison.md").write_text(metrics["comparison_markdown"])
+    comp_cal.to_csv(run_dir / "comparison_calibratable.csv", index=False)
+    (run_dir / "comparison.md").write_text(md)
     pd.DataFrame(per_channel).to_csv(run_dir / "per_channel.csv", index=False)
     events.to_csv(run_dir / "events.csv", index=False)
     pd.DataFrame(fa_rows, columns=["chan_id", "spacecraft", "method", "start", "end", "length",
@@ -125,6 +169,20 @@ def evaluate_run(run_dir: Path) -> dict:
     _figures(run_dir, comp, results, methods, common)
     log.info("Evaluation written to %s", run_dir)
     return metrics
+
+
+COMP_COLS = ("precision", "recall", "f1", "fpr", "fnr", "accuracy", "event_precision", "event_recall", "event_f1",
+             "event_tp", "event_fn", "event_fp", "roc_auc_macro", "pr_auc_macro", "roc_auc_pooled", "pr_auc_pooled",
+             "n_channels")
+
+
+def _comparison(results: dict, methods: list[str], key: str) -> pd.DataFrame:
+    rows = []
+    for m in methods:
+        r = results[m][key]
+        rows.append({"method": m, **{k: r[k] for k in COMP_COLS},
+                     "roc_auc_macro_ci_low": r["roc_auc_macro_ci"][0], "roc_auc_macro_ci_high": r["roc_auc_macro_ci"][1]})
+    return pd.DataFrame(rows)
 
 
 def _load_label_meta(run_dir: Path, chans: list[str]):
@@ -138,8 +196,8 @@ def _load_label_meta(run_dir: Path, chans: list[str]):
 
 
 def _markdown(comp: pd.DataFrame) -> str:
-    cols = ["method", "precision", "recall", "f1", "fpr", "accuracy", "event_precision", "event_recall",
-            "event_f1", "event_tp", "event_fn", "event_fp", "roc_auc", "pr_auc"]
+    cols = ["method", "precision", "recall", "f1", "fpr", "event_precision", "event_recall",
+            "event_f1", "event_tp", "event_fn", "event_fp", "roc_auc_macro", "pr_auc_macro", "roc_auc_pooled"]
     lines = ["| " + " | ".join(cols) + " |", "|" + "---|" * len(cols)]
     for _, r in comp.iterrows():
         lines.append("| " + " | ".join(f"{r[c]:.3f}" if isinstance(r[c], float) else str(r[c]) for c in cols) + " |")

@@ -36,6 +36,7 @@ class ValueScaler:
     def __init__(self, mean: float = 0.0, std: float = 1.0):
         self.mean = float(mean)
         self.std = float(std)
+        self.constant = False   # True when fit() saw a (near-)constant signal and kept std = 1
 
     def fit(self, fit_array: np.ndarray) -> "ValueScaler":
         values = fit_array[:, VALUE_COL]
@@ -43,7 +44,8 @@ class ValueScaler:
         # 19 benchmark channels are exactly constant in train (std = 0). Dividing by ~0 would turn
         # tiny test changes into astronomically large inputs, so we keep the original units instead.
         std = float(values.std())
-        self.std = std if std >= self.MIN_STD else 1.0
+        self.constant = std < self.MIN_STD
+        self.std = std if not self.constant else 1.0
         return self
 
     def transform(self, array: np.ndarray) -> np.ndarray:
@@ -52,8 +54,10 @@ class ValueScaler:
         return out
 
     def to_dict(self) -> dict:
-        return {"mean": self.mean, "std": self.std}
+        return {"mean": self.mean, "std": self.std, "constant": self.constant}
 
     @classmethod
     def from_dict(cls, d: dict) -> "ValueScaler":
-        return cls(d["mean"], d["std"])
+        sc = cls(d["mean"], d["std"])
+        sc.constant = bool(d.get("constant", False))
+        return sc

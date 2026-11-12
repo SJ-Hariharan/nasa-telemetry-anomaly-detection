@@ -123,10 +123,12 @@ r = {"overall": {**point_metrics(_sum(counts[m]["point"], P_KEYS)),
 **Problem.** F1 judges one threshold. We also want to know how well the raw scores *rank* anomalous above normal points.
 **Concept.** ROC-AUC = probability that a random anomalous point scores higher than a random normal one (0.5 = random). PR-AUC (`average_precision_score`) summarises the precision–recall curve; its random baseline equals the anomaly rate, so it is more informative under imbalance.
 
-**Why normalise.** Each channel's scores live on its own scale (and the three detectors' scores are not comparable either). Pooling raw scores lets loud channels dominate the ranking. `evaluate_run` divides by the channel threshold: $\tilde s_t = s_t/\text{thr}_c$, so 1.0 means "at that channel's decision boundary" everywhere. Warm-up NaNs become 0.
+**Why normalise.** Each channel's scores live on its own scale (and the three detectors' scores are not comparable either). Pooling raw scores lets loud channels dominate the ranking. `evaluate_run` divides by the channel threshold: $\tilde s_t = s_t/\text{thr}_c$, so 1.0 means "at that channel's decision boundary" everywhere. Warm-up NaNs are excluded.
 
 **Example.** Channel A scores `[1, 2, 3, 6]`, thr 4; channel B `[10, 20, 30, 60]`, thr 40; the last point of each is anomalous.
 Each channel alone ranks perfectly (AUC 1.0). `threshold_free` on pooled **raw** scores: ROC-AUC **0.75**, PR-AUC 0.70 (B's normal points outrank A's anomaly). On pooled **normalised** scores: ROC-AUC 1.0, PR-AUC 1.0.
+
+**Update after review.** The project now reports the **macro** AUC as the primary figure: the mean of per-channel AUCs on raw scores, with warm-up excluded and a bootstrap interval. The pooled normalised AUC is secondary. On the full run, pooling reversed the baseline/IF order and tripled the LSTM's lead. The normalisation in the example above only works because both thresholds sit at the same relative position; real thresholds do not.
 
 **Limitations.** Normalised AUC depends on the calibrated thresholds; channels with an `eps` threshold (constant validation scores) produce huge normalised scores. AUC also counts points, inheriting the long-anomaly weighting of §1.
 

@@ -10,17 +10,18 @@ and an interactive Streamlit dashboard.
 
 ## Results (full run: 81 channels, thresholds calibrated without labels)
 
-| Method | Point precision | Point recall | Point F1 | Event recall | Event F1 | False-alarm events | ROC-AUC | PR-AUC |
+| Method | Point precision | Point recall | Point F1 | Event recall | Event F1 | False-alarm events | ROC-AUC (macro) | PR-AUC (macro) |
 |---|---|---|---|---|---|---|---|---|
-| Rolling z-score | 0.301 | 0.195 | 0.237 | 0.827 (86/104) | 0.056 | 2,881 | 0.603 | 0.221 |
-| Isolation Forest | 0.268 | 0.299 | 0.283 | 0.692 (72/104) | 0.065 | 2,025 | 0.590 | 0.183 |
-| **LSTM forecaster** | 0.269 | **0.688** | **0.387** | **0.933 (97/104)** | **0.099** | **1,764** | **0.753** | **0.317** |
+| Rolling z-score | 0.301 | 0.195 | 0.237 | 0.827 (86/104) | 0.056 | 2,881 | 0.590 | 0.260 |
+| Isolation Forest | 0.268 | 0.299 | 0.283 | 0.692 (72/104) | 0.065 | 2,025 | 0.635 | 0.292 |
+| **LSTM forecaster** | 0.269 | **0.688** | **0.387** | **0.933 (97/104)** | **0.099** | **1,764** | **0.677** | **0.456** |
 
-The LSTM ranks anomalies best and catches 97 of 104 labelled events (median latency 16 steps). Its alarms
-are imprecise, though, like every method's here: test data drifts away from the short training histories,
-so thresholds that flag 0.5% of validation points flag far more on test. Details, per-spacecraft numbers,
-error analysis and a post-hoc threshold-sensitivity study: [`EXPERIMENTS.md`](EXPERIMENTS.md).
-Single seed and no hyper-parameter search. **Not a replication of the Telemanom paper.**
+The LSTM catches 97 of 104 labelled events (median latency 16 steps) and has the best PR-AUC. Its ROC-AUC lead
+over Isolation Forest is within the bootstrap intervals. Every method raises far too many alarms. 22 channels
+cannot be calibrated at all (constant training signal, threshold ≈ 0), and they account for 52% (baseline) and
+44% (LSTM) of the point false positives. On the 59 calibratable channels, LSTM point F1 is 0.425. Validation-to-test score shift (KS statistic)
+explains part of the rest. Details, both tables, error analysis and a post-hoc sensitivity study: [`EXPERIMENTS.md`](EXPERIMENTS.md).
+Single seed, no hyper-parameter search. **Not a replication of the Telemanom paper.**
 
 ## Quick start
 

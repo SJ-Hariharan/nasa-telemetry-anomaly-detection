@@ -29,7 +29,7 @@ def test_load_labels_parses_lists(synthetic_raw_dir):
 def test_validation_passes_on_clean_data(synthetic_raw_dir):
     report = validate_dataset(synthetic_raw_dir)
     assert report["ok"], report["errors"]
-    assert report["summary"]["n_anomaly_sequences"] == 4
+    assert report["summary"]["n_anomaly_sequences"] == 5
 
 
 def test_validation_catches_length_mismatch(synthetic_raw_dir):
@@ -91,7 +91,7 @@ def test_duplicate_label_rows_are_merged_and_reported(synthetic_raw_dir):
     csv = synthetic_raw_dir / "labeled_anomalies.csv"
     csv.write_text(csv.read_text() + 'S-1,SMAP,"[[595, 610]]",[contextual],1000\n')
     labels = load_labels(synthetic_raw_dir)
-    assert len(labels) == 2
+    assert len(labels) == 3
     assert labels.set_index("chan_id").loc["S-1", "anomaly_sequences"] == [[595, 639], [850, 850]]
     report = validate_dataset(synthetic_raw_dir)
     assert report["ok"] and any("merged" in w for w in report["warnings"])

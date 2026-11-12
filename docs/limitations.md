@@ -51,12 +51,23 @@
 
 ## What the full run showed (see `EXPERIMENTS.md`)
 
-* **Distribution shift dominates the errors.** Thresholds flag ~0.5% of validation points, but the mean test FPR is
-  7.8% (baseline), 13.6% (IF) and 25.2% (LSTM), driven by a minority of channels (29 have LSTM FPR > 20%).
-  Event precision is therefore ≤ 0.05 for all methods. **These detectors would produce far too many alerts
-  for operational use as configured.**
+* **22 channels cannot be calibrated.** 19 have a constant training signal, and 3 more have a constant validation segment
+  for the baseline. For them the 99.5% validation quantile is ~0, so any test deviation is flagged. They produce 52% of the
+  baseline's and 44% of the LSTM's point false positives (LSTM FPR 0.46 on them vs 0.20 elsewhere). The pipeline now flags them instead of
+  reporting a "calibrated" threshold, and results are given with and without them. A principled fallback (pooled or
+  hierarchical calibration across channels of the same spacecraft) is not implemented.
+* **Small validation sets.** 13 channels have fewer than 300 validation points (minimum 62). The 99.5% quantile of
+  62 points is essentially the validation maximum, so thresholds on these channels are noisy.
 * **The 99.5% quantile is too low for this benchmark.** Post-hoc, a 3× higher LSTM threshold would roughly double
-  event F1. That was observed with test labels and is *not* applied. A legitimate fix would be to choose the
-  quantile on a held-out set of *channels* (leave-channels-out), or use dynamic/pruned thresholds as in Telemanom.
+  event F1. That was observed with test labels and is *not* applied. A legitimate fix would choose the calibration
+  rule on a held-out set of *channels* (leave-channels-out), or use dynamic/pruned thresholds as in Telemanom.
+* **Shift is a partial explanation.** The per-channel KS distance between validation and test scores correlates
+  moderately with FPR for the LSTM (Spearman 0.51) and IF (0.38), and not at all for the baseline. Raw-signal drift
+  statistics correlate weakly (|ρ| ≤ 0.27). Earlier wording attributed the false alarms wholesale to
+  "distribution shift". That was not supported and has been replaced.
+* **AUC caveats.** Only the macro (per-channel mean) AUC is a fair ranking figure; the pooled normalised-score AUC is
+  kept for reference. The LSTM's macro ROC-AUC lead over Isolation Forest is within the bootstrap intervals, and on
+  calibratable channels IF is marginally ahead. The LSTM's lead on PR-AUC and recall is clear.
+* **Event FP counts are not comparable across methods.** Only the LSTM's scores are smoothed, and `merge_gap = 0`.
 * **Threshold-multiplier sensitivity is meaningless for Isolation Forest** (bounded score scale), so it is excluded from that analysis.
 * LSTM misses are mostly long contextual anomalies whose values stay in a familiar range (6 of its 7 misses).

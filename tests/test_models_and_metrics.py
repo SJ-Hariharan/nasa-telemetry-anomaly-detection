@@ -4,12 +4,12 @@ import pandas as pd
 import pytest
 import torch
 
-from src.evaluation.metrics import event_counts, event_metrics, point_counts, point_metrics, threshold_free
+from src.evaluation.metrics import event_counts, event_metrics, macro_auc, point_counts, point_metrics, threshold_free
 from src.inference.predict import detect, frame_to_array
 from src.models.detectors import IsolationForestDetector, RollingZScoreDetector
 from src.models.lstm import LSTMDetector, LSTMForecaster
 from src.models.persistence import DetectorBundle, load_bundle
-from src.models.thresholds import apply_threshold, calibrate_threshold, runs
+from src.models.thresholds import apply_threshold, calibrate_threshold, calibration_is_degenerate, runs
 from src.preprocessing.scaling import ValueScaler
 
 
@@ -47,6 +47,27 @@ def test_event_metrics():
 def test_threshold_free_auc_perfect_ranking():
     r = threshold_free(np.array([0, 0, 1, 1]), np.array([0.1, 0.2, 2.0, 3.0]))
     assert r["roc_auc"] == 1.0 and r["pr_auc"] == 1.0
+
+
+def test_threshold_free_ignores_warmup_nans():
+    y, s = np.array([0, 0, 1, 1, 0]), np.array([np.nan, np.nan, 1.0, 2.0, 3.0])
+    assert threshold_free(y, s)["roc_auc"] == 0.0            # only the 3 finite points count (0.667 if NaN -> 0)
+    assert threshold_free(np.array([0, 0]), np.array([1.0, 2.0]))["roc_auc"] is None
+
+
+def test_macro_auc_mean_and_bootstrap_interval():
+    r = macro_auc([0.5, 0.7, 0.9, None])
+    assert r["n"] == 3 and r["mean"] == pytest.approx(0.7)
+    assert r["ci_low"] <= r["mean"] <= r["ci_high"] and r["ci_low"] >= 0.5 and r["ci_high"] <= 0.9
+    assert macro_auc([])["mean"] is None
+
+
+def test_degenerate_calibration_is_flagged():
+    zeros = np.zeros(500)
+    assert calibration_is_degenerate(zeros, calibrate_threshold(zeros))         # constant channel
+    assert calibration_is_degenerate(np.full(500, 0.2), 0.2)                      # no spread at all
+    s = np.abs(np.random.default_rng(0).standard_normal(500))
+    assert not calibration_is_degenerate(s, calibrate_threshold(s))
 
 
 # ---------- thresholds ----------

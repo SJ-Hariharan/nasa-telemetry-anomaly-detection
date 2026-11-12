@@ -31,6 +31,22 @@ def calibrate_threshold(val_scores: np.ndarray, method: str = "quantile", quanti
     return thr if thr > 0 else float(np.finfo(np.float32).eps)
 
 
+DEGENERATE_FLOOR = 10 * float(np.finfo(np.float32).eps)
+
+
+def calibration_is_degenerate(val_scores: np.ndarray, threshold: float) -> bool:
+    """True when the validation scores carry no information about nominal variability.
+
+    Happens on channels whose training signal is constant: every validation score is 0 (baseline) or a
+    tiny near-constant error (LSTM), so the "99.5% quantile" collapses to ~0 and ANY test deviation is
+    flagged. Such a threshold is reported but marked ``calibratable: false`` and the evaluation shows
+    results with and without these channels (see docs/limitations.md, finding D1).
+    """
+    s = np.asarray(val_scores, dtype=np.float64)
+    s = s[np.isfinite(s)]
+    return bool(s.size == 0 or np.std(s) == 0.0 or threshold <= DEGENERATE_FLOOR)
+
+
 def runs(binary: np.ndarray) -> list[tuple[int, int]]:
     """Contiguous runs of 1s as inclusive (start, end) pairs. [0,1,1,0,1] -> [(1,2),(4,4)]"""
     b = np.concatenate([[0], np.asarray(binary, dtype=np.int8), [0]])

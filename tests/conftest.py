@@ -34,6 +34,15 @@ def synthetic_raw_dir(tmp_path: Path) -> Path:
         np.save(raw / "train" / f"{chan}.npy", train)
         np.save(raw / "test" / f"{chan}.npy", test)
         rows.append(f'{chan},{sc},"[[600, 639], [850, 850]]","[contextual, point]",1000')
+    # A channel whose TRAIN signal is constant (19 real benchmark channels are like this): the threshold
+    # cannot be calibrated, and the evaluation must flag it rather than hide it in the averages.
+    train, test = _series(1500, rng, 24), _series(1000, rng, 24)
+    train[:, 0] = 0.3
+    test[:, 0] = 0.3
+    test[700:720, 0] = 0.9
+    np.save(raw / "train" / "C-1.npy", train)
+    np.save(raw / "test" / "C-1.npy", test)
+    rows.append('C-1,SMAP,"[[700, 719]]","[point]",1000')
     (raw / "labeled_anomalies.csv").write_text("\n".join(rows) + "\n")
     return raw
 

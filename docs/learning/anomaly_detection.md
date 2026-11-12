@@ -50,8 +50,8 @@ event metrics in `src/evaluation/metrics.py`.
 
 **Concept.** A detector outputs a continuous **score** $s_t$ (higher = more unusual). A **decision**
 needs a threshold $\tau$: $\hat y_t = \mathbb{1}[s_t > \tau]$. Separating them lets us:
-- compare detectors threshold-free (ROC-AUC, PR-AUC in `threshold_free`, on $s_t/\tau$ so channels
-  are comparable — 1.0 = that channel's boundary);
+- compare detectors threshold-free (ROC-AUC, PR-AUC in `threshold_free`, computed per channel and
+  macro-averaged; a pooled variant on $s_t/\tau$ is kept as a secondary figure);
 - change the operating point without retraining (`SENSITIVITY_MULTIPLIERS` in
   `src/evaluation/evaluate.py` multiplies thresholds by 0.5…5).
 

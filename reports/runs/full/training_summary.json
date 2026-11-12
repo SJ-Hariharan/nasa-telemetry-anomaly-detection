@@ -20,13 +20,17 @@
      "status": "ok",
      "threshold": 3.174912030654851,
      "seconds": 0.0,
-     "val_flag_rate": 0.005226480836236934
+     "val_flag_rate": 0.005226480836236934,
+     "calibratable": true,
+     "val_len": 574
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6764797722556649,
      "seconds": 0.35,
-     "val_flag_rate": 0.005226480836236934
+     "val_flag_rate": 0.005226480836236934,
+     "calibratable": true,
+     "val_len": 574
     },
     "lstm": {
      "status": "ok",
@@ -35,9 +39,12 @@
      "val_flag_rate": 0.005226480836236934,
      "best_epoch": 37,
      "epochs_run": 44,
-     "best_val_mse": 0.14350955188274384
+     "best_val_mse": 0.14350955188274384,
+     "calibratable": true,
+     "val_len": 574
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "S-1",
@@ -50,13 +57,17 @@
      "status": "ok",
      "threshold": 2.87966088339657,
      "seconds": 0.0,
-     "val_flag_rate": 0.005319148936170213
+     "val_flag_rate": 0.005319148936170213,
+     "calibratable": true,
+     "val_len": 564
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5873829537063205,
      "seconds": 0.31,
-     "val_flag_rate": 0.005319148936170213
+     "val_flag_rate": 0.005319148936170213,
+     "calibratable": true,
+     "val_len": 564
     },
     "lstm": {
      "status": "ok",
@@ -65,9 +76,12 @@
      "val_flag_rate": 0.005319148936170213,
      "best_epoch": 28,
      "epochs_run": 35,
-     "best_val_mse": 0.6847473382949829
+     "best_val_mse": 0.6847473382949829,
+     "calibratable": true,
+     "val_len": 564
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-1",
@@ -80,13 +94,17 @@
      "status": "ok",
      "threshold": 5.850460615192661,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6832803072719714,
      "seconds": 0.28,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -95,9 +113,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 28,
      "epochs_run": 35,
-     "best_val_mse": 0.0023043507244437933
+     "best_val_mse": 0.0023043507244437933,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-2",
@@ -110,13 +131,17 @@
      "status": "ok",
      "threshold": 6.463998304480047,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6180377174977624,
      "seconds": 0.38,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -125,9 +150,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 16,
      "epochs_run": 23,
-     "best_val_mse": 0.012588771060109138
+     "best_val_mse": 0.012588771060109138,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-3",
@@ -140,13 +168,17 @@
      "status": "ok",
      "threshold": 3.1669692587081593,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6863502010496519,
      "seconds": 0.28,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -155,9 +187,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 9,
      "epochs_run": 16,
-     "best_val_mse": 0.013217591680586338
+     "best_val_mse": 0.013217591680586338,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-4",
@@ -170,13 +205,17 @@
      "status": "ok",
      "threshold": 7.1466616660253415,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6123253746669515,
      "seconds": 0.28,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -185,9 +224,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 17,
      "epochs_run": 24,
-     "best_val_mse": 0.004979812540113926
+     "best_val_mse": 0.004979812540113926,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-5",
@@ -200,13 +242,17 @@
      "status": "ok",
      "threshold": 5.850460615192661,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6786670385609098,
      "seconds": 0.29,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -215,9 +261,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 39,
      "epochs_run": 46,
-     "best_val_mse": 0.0011412440799176693
+     "best_val_mse": 0.0011412440799176693,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-6",
@@ -230,13 +279,17 @@
      "status": "ok",
      "threshold": 6.999999999999999,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6944425747357577,
      "seconds": 0.29,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -245,9 +298,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 30,
      "epochs_run": 37,
-     "best_val_mse": 0.003807921428233385
+     "best_val_mse": 0.003807921428233385,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-7",
@@ -260,13 +316,17 @@
      "status": "ok",
      "threshold": 2.861377219555071,
      "seconds": 0.0,
-     "val_flag_rate": 0.005415162454873646
+     "val_flag_rate": 0.005415162454873646,
+     "calibratable": true,
+     "val_len": 554
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.607275614125819,
      "seconds": 0.32,
-     "val_flag_rate": 0.005415162454873646
+     "val_flag_rate": 0.005415162454873646,
+     "calibratable": true,
+     "val_len": 554
     },
     "lstm": {
      "status": "ok",
@@ -275,9 +335,12 @@
      "val_flag_rate": 0.005415162454873646,
      "best_epoch": 25,
      "epochs_run": 32,
-     "best_val_mse": 0.39955076575279236
+     "best_val_mse": 0.39955076575279236,
+     "calibratable": true,
+     "val_len": 554
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-8",
@@ -290,13 +353,17 @@
      "status": "ok",
      "threshold": 6.14066685991911,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.614497941961537,
      "seconds": 0.31,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -305,9 +372,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 10,
      "epochs_run": 17,
-     "best_val_mse": 0.008434776216745377
+     "best_val_mse": 0.008434776216745377,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-9",
@@ -320,13 +390,17 @@
      "status": "ok",
      "threshold": 4.735911490817771,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6332311770493565,
      "seconds": 0.28,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -335,9 +409,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 10,
      "epochs_run": 17,
-     "best_val_mse": 0.015372266061604023
+     "best_val_mse": 0.015372266061604023,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-10",
@@ -350,13 +427,17 @@
      "status": "ok",
      "threshold": 5.863357242408545,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6670588187775289,
      "seconds": 0.3,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -365,9 +446,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 26,
      "epochs_run": 33,
-     "best_val_mse": 0.0012190096313133836
+     "best_val_mse": 0.0012190096313133836,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-11",
@@ -380,13 +464,17 @@
      "status": "ok",
      "threshold": 5.888798375095245,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6729055814366879,
      "seconds": 0.32,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -395,9 +483,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 45,
      "epochs_run": 52,
-     "best_val_mse": 0.0014779460616409779
+     "best_val_mse": 0.0014779460616409779,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-12",
@@ -410,13 +501,17 @@
      "status": "ok",
      "threshold": 5.850460615192661,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6830540414890245,
      "seconds": 0.29,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -425,9 +520,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 56,
      "epochs_run": 60,
-     "best_val_mse": 0.0004586353315971792
+     "best_val_mse": 0.0004586353315971792,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "E-13",
@@ -440,13 +538,17 @@
      "status": "ok",
      "threshold": 4.415242540223842,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6265995256782909,
      "seconds": 0.31,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -455,9 +557,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 26,
      "epochs_run": 33,
-     "best_val_mse": 0.05008372291922569
+     "best_val_mse": 0.05008372291922569,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "A-1",
@@ -470,13 +575,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6576277148090748,
      "seconds": 0.28,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -485,9 +594,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 2,
      "epochs_run": 9,
-     "best_val_mse": 2.791614761576966e-08
+     "best_val_mse": 2.791614761576966e-08,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "D-1",
@@ -500,13 +612,17 @@
      "status": "ok",
      "threshold": 3.460641782916641,
      "seconds": 0.0,
-     "val_flag_rate": 0.005263157894736842
+     "val_flag_rate": 0.005263157894736842,
+     "calibratable": true,
+     "val_len": 570
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5901261676252678,
      "seconds": 0.29,
-     "val_flag_rate": 0.005263157894736842
+     "val_flag_rate": 0.005263157894736842,
+     "calibratable": true,
+     "val_len": 570
     },
     "lstm": {
      "status": "ok",
@@ -515,9 +631,12 @@
      "val_flag_rate": 0.005263157894736842,
      "best_epoch": 23,
      "epochs_run": 30,
-     "best_val_mse": 0.21991249918937683
+     "best_val_mse": 0.21991249918937683,
+     "calibratable": true,
+     "val_len": 570
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "P-2",
@@ -530,13 +649,17 @@
      "status": "ok",
      "threshold": 2.4387940736841522,
      "seconds": 0.0,
-     "val_flag_rate": 0.005319148936170213
+     "val_flag_rate": 0.005319148936170213,
+     "calibratable": true,
+     "val_len": 564
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.592044884995124,
      "seconds": 0.31,
-     "val_flag_rate": 0.005319148936170213
+     "val_flag_rate": 0.005319148936170213,
+     "calibratable": true,
+     "val_len": 564
     },
     "lstm": {
      "status": "ok",
@@ -545,9 +668,12 @@
      "val_flag_rate": 0.005319148936170213,
      "best_epoch": 23,
      "epochs_run": 30,
-     "best_val_mse": 0.5012288689613342
+     "best_val_mse": 0.5012288689613342,
+     "calibratable": true,
+     "val_len": 564
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "P-3",
@@ -560,13 +686,17 @@
      "status": "ok",
      "threshold": 3.9867510844602463,
      "seconds": 0.0,
-     "val_flag_rate": 0.005253940455341506
+     "val_flag_rate": 0.005253940455341506,
+     "calibratable": true,
+     "val_len": 571
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5605899217154791,
      "seconds": 0.29,
-     "val_flag_rate": 0.005253940455341506
+     "val_flag_rate": 0.005253940455341506,
+     "calibratable": true,
+     "val_len": 571
     },
     "lstm": {
      "status": "ok",
@@ -575,9 +705,12 @@
      "val_flag_rate": 0.005253940455341506,
      "best_epoch": 14,
      "epochs_run": 21,
-     "best_val_mse": 0.07232677191495895
+     "best_val_mse": 0.07232677191495895,
+     "calibratable": true,
+     "val_len": 571
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "D-2",
@@ -590,13 +723,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.7967972666223007,
      "seconds": 0.28,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -605,9 +742,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 2,
      "epochs_run": 9,
-     "best_val_mse": 4.7699650451704656e-08
+     "best_val_mse": 4.7699650451704656e-08,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "D-3",
@@ -620,13 +760,17 @@
      "status": "ok",
      "threshold": 2.2139962039527443,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6560982513261353,
      "seconds": 0.32,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -635,9 +779,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 15,
      "epochs_run": 22,
-     "best_val_mse": 0.01794210448861122
+     "best_val_mse": 0.01794210448861122,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "D-4",
@@ -650,13 +797,17 @@
      "status": "ok",
      "threshold": 9.949874371066198,
      "seconds": 0.0,
-     "val_flag_rate": 0.005291005291005291
+     "val_flag_rate": 0.005291005291005291,
+     "calibratable": true,
+     "val_len": 567
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6538729842031273,
      "seconds": 0.27,
-     "val_flag_rate": 0.005291005291005291
+     "val_flag_rate": 0.005291005291005291,
+     "calibratable": true,
+     "val_len": 567
     },
     "lstm": {
      "status": "ok",
@@ -665,9 +816,12 @@
      "val_flag_rate": 0.005291005291005291,
      "best_epoch": 5,
      "epochs_run": 12,
-     "best_val_mse": 0.052964191883802414
+     "best_val_mse": 0.052964191883802414,
+     "calibratable": true,
+     "val_len": 567
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "A-2",
@@ -680,13 +834,17 @@
      "status": "ok",
      "threshold": 1.6582043694375648,
      "seconds": 0.0,
-     "val_flag_rate": 0.005660377358490566
+     "val_flag_rate": 0.005660377358490566,
+     "calibratable": true,
+     "val_len": 530
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5580579769130812,
      "seconds": 0.55,
-     "val_flag_rate": 0.005660377358490566
+     "val_flag_rate": 0.005660377358490566,
+     "calibratable": true,
+     "val_len": 530
     },
     "lstm": {
      "status": "ok",
@@ -695,9 +853,12 @@
      "val_flag_rate": 0.005660377358490566,
      "best_epoch": 30,
      "epochs_run": 37,
-     "best_val_mse": 0.09528280794620514
+     "best_val_mse": 0.09528280794620514,
+     "calibratable": true,
+     "val_len": 530
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "A-3",
@@ -710,13 +871,17 @@
      "status": "ok",
      "threshold": 1.8750884380207289,
      "seconds": 0.0,
-     "val_flag_rate": 0.005484460694698354
+     "val_flag_rate": 0.005484460694698354,
+     "calibratable": true,
+     "val_len": 547
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5615076573848876,
      "seconds": 0.31,
-     "val_flag_rate": 0.005484460694698354
+     "val_flag_rate": 0.005484460694698354,
+     "calibratable": true,
+     "val_len": 547
     },
     "lstm": {
      "status": "ok",
@@ -725,9 +890,12 @@
      "val_flag_rate": 0.005484460694698354,
      "best_epoch": 25,
      "epochs_run": 32,
-     "best_val_mse": 0.06702005118131638
+     "best_val_mse": 0.06702005118131638,
+     "calibratable": true,
+     "val_len": 547
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "A-4",
@@ -740,13 +908,17 @@
      "status": "ok",
      "threshold": 1.7966476407846397,
      "seconds": 0.0,
-     "val_flag_rate": 0.0055762081784386614
+     "val_flag_rate": 0.0055762081784386614,
+     "calibratable": true,
+     "val_len": 538
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5504292136477118,
      "seconds": 0.32,
-     "val_flag_rate": 0.0055762081784386614
+     "val_flag_rate": 0.0055762081784386614,
+     "calibratable": true,
+     "val_len": 538
     },
     "lstm": {
      "status": "ok",
@@ -755,9 +927,12 @@
      "val_flag_rate": 0.0055762081784386614,
      "best_epoch": 12,
      "epochs_run": 19,
-     "best_val_mse": 0.13334369659423828
+     "best_val_mse": 0.13334369659423828,
+     "calibratable": true,
+     "val_len": 538
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "G-1",
@@ -770,13 +945,17 @@
      "status": "ok",
      "threshold": 1.9546242828199927,
      "seconds": 0.0,
-     "val_flag_rate": 0.005319148936170213
+     "val_flag_rate": 0.005319148936170213,
+     "calibratable": true,
+     "val_len": 564
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6315232538135959,
      "seconds": 0.38,
-     "val_flag_rate": 0.005319148936170213
+     "val_flag_rate": 0.005319148936170213,
+     "calibratable": true,
+     "val_len": 564
     },
     "lstm": {
      "status": "ok",
@@ -785,9 +964,12 @@
      "val_flag_rate": 0.005319148936170213,
      "best_epoch": 4,
      "epochs_run": 11,
-     "best_val_mse": 0.1293429285287857
+     "best_val_mse": 0.1293429285287857,
+     "calibratable": true,
+     "val_len": 564
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "G-2",
@@ -800,13 +982,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 496
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6868043846598483,
      "seconds": 0.35,
-     "val_flag_rate": 0.006048387096774193
+     "val_flag_rate": 0.006048387096774193,
+     "calibratable": true,
+     "val_len": 496
     },
     "lstm": {
      "status": "ok",
@@ -815,9 +1001,12 @@
      "val_flag_rate": 0.006048387096774193,
      "best_epoch": 3,
      "epochs_run": 10,
-     "best_val_mse": 8.114285066085358e-08
+     "best_val_mse": 8.114285066085358e-08,
+     "calibratable": true,
+     "val_len": 496
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "D-5",
@@ -830,13 +1019,17 @@
      "status": "ok",
      "threshold": 0.036205480396747584,
      "seconds": 0.01,
-     "val_flag_rate": 0.005859375
+     "val_flag_rate": 0.005859375,
+     "calibratable": true,
+     "val_len": 512
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6205731984692288,
      "seconds": 0.3,
-     "val_flag_rate": 0.005859375
+     "val_flag_rate": 0.005859375,
+     "calibratable": true,
+     "val_len": 512
     },
     "lstm": {
      "status": "ok",
@@ -845,9 +1038,12 @@
      "val_flag_rate": 0.005859375,
      "best_epoch": 1,
      "epochs_run": 8,
-     "best_val_mse": 2.6295901989215054e-07
+     "best_val_mse": 2.6295901989215054e-07,
+     "calibratable": true,
+     "val_len": 512
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "D-6",
@@ -860,13 +1056,17 @@
      "status": "ok",
      "threshold": 3.9328542390660015,
      "seconds": 0.0,
-     "val_flag_rate": 0.005780346820809248
+     "val_flag_rate": 0.005780346820809248,
+     "calibratable": true,
+     "val_len": 519
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.59879067330042,
      "seconds": 0.29,
-     "val_flag_rate": 0.005780346820809248
+     "val_flag_rate": 0.005780346820809248,
+     "calibratable": true,
+     "val_len": 519
     },
     "lstm": {
      "status": "ok",
@@ -875,9 +1075,12 @@
      "val_flag_rate": 0.005780346820809248,
      "best_epoch": 12,
      "epochs_run": 19,
-     "best_val_mse": 0.008167495019733906
+     "best_val_mse": 0.008167495019733906,
+     "calibratable": true,
+     "val_len": 519
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "D-7",
@@ -890,13 +1093,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 517
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.7582480397899638,
      "seconds": 0.31,
-     "val_flag_rate": 0.005802707930367505
+     "val_flag_rate": 0.005802707930367505,
+     "calibratable": true,
+     "val_len": 517
     },
     "lstm": {
      "status": "ok",
@@ -905,9 +1112,12 @@
      "val_flag_rate": 0.005802707930367505,
      "best_epoch": 4,
      "epochs_run": 11,
-     "best_val_mse": 2.8839028942684308e-08
+     "best_val_mse": 2.8839028942684308e-08,
+     "calibratable": true,
+     "val_len": 517
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "F-1",
@@ -920,13 +1130,17 @@
      "status": "ok",
      "threshold": 3.867378343579008,
      "seconds": 0.0,
-     "val_flag_rate": 0.005226480836236934
+     "val_flag_rate": 0.005226480836236934,
+     "calibratable": true,
+     "val_len": 574
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5890231743532517,
      "seconds": 0.33,
-     "val_flag_rate": 0.005226480836236934
+     "val_flag_rate": 0.005226480836236934,
+     "calibratable": true,
+     "val_len": 574
     },
     "lstm": {
      "status": "ok",
@@ -935,9 +1149,12 @@
      "val_flag_rate": 0.005226480836236934,
      "best_epoch": 26,
      "epochs_run": 33,
-     "best_val_mse": 0.22420881688594818
+     "best_val_mse": 0.22420881688594818,
+     "calibratable": true,
+     "val_len": 574
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "P-4",
@@ -950,13 +1167,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 522
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6673932218608156,
      "seconds": 0.28,
-     "val_flag_rate": 0.0038314176245210726
+     "val_flag_rate": 0.0038314176245210726,
+     "calibratable": true,
+     "val_len": 522
     },
     "lstm": {
      "status": "ok",
@@ -965,9 +1186,12 @@
      "val_flag_rate": 0.005747126436781609,
      "best_epoch": 2,
      "epochs_run": 9,
-     "best_val_mse": 6.819808362479307e-08
+     "best_val_mse": 6.819808362479307e-08,
+     "calibratable": true,
+     "val_len": 522
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "G-3",
@@ -980,13 +1204,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 525
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5437603862992139,
      "seconds": 0.3,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 525
     },
     "lstm": {
      "status": "ok",
@@ -995,9 +1223,12 @@
      "val_flag_rate": 0.005714285714285714,
      "best_epoch": 1,
      "epochs_run": 8,
-     "best_val_mse": 0.0005549921770580113
+     "best_val_mse": 0.0005549921770580113,
+     "calibratable": true,
+     "val_len": 525
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "T-1",
@@ -1010,13 +1241,17 @@
      "status": "ok",
      "threshold": 2.421266295879061,
      "seconds": 0.0,
-     "val_flag_rate": 0.0052173913043478265
+     "val_flag_rate": 0.0052173913043478265,
+     "calibratable": true,
+     "val_len": 575
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6042601012210317,
      "seconds": 0.48,
-     "val_flag_rate": 0.0052173913043478265
+     "val_flag_rate": 0.0052173913043478265,
+     "calibratable": true,
+     "val_len": 575
     },
     "lstm": {
      "status": "ok",
@@ -1025,9 +1260,12 @@
      "val_flag_rate": 0.0052173913043478265,
      "best_epoch": 38,
      "epochs_run": 45,
-     "best_val_mse": 0.004326480440795422
+     "best_val_mse": 0.004326480440795422,
+     "calibratable": true,
+     "val_len": 575
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "T-2",
@@ -1040,13 +1278,17 @@
      "status": "ok",
      "threshold": 2.430136375237504,
      "seconds": 0.01,
-     "val_flag_rate": 0.005253940455341506
+     "val_flag_rate": 0.005253940455341506,
+     "calibratable": true,
+     "val_len": 571
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5991368363723478,
      "seconds": 0.32,
-     "val_flag_rate": 0.005253940455341506
+     "val_flag_rate": 0.005253940455341506,
+     "calibratable": true,
+     "val_len": 571
     },
     "lstm": {
      "status": "ok",
@@ -1055,9 +1297,12 @@
      "val_flag_rate": 0.005253940455341506,
      "best_epoch": 37,
      "epochs_run": 44,
-     "best_val_mse": 0.004468030761927366
+     "best_val_mse": 0.004468030761927366,
+     "calibratable": true,
+     "val_len": 571
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "D-8",
@@ -1070,13 +1315,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.01,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 520
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.38906955015817546,
      "seconds": 0.23,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 520
     },
     "lstm": {
      "status": "ok",
@@ -1085,9 +1334,12 @@
      "val_flag_rate": 0.0057692307692307696,
      "best_epoch": 4,
      "epochs_run": 11,
-     "best_val_mse": 1.0554375506899305e-07
+     "best_val_mse": 1.0554375506899305e-07,
+     "calibratable": true,
+     "val_len": 520
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "D-9",
@@ -1100,13 +1352,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 517
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.40346852135708733,
      "seconds": 0.17,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 517
     },
     "lstm": {
      "status": "ok",
@@ -1115,9 +1371,12 @@
      "val_flag_rate": 0.005802707930367505,
      "best_epoch": 3,
      "epochs_run": 10,
-     "best_val_mse": 1.0665016425548401e-08
+     "best_val_mse": 1.0665016425548401e-08,
+     "calibratable": true,
+     "val_len": 517
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "F-2",
@@ -1130,13 +1389,17 @@
      "status": "ok",
      "threshold": 5.9177192701874715,
      "seconds": 0.0,
-     "val_flag_rate": 0.005244755244755245
+     "val_flag_rate": 0.005244755244755245,
+     "calibratable": true,
+     "val_len": 572
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6125243753746822,
      "seconds": 0.21,
-     "val_flag_rate": 0.005244755244755245
+     "val_flag_rate": 0.005244755244755245,
+     "calibratable": true,
+     "val_len": 572
     },
     "lstm": {
      "status": "ok",
@@ -1145,9 +1408,12 @@
      "val_flag_rate": 0.005244755244755245,
      "best_epoch": 34,
      "epochs_run": 41,
-     "best_val_mse": 0.575175940990448
+     "best_val_mse": 0.575175940990448,
+     "calibratable": true,
+     "val_len": 572
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "G-4",
@@ -1160,13 +1426,17 @@
      "status": "ok",
      "threshold": 1.9395630337539334,
      "seconds": 0.0,
-     "val_flag_rate": 0.00392156862745098
+     "val_flag_rate": 0.00392156862745098,
+     "calibratable": true,
+     "val_len": 510
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6563001646918067,
      "seconds": 0.2,
-     "val_flag_rate": 0.00392156862745098
+     "val_flag_rate": 0.00392156862745098,
+     "calibratable": true,
+     "val_len": 510
     },
     "lstm": {
      "status": "ok",
@@ -1175,9 +1445,12 @@
      "val_flag_rate": 0.0058823529411764705,
      "best_epoch": 21,
      "epochs_run": 28,
-     "best_val_mse": 0.22162649035453796
+     "best_val_mse": 0.22162649035453796,
+     "calibratable": true,
+     "val_len": 510
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "T-3",
@@ -1190,13 +1463,17 @@
      "status": "ok",
      "threshold": 1.6030184100129221,
      "seconds": 0.0,
-     "val_flag_rate": 0.0034782608695652175
+     "val_flag_rate": 0.0034782608695652175,
+     "calibratable": true,
+     "val_len": 575
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5535541026471794,
      "seconds": 0.19,
-     "val_flag_rate": 0.0052173913043478265
+     "val_flag_rate": 0.0052173913043478265,
+     "calibratable": true,
+     "val_len": 575
     },
     "lstm": {
      "status": "ok",
@@ -1205,9 +1482,12 @@
      "val_flag_rate": 0.0052173913043478265,
      "best_epoch": 16,
      "epochs_run": 23,
-     "best_val_mse": 0.009123464114964008
+     "best_val_mse": 0.009123464114964008,
+     "calibratable": true,
+     "val_len": 575
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "D-11",
@@ -1220,13 +1500,17 @@
      "status": "ok",
      "threshold": 9.2409447108439,
      "seconds": 0.0,
-     "val_flag_rate": 0.005747126436781609
+     "val_flag_rate": 0.005747126436781609,
+     "calibratable": true,
+     "val_len": 522
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6470178275478808,
      "seconds": 0.18,
-     "val_flag_rate": 0.005747126436781609
+     "val_flag_rate": 0.005747126436781609,
+     "calibratable": true,
+     "val_len": 522
     },
     "lstm": {
      "status": "ok",
@@ -1235,9 +1519,12 @@
      "val_flag_rate": 0.005747126436781609,
      "best_epoch": 10,
      "epochs_run": 17,
-     "best_val_mse": 0.895789384841919
+     "best_val_mse": 0.895789384841919,
+     "calibratable": true,
+     "val_len": 522
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "D-12",
@@ -1250,13 +1537,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 62
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5000000000000006,
      "seconds": 0.16,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 62
     },
     "lstm": {
      "status": "ok",
@@ -1265,9 +1556,12 @@
      "val_flag_rate": 0.0,
      "best_epoch": 3,
      "epochs_run": 10,
-     "best_val_mse": 1.4648706692099722e-09
+     "best_val_mse": 1.4648706692099722e-09,
+     "calibratable": false,
+     "val_len": 62
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "B-1",
@@ -1280,13 +1574,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 487
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.41678656259803526,
      "seconds": 0.21,
-     "val_flag_rate": 0.002053388090349076
+     "val_flag_rate": 0.002053388090349076,
+     "calibratable": true,
+     "val_len": 487
     },
     "lstm": {
      "status": "ok",
@@ -1295,9 +1593,12 @@
      "val_flag_rate": 0.0,
      "best_epoch": 2,
      "epochs_run": 9,
-     "best_val_mse": 1.263866433731664e-08
+     "best_val_mse": 1.263866433731664e-08,
+     "calibratable": false,
+     "val_len": 487
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "G-6",
@@ -1310,13 +1611,17 @@
      "status": "ok",
      "threshold": 1.7495283247703242,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6583212469625677,
      "seconds": 0.19,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -1325,9 +1630,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 5,
      "epochs_run": 12,
-     "best_val_mse": 0.027407564222812653
+     "best_val_mse": 0.027407564222812653,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "G-7",
@@ -1340,13 +1648,17 @@
      "status": "ok",
      "threshold": 7.000000000000001,
      "seconds": 0.0,
-     "val_flag_rate": 0.00408997955010225
+     "val_flag_rate": 0.00408997955010225,
+     "calibratable": true,
+     "val_len": 489
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6808102631537566,
      "seconds": 0.17,
-     "val_flag_rate": 0.00408997955010225
+     "val_flag_rate": 0.00408997955010225,
+     "calibratable": true,
+     "val_len": 489
     },
     "lstm": {
      "status": "ok",
@@ -1355,9 +1667,12 @@
      "val_flag_rate": 0.006134969325153374,
      "best_epoch": 25,
      "epochs_run": 32,
-     "best_val_mse": 1.0455970764160156
+     "best_val_mse": 1.0455970764160156,
+     "calibratable": true,
+     "val_len": 489
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "P-7",
@@ -1370,13 +1685,17 @@
      "status": "ok",
      "threshold": 2.2553587307612752,
      "seconds": 0.0,
-     "val_flag_rate": 0.005253940455341506
+     "val_flag_rate": 0.005253940455341506,
+     "calibratable": true,
+     "val_len": 571
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5532512982068382,
      "seconds": 0.19,
-     "val_flag_rate": 0.005253940455341506
+     "val_flag_rate": 0.005253940455341506,
+     "calibratable": true,
+     "val_len": 571
     },
     "lstm": {
      "status": "ok",
@@ -1385,9 +1704,12 @@
      "val_flag_rate": 0.005253940455341506,
      "best_epoch": 20,
      "epochs_run": 27,
-     "best_val_mse": 0.07174932211637497
+     "best_val_mse": 0.07174932211637497,
+     "calibratable": true,
+     "val_len": 571
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "R-1",
@@ -1400,13 +1722,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.01,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 575
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.4144003163830293,
      "seconds": 0.19,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 575
     },
     "lstm": {
      "status": "ok",
@@ -1415,9 +1741,12 @@
      "val_flag_rate": 0.0017391304347826088,
      "best_epoch": 4,
      "epochs_run": 11,
-     "best_val_mse": 9.116010724063983e-10
+     "best_val_mse": 9.116010724063983e-10,
+     "calibratable": true,
+     "val_len": 575
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "A-5",
@@ -1430,13 +1759,17 @@
      "status": "ok",
      "threshold": 0.042393583059311304,
      "seconds": 0.0,
-     "val_flag_rate": 0.0070921985815602835
+     "val_flag_rate": 0.0070921985815602835,
+     "calibratable": true,
+     "val_len": 141
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.7194758658389087,
      "seconds": 0.18,
-     "val_flag_rate": 0.0070921985815602835
+     "val_flag_rate": 0.0070921985815602835,
+     "calibratable": true,
+     "val_len": 141
     },
     "lstm": {
      "status": "ok",
@@ -1445,9 +1778,12 @@
      "val_flag_rate": 0.0070921985815602835,
      "best_epoch": 1,
      "epochs_run": 8,
-     "best_val_mse": 3.3260201348639384e-07
+     "best_val_mse": 3.3260201348639384e-07,
+     "calibratable": true,
+     "val_len": 141
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "A-6",
@@ -1460,13 +1796,17 @@
      "status": "ok",
      "threshold": 10.691693020905355,
      "seconds": 0.0,
-     "val_flag_rate": 0.007352941176470588
+     "val_flag_rate": 0.007352941176470588,
+     "calibratable": true,
+     "val_len": 136
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.7454217468775403,
      "seconds": 0.16,
-     "val_flag_rate": 0.007352941176470588
+     "val_flag_rate": 0.007352941176470588,
+     "calibratable": true,
+     "val_len": 136
     },
     "lstm": {
      "status": "ok",
@@ -1475,9 +1815,12 @@
      "val_flag_rate": 0.007352941176470588,
      "best_epoch": 15,
      "epochs_run": 22,
-     "best_val_mse": 51.95802688598633
+     "best_val_mse": 51.95802688598633,
+     "calibratable": true,
+     "val_len": 136
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "A-7",
@@ -1490,13 +1833,17 @@
      "status": "ok",
      "threshold": 3.0399617554244442,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6984210531720719,
      "seconds": 0.2,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -1505,9 +1852,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 28,
      "epochs_run": 35,
-     "best_val_mse": 0.03196095675230026
+     "best_val_mse": 0.03196095675230026,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "D-13",
@@ -1520,13 +1870,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 298
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5000000000000008,
      "seconds": 0.16,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 298
     },
     "lstm": {
      "status": "ok",
@@ -1535,9 +1889,12 @@
      "val_flag_rate": 0.0,
      "best_epoch": 3,
      "epochs_run": 10,
-     "best_val_mse": 7.662834491384274e-07
+     "best_val_mse": 7.662834491384274e-07,
+     "calibratable": false,
+     "val_len": 298
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "A-8",
@@ -1550,13 +1907,17 @@
      "status": "ok",
      "threshold": 0.0026335164904576214,
      "seconds": 0.01,
-     "val_flag_rate": 0.006578947368421052
+     "val_flag_rate": 0.006578947368421052,
+     "calibratable": true,
+     "val_len": 152
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6160295448498706,
      "seconds": 0.39,
-     "val_flag_rate": 0.006578947368421052
+     "val_flag_rate": 0.006578947368421052,
+     "calibratable": true,
+     "val_len": 152
     },
     "lstm": {
      "status": "ok",
@@ -1565,9 +1926,12 @@
      "val_flag_rate": 0.006578947368421052,
      "best_epoch": 27,
      "epochs_run": 34,
-     "best_val_mse": 1.2469236310153065e-08
+     "best_val_mse": 1.2469236310153065e-08,
+     "calibratable": true,
+     "val_len": 152
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "A-9",
@@ -1580,13 +1944,17 @@
      "status": "ok",
      "threshold": 0.18792066991329126,
      "seconds": 0.0,
-     "val_flag_rate": 0.006578947368421052
+     "val_flag_rate": 0.006578947368421052,
+     "calibratable": true,
+     "val_len": 152
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.608264286732879,
      "seconds": 0.18,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 152
     },
     "lstm": {
      "status": "ok",
@@ -1595,9 +1963,12 @@
      "val_flag_rate": 0.006578947368421052,
      "best_epoch": 15,
      "epochs_run": 22,
-     "best_val_mse": 2.7121195671497844e-05
+     "best_val_mse": 2.7121195671497844e-05,
+     "calibratable": true,
+     "val_len": 152
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "F-3",
@@ -1610,13 +1981,17 @@
      "status": "ok",
      "threshold": 1.7494636743518506,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6563347736657714,
      "seconds": 0.18,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -1625,9 +2000,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 12,
      "epochs_run": 19,
-     "best_val_mse": 0.022784987464547157
+     "best_val_mse": 0.022784987464547157,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "M-6",
@@ -1640,13 +2018,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 313
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.7825555667881975,
      "seconds": 0.17,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 313
     },
     "lstm": {
      "status": "ok",
@@ -1655,9 +2037,12 @@
      "val_flag_rate": 0.006389776357827476,
      "best_epoch": 5,
      "epochs_run": 12,
-     "best_val_mse": 3.3075318128794606e-07
+     "best_val_mse": 3.3075318128794606e-07,
+     "calibratable": true,
+     "val_len": 313
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "M-1",
@@ -1670,13 +2055,17 @@
      "status": "ok",
      "threshold": 2.0007870192052666,
      "seconds": 0.0,
-     "val_flag_rate": 0.006787330316742082
+     "val_flag_rate": 0.006787330316742082,
+     "calibratable": true,
+     "val_len": 442
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.661525180919981,
      "seconds": 0.16,
-     "val_flag_rate": 0.006787330316742082
+     "val_flag_rate": 0.006787330316742082,
+     "calibratable": true,
+     "val_len": 442
     },
     "lstm": {
      "status": "ok",
@@ -1685,9 +2074,12 @@
      "val_flag_rate": 0.006787330316742082,
      "best_epoch": 26,
      "epochs_run": 33,
-     "best_val_mse": 0.12928971648216248
+     "best_val_mse": 0.12928971648216248,
+     "calibratable": true,
+     "val_len": 442
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "M-2",
@@ -1700,13 +2092,17 @@
      "status": "ok",
      "threshold": 5.568547401629469,
      "seconds": 0.0,
-     "val_flag_rate": 0.006787330316742082
+     "val_flag_rate": 0.006787330316742082,
+     "calibratable": true,
+     "val_len": 442
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.7775246545377023,
      "seconds": 0.2,
-     "val_flag_rate": 0.004524886877828055
+     "val_flag_rate": 0.004524886877828055,
+     "calibratable": true,
+     "val_len": 442
     },
     "lstm": {
      "status": "ok",
@@ -1715,9 +2111,12 @@
      "val_flag_rate": 0.006787330316742082,
      "best_epoch": 33,
      "epochs_run": 40,
-     "best_val_mse": 0.29473745822906494
+     "best_val_mse": 0.29473745822906494,
+     "calibratable": true,
+     "val_len": 442
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "S-2",
@@ -1730,13 +2129,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 185
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.7377196592781312,
      "seconds": 0.2,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 185
     },
     "lstm": {
      "status": "ok",
@@ -1745,9 +2148,12 @@
      "val_flag_rate": 0.005405405405405406,
      "best_epoch": 11,
      "epochs_run": 18,
-     "best_val_mse": 3.9494562997788307e-07
+     "best_val_mse": 3.9494562997788307e-07,
+     "calibratable": true,
+     "val_len": 185
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "P-10",
@@ -1760,13 +2166,17 @@
      "status": "ok",
      "threshold": 3.298136428465331,
      "seconds": 0.0,
-     "val_flag_rate": 0.00580046403712297
+     "val_flag_rate": 0.00580046403712297,
+     "calibratable": true,
+     "val_len": 862
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5373984746565574,
      "seconds": 0.23,
-     "val_flag_rate": 0.00580046403712297
+     "val_flag_rate": 0.00580046403712297,
+     "calibratable": true,
+     "val_len": 862
     },
     "lstm": {
      "status": "ok",
@@ -1775,9 +2185,12 @@
      "val_flag_rate": 0.00580046403712297,
      "best_epoch": 3,
      "epochs_run": 10,
-     "best_val_mse": 1.0687599182128906
+     "best_val_mse": 1.0687599182128906,
+     "calibratable": true,
+     "val_len": 862
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "T-4",
@@ -1790,13 +2203,17 @@
      "status": "ok",
      "threshold": 1.829706557608767,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 454
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6387366481171118,
      "seconds": 0.22,
-     "val_flag_rate": 0.006607929515418502
+     "val_flag_rate": 0.006607929515418502,
+     "calibratable": true,
+     "val_len": 454
     },
     "lstm": {
      "status": "ok",
@@ -1805,9 +2222,12 @@
      "val_flag_rate": 0.006607929515418502,
      "best_epoch": 20,
      "epochs_run": 27,
-     "best_val_mse": 0.1963661015033722
+     "best_val_mse": 0.1963661015033722,
+     "calibratable": true,
+     "val_len": 454
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "T-5",
@@ -1820,13 +2240,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 454
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.7579467319504805,
      "seconds": 0.29,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 454
     },
     "lstm": {
      "status": "ok",
@@ -1835,9 +2259,12 @@
      "val_flag_rate": 0.006607929515418502,
      "best_epoch": 3,
      "epochs_run": 10,
-     "best_val_mse": 9.085463403835092e-08
+     "best_val_mse": 9.085463403835092e-08,
+     "calibratable": true,
+     "val_len": 454
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "F-7",
@@ -1850,13 +2277,17 @@
      "status": "ok",
      "threshold": 2.93908315829988,
      "seconds": 0.0,
-     "val_flag_rate": 0.00597609561752988
+     "val_flag_rate": 0.00597609561752988,
+     "calibratable": true,
+     "val_len": 502
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6347855607718145,
      "seconds": 0.25,
-     "val_flag_rate": 0.00597609561752988
+     "val_flag_rate": 0.00597609561752988,
+     "calibratable": true,
+     "val_len": 502
     },
     "lstm": {
      "status": "ok",
@@ -1865,9 +2296,12 @@
      "val_flag_rate": 0.00597609561752988,
      "best_epoch": 27,
      "epochs_run": 34,
-     "best_val_mse": 0.43367913365364075
+     "best_val_mse": 0.43367913365364075,
+     "calibratable": true,
+     "val_len": 502
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "M-3",
@@ -1880,13 +2314,17 @@
      "status": "ok",
      "threshold": 12.742805975943757,
      "seconds": 0.0,
-     "val_flag_rate": 0.007371007371007371
+     "val_flag_rate": 0.007371007371007371,
+     "calibratable": true,
+     "val_len": 407
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6355785500035942,
      "seconds": 0.31,
-     "val_flag_rate": 0.007371007371007371
+     "val_flag_rate": 0.007371007371007371,
+     "calibratable": true,
+     "val_len": 407
     },
     "lstm": {
      "status": "ok",
@@ -1895,9 +2333,12 @@
      "val_flag_rate": 0.007371007371007371,
      "best_epoch": 37,
      "epochs_run": 44,
-     "best_val_mse": 0.014717482030391693
+     "best_val_mse": 0.014717482030391693,
+     "calibratable": true,
+     "val_len": 407
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "M-4",
@@ -1910,13 +2351,17 @@
      "status": "ok",
      "threshold": 10.894511147689482,
      "seconds": 0.0,
-     "val_flag_rate": 0.007228915662650603
+     "val_flag_rate": 0.007228915662650603,
+     "calibratable": true,
+     "val_len": 415
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.613732003467261,
      "seconds": 0.66,
-     "val_flag_rate": 0.007228915662650603
+     "val_flag_rate": 0.007228915662650603,
+     "calibratable": true,
+     "val_len": 415
     },
     "lstm": {
      "status": "ok",
@@ -1925,9 +2370,12 @@
      "val_flag_rate": 0.007228915662650603,
      "best_epoch": 16,
      "epochs_run": 23,
-     "best_val_mse": 0.04581868648529053
+     "best_val_mse": 0.04581868648529053,
+     "calibratable": true,
+     "val_len": 415
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "M-5",
@@ -1940,13 +2388,17 @@
      "status": "ok",
      "threshold": 3.1872120688368155,
      "seconds": 0.0,
-     "val_flag_rate": 0.007389162561576354
+     "val_flag_rate": 0.007389162561576354,
+     "calibratable": true,
+     "val_len": 406
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6300433029589366,
      "seconds": 0.27,
-     "val_flag_rate": 0.007389162561576354
+     "val_flag_rate": 0.007389162561576354,
+     "calibratable": true,
+     "val_len": 406
     },
     "lstm": {
      "status": "ok",
@@ -1955,9 +2407,12 @@
      "val_flag_rate": 0.007389162561576354,
      "best_epoch": 17,
      "epochs_run": 24,
-     "best_val_mse": 0.097516730427742
+     "best_val_mse": 0.097516730427742,
+     "calibratable": true,
+     "val_len": 406
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "P-15",
@@ -1970,13 +2425,17 @@
      "status": "ok",
      "threshold": 6.6961833462621865,
      "seconds": 0.0,
-     "val_flag_rate": 0.005434782608695652
+     "val_flag_rate": 0.005434782608695652,
+     "calibratable": true,
+     "val_len": 736
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.533586199530426,
      "seconds": 0.24,
-     "val_flag_rate": 0.005434782608695652
+     "val_flag_rate": 0.005434782608695652,
+     "calibratable": true,
+     "val_len": 736
     },
     "lstm": {
      "status": "ok",
@@ -1985,9 +2444,12 @@
      "val_flag_rate": 0.005434782608695652,
      "best_epoch": 48,
      "epochs_run": 55,
-     "best_val_mse": 0.011284563690423965
+     "best_val_mse": 0.011284563690423965,
+     "calibratable": true,
+     "val_len": 736
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "C-1",
@@ -2000,13 +2462,17 @@
      "status": "ok",
      "threshold": 4.391594237758239,
      "seconds": 0.0,
-     "val_flag_rate": 0.006944444444444444
+     "val_flag_rate": 0.006944444444444444,
+     "calibratable": true,
+     "val_len": 432
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6339173984343522,
      "seconds": 0.25,
-     "val_flag_rate": 0.006944444444444444
+     "val_flag_rate": 0.006944444444444444,
+     "calibratable": true,
+     "val_len": 432
     },
     "lstm": {
      "status": "ok",
@@ -2015,9 +2481,12 @@
      "val_flag_rate": 0.006944444444444444,
      "best_epoch": 39,
      "epochs_run": 46,
-     "best_val_mse": 0.003297148272395134
+     "best_val_mse": 0.003297148272395134,
+     "calibratable": true,
+     "val_len": 432
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "C-2",
@@ -2030,13 +2499,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 153
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.7674420025121399,
      "seconds": 0.16,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 153
     },
     "lstm": {
      "status": "ok",
@@ -2045,9 +2518,12 @@
      "val_flag_rate": 0.006535947712418301,
      "best_epoch": 13,
      "epochs_run": 20,
-     "best_val_mse": 7.102865993147134e-07
+     "best_val_mse": 7.102865993147134e-07,
+     "calibratable": true,
+     "val_len": 153
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "T-12",
@@ -2060,13 +2536,17 @@
      "status": "ok",
      "threshold": 5.894837567783662,
      "seconds": 0.0,
-     "val_flag_rate": 0.008733624454148471
+     "val_flag_rate": 0.008733624454148471,
+     "calibratable": true,
+     "val_len": 229
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.649716629694361,
      "seconds": 0.26,
-     "val_flag_rate": 0.008733624454148471
+     "val_flag_rate": 0.008733624454148471,
+     "calibratable": true,
+     "val_len": 229
     },
     "lstm": {
      "status": "ok",
@@ -2075,9 +2555,12 @@
      "val_flag_rate": 0.008733624454148471,
      "best_epoch": 10,
      "epochs_run": 17,
-     "best_val_mse": 0.016229894012212753
+     "best_val_mse": 0.016229894012212753,
+     "calibratable": true,
+     "val_len": 229
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "T-13",
@@ -2090,13 +2573,17 @@
      "status": "ok",
      "threshold": 5.895066441934702,
      "seconds": 0.01,
-     "val_flag_rate": 0.008733624454148471
+     "val_flag_rate": 0.008733624454148471,
+     "calibratable": true,
+     "val_len": 229
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6484958612708361,
      "seconds": 0.19,
-     "val_flag_rate": 0.008733624454148471
+     "val_flag_rate": 0.008733624454148471,
+     "calibratable": true,
+     "val_len": 229
     },
     "lstm": {
      "status": "ok",
@@ -2105,9 +2592,12 @@
      "val_flag_rate": 0.008733624454148471,
      "best_epoch": 1,
      "epochs_run": 8,
-     "best_val_mse": 0.03600449115037918
+     "best_val_mse": 0.03600449115037918,
+     "calibratable": true,
+     "val_len": 229
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "F-4",
@@ -2120,13 +2610,17 @@
      "status": "ok",
      "threshold": 5.551056750076611,
      "seconds": 0.0,
-     "val_flag_rate": 0.0066815144766146995
+     "val_flag_rate": 0.0066815144766146995,
+     "calibratable": true,
+     "val_len": 449
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5417124102103245,
      "seconds": 0.18,
-     "val_flag_rate": 0.0066815144766146995
+     "val_flag_rate": 0.0066815144766146995,
+     "calibratable": true,
+     "val_len": 449
     },
     "lstm": {
      "status": "ok",
@@ -2135,9 +2629,12 @@
      "val_flag_rate": 0.0066815144766146995,
      "best_epoch": 57,
      "epochs_run": 60,
-     "best_val_mse": 0.010513744316995144
+     "best_val_mse": 0.010513744316995144,
+     "calibratable": true,
+     "val_len": 449
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "F-5",
@@ -2150,13 +2647,17 @@
      "status": "ok",
      "threshold": 5.0770129566007505,
      "seconds": 0.0,
-     "val_flag_rate": 0.0057692307692307696
+     "val_flag_rate": 0.0057692307692307696,
+     "calibratable": true,
+     "val_len": 520
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5070784612528696,
      "seconds": 0.18,
-     "val_flag_rate": 0.0057692307692307696
+     "val_flag_rate": 0.0057692307692307696,
+     "calibratable": true,
+     "val_len": 520
     },
     "lstm": {
      "status": "ok",
@@ -2165,9 +2666,12 @@
      "val_flag_rate": 0.0057692307692307696,
      "best_epoch": 8,
      "epochs_run": 15,
-     "best_val_mse": 0.009005051106214523
+     "best_val_mse": 0.009005051106214523,
+     "calibratable": true,
+     "val_len": 520
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "D-14",
@@ -2180,13 +2684,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 735
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6987732296623441,
      "seconds": 0.28,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 735
     },
     "lstm": {
      "status": "ok",
@@ -2195,9 +2703,12 @@
      "val_flag_rate": 0.005442176870748299,
      "best_epoch": 2,
      "epochs_run": 9,
-     "best_val_mse": 1.9046866839289578e-07
+     "best_val_mse": 1.9046866839289578e-07,
+     "calibratable": true,
+     "val_len": 735
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "T-9",
@@ -2210,13 +2721,17 @@
      "status": "ok",
      "threshold": 5.683821876795236,
      "seconds": 0.0,
-     "val_flag_rate": 0.011363636363636364
+     "val_flag_rate": 0.011363636363636364,
+     "calibratable": true,
+     "val_len": 88
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5818561953643404,
      "seconds": 0.21,
-     "val_flag_rate": 0.011363636363636364
+     "val_flag_rate": 0.011363636363636364,
+     "calibratable": true,
+     "val_len": 88
     },
     "lstm": {
      "status": "ok",
@@ -2225,9 +2740,12 @@
      "val_flag_rate": 0.011363636363636364,
      "best_epoch": 6,
      "epochs_run": 13,
-     "best_val_mse": 0.10193515568971634
+     "best_val_mse": 0.10193515568971634,
+     "calibratable": true,
+     "val_len": 88
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "P-14",
@@ -2240,13 +2758,17 @@
      "status": "ok",
      "threshold": 0.027051180601119995,
      "seconds": 0.0,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5279765749239629,
      "seconds": 0.21,
-     "val_flag_rate": 0.005208333333333333
+     "val_flag_rate": 0.005208333333333333,
+     "calibratable": true,
+     "val_len": 576
     },
     "lstm": {
      "status": "ok",
@@ -2255,9 +2777,12 @@
      "val_flag_rate": 0.005208333333333333,
      "best_epoch": 4,
      "epochs_run": 11,
-     "best_val_mse": 1.3845949808910518e-07
+     "best_val_mse": 1.3845949808910518e-07,
+     "calibratable": true,
+     "val_len": 576
     }
-   }
+   },
+   "constant_train": true
   },
   {
    "chan_id": "T-8",
@@ -2270,13 +2795,17 @@
      "status": "ok",
      "threshold": 264.97113344790165,
      "seconds": 0.0,
-     "val_flag_rate": 0.006666666666666667
+     "val_flag_rate": 0.006666666666666667,
+     "calibratable": true,
+     "val_len": 150
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5715754758813099,
      "seconds": 0.21,
-     "val_flag_rate": 0.006666666666666667
+     "val_flag_rate": 0.006666666666666667,
+     "calibratable": true,
+     "val_len": 150
     },
     "lstm": {
      "status": "ok",
@@ -2285,9 +2814,12 @@
      "val_flag_rate": 0.006666666666666667,
      "best_epoch": 4,
      "epochs_run": 11,
-     "best_val_mse": 0.7155996561050415
+     "best_val_mse": 0.7155996561050415,
+     "calibratable": true,
+     "val_len": 150
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "P-11",
@@ -2300,13 +2832,17 @@
      "status": "ok",
      "threshold": 4.127007106155584,
      "seconds": 0.0,
-     "val_flag_rate": 0.005037783375314861
+     "val_flag_rate": 0.005037783375314861,
+     "calibratable": true,
+     "val_len": 794
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5339889048689066,
      "seconds": 0.19,
-     "val_flag_rate": 0.005037783375314861
+     "val_flag_rate": 0.005037783375314861,
+     "calibratable": true,
+     "val_len": 794
     },
     "lstm": {
      "status": "ok",
@@ -2315,9 +2851,12 @@
      "val_flag_rate": 0.005037783375314861,
      "best_epoch": 13,
      "epochs_run": 20,
-     "best_val_mse": 0.1302005797624588
+     "best_val_mse": 0.1302005797624588,
+     "calibratable": true,
+     "val_len": 794
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "D-15",
@@ -2330,13 +2869,17 @@
      "status": "ok",
      "threshold": 3.94503236197341,
      "seconds": 0.0,
-     "val_flag_rate": 0.004819277108433735
+     "val_flag_rate": 0.004819277108433735,
+     "calibratable": true,
+     "val_len": 415
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6230005393284511,
      "seconds": 0.18,
-     "val_flag_rate": 0.007228915662650603
+     "val_flag_rate": 0.007228915662650603,
+     "calibratable": true,
+     "val_len": 415
     },
     "lstm": {
      "status": "ok",
@@ -2345,9 +2888,12 @@
      "val_flag_rate": 0.007228915662650603,
      "best_epoch": 14,
      "epochs_run": 21,
-     "best_val_mse": 0.24507637321949005
+     "best_val_mse": 0.24507637321949005,
+     "calibratable": true,
+     "val_len": 415
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "D-16",
@@ -2360,13 +2906,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 290
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.5222129253901682,
      "seconds": 0.17,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 290
     },
     "lstm": {
      "status": "ok",
@@ -2375,9 +2925,12 @@
      "val_flag_rate": 0.006896551724137931,
      "best_epoch": 7,
      "epochs_run": 14,
-     "best_val_mse": 0.005705330520868301
+     "best_val_mse": 0.005705330520868301,
+     "calibratable": true,
+     "val_len": 290
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "M-7",
@@ -2390,13 +2943,17 @@
      "status": "ok",
      "threshold": 1.1920928955078125e-07,
      "seconds": 0.0,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 317
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.3621598977910035,
      "seconds": 0.17,
-     "val_flag_rate": 0.0
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 317
     },
     "lstm": {
      "status": "ok",
@@ -2405,9 +2962,12 @@
      "val_flag_rate": 0.006309148264984227,
      "best_epoch": 1,
      "epochs_run": 8,
-     "best_val_mse": 0.003665975295007229
+     "best_val_mse": 0.003665975295007229,
+     "calibratable": true,
+     "val_len": 317
     }
-   }
+   },
+   "constant_train": false
   },
   {
    "chan_id": "F-8",
@@ -2420,13 +2980,17 @@
      "status": "ok",
      "threshold": 6.781941695138156,
      "seconds": 0.0,
-     "val_flag_rate": 0.005988023952095809
+     "val_flag_rate": 0.005988023952095809,
+     "calibratable": true,
+     "val_len": 668
     },
     "isolation_forest": {
      "status": "ok",
      "threshold": 0.6740866330078812,
      "seconds": 0.17,
-     "val_flag_rate": 0.005988023952095809
+     "val_flag_rate": 0.005988023952095809,
+     "calibratable": true,
+     "val_len": 668
     },
     "lstm": {
      "status": "ok",
@@ -2435,9 +2999,12 @@
      "val_flag_rate": 0.005988023952095809,
      "best_epoch": 9,
      "epochs_run": 16,
-     "best_val_mse": 0.37794363498687744
+     "best_val_mse": 0.37794363498687744,
+     "calibratable": true,
+     "val_len": 668
     }
-   }
+   },
+   "constant_train": false
   }
  ],
  "failures": []

@@ -20,13 +20,20 @@ def test_end_to_end_pipeline(tiny_config, synthetic_raw_dir, tmp_path):
     assert table["label"].sum() == 41                     # 40-point shift + 1-point spike
 
     metrics = evaluate_run(reports)
-    assert metrics["n_channels_evaluated"] == 2
+    assert metrics["n_channels_evaluated"] == 3
+    # The constant-training channel is reported but flagged, and the comparison is also given without it.
+    assert set(metrics["uncalibratable_channels"]) == {"C-1"} and metrics["n_calibratable_channels"] == 2
+    assert summary["channels"][2]["constant_train"] and not summary["channels"][2]["methods"]["baseline"]["calibratable"]
     for m in ("baseline", "isolation_forest", "lstm"):
-        o = metrics["results"][m]["overall"]
-        assert 0.0 <= o["f1"] <= 1.0 and o["event_tp"] + o["event_fn"] == 4
+        o, c = metrics["results"][m]["overall"], metrics["results"][m]["calibratable"]
+        assert 0.0 <= o["f1"] <= 1.0 and o["event_tp"] + o["event_fn"] == 5 and c["event_tp"] + c["event_fn"] == 4
+        assert c["n_channels"] == 2 and o["roc_auc_macro_ci"][0] <= o["roc_auc_macro"] <= o["roc_auc_macro_ci"][1]
+    per = pd.read_csv(reports / "per_channel.csv")
+    assert {"roc_auc", "pr_auc", "ks_val_test", "calibratable", "val_len"} <= set(per.columns)
+    assert per["ks_val_test"].between(0, 1).all() and (reports / "scores" / "S-1.val.parquet").exists()
     # The injected anomalies are blatant: the simple baseline must catch at least one event.
     assert metrics["results"]["baseline"]["overall"]["event_tp"] >= 1
-    for f in ("comparison.csv", "events.csv", "false_alarms.csv", "sensitivity.csv", "figures/metric_comparison.png"):
+    for f in ("comparison.csv", "comparison_calibratable.csv", "events.csv", "false_alarms.csv", "sensitivity.csv", "figures/metric_comparison.png"):
         assert (reports / f).exists(), f
 
     # Inference from saved models reproduces the pipeline's test scores exactly.

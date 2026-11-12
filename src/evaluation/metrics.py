@@ -73,11 +73,28 @@ def event_metrics(c: dict) -> dict:
 def threshold_free(y_true: np.ndarray, norm_scores: np.ndarray) -> dict:
     """ROC-AUC and PR-AUC (average precision) of scores, independent of any threshold.
 
-    ``norm_scores`` = score / channel threshold, so values from different channels are on a
-    comparable scale (1.0 = that channel's decision boundary). Warm-up NaNs count as 0.
+    Warm-up positions (NaN score) are EXCLUDED: counting them as score 0 would add thousands of
+    trivially easy negatives. Returns None when only one class is present.
+
+    Use per channel (raw scores). Pooling ``score / threshold`` across channels is also computed by
+    the evaluation, but it is only a secondary figure: dividing by a per-channel threshold does not
+    make scores from different channels rank-comparable (review finding D2).
     """
-    s = np.nan_to_num(np.asarray(norm_scores, dtype=np.float64), nan=0.0, posinf=1e12)
+    s = np.asarray(norm_scores, dtype=np.float64)
     y = np.asarray(y_true).astype(int)
-    if y.min() == y.max():
+    ok = np.isfinite(s)
+    s, y = np.clip(s[ok], None, 1e12), y[ok]
+    if y.size == 0 or y.min() == y.max():
         return {"roc_auc": None, "pr_auc": None}
     return {"roc_auc": float(roc_auc_score(y, s)), "pr_auc": float(average_precision_score(y, s))}
+
+
+def macro_auc(values: list, n_boot: int = 1000, seed: int = 0) -> dict:
+    """Mean of per-channel AUCs with a bootstrap-over-channels 95% interval (None entries skipped)."""
+    v = np.asarray([x for x in values if x is not None], dtype=np.float64)
+    if v.size == 0:
+        return {"mean": None, "ci_low": None, "ci_high": None, "n": 0}
+    rng = np.random.default_rng(seed)
+    boots = rng.choice(v, size=(n_boot, v.size), replace=True).mean(axis=1)
+    return {"mean": float(v.mean()), "ci_low": float(np.percentile(boots, 2.5)),
+            "ci_high": float(np.percentile(boots, 97.5)), "n": int(v.size)}

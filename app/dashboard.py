@@ -50,6 +50,8 @@ def load_run(run: str) -> dict:
             "config": json.loads((d / "config_used.json").read_text()),
             "channels": {c["chan_id"]: c for c in summary["channels"]},
             "comparison": pd.read_csv(d / "comparison.csv"), "per_channel": pd.read_csv(d / "per_channel.csv"),
+            "comparison_calibratable": (pd.read_csv(d / "comparison_calibratable.csv")
+                                        if (d / "comparison_calibratable.csv").exists() else pd.DataFrame()),
             "events": pd.read_csv(d / "events.csv"), "false_alarms": pd.read_csv(d / "false_alarms.csv"),
             "sensitivity": pd.read_csv(d / "sensitivity.csv")}
 
@@ -158,7 +160,19 @@ def page_overview(run: str, rd: dict):
                  use_container_width=True)
     st.caption("Point metrics treat every timestep as a sample; event metrics treat each labelled anomaly sequence "
                "as one event (detected if any predicted point overlaps it) and each predicted run that overlaps no "
-               "label as one false alarm. Thresholds were calibrated on the validation part of the TRAIN files only.")
+               "label as one false alarm. Thresholds were calibrated on the validation part of the TRAIN files only. "
+               "`roc_auc_macro` / `pr_auc_macro` are means of per-channel AUCs (the primary ranking figures); "
+               "`roc_auc_pooled` divides scores by each channel's threshold before pooling and is kept only for reference.")
+    unc = m.get("uncalibratable_channels", {})
+    if unc and len(rd["comparison_calibratable"]):
+        st.subheader(f"Same comparison on the {m['n_calibratable_channels']} calibratable channels")
+        st.caption(f"{len(unc)} channels have a constant training signal or validation scores with no spread, so their "
+                   "'99.5% quantile' threshold is ~0 and any test deviation is flagged. They are kept in the table above "
+                   f"and excluded here: {', '.join(sorted(unc))}.")
+        cc = rd["comparison_calibratable"].copy()
+        cc["method"] = cc["method"].map(LABELS)
+        st.dataframe(cc.set_index("method").style.format("{:.3f}", subset=[c for c in cc.columns if cc[c].dtype == float]),
+                     use_container_width=True)
     with st.expander("Dataset provenance"):
         st.markdown("NASA SMAP (Soil Moisture Active Passive) and MSL (Mars Science Laboratory) telemetry with expert "
                     "anomaly labels from Hundman et al., KDD 2018 (Telemanom). Original `.npy` files obtained from a "
@@ -243,7 +257,7 @@ def page_comparison(run: str, rd: dict):
     st.header("Model comparison")
     comp = rd["comparison"]
     keys = st.multiselect("Metrics", ["precision", "recall", "f1", "fpr", "event_precision", "event_recall",
-                                      "event_f1", "roc_auc", "pr_auc"],
+                                      "event_f1", "roc_auc_macro", "pr_auc_macro", "roc_auc_pooled", "pr_auc_pooled"],
                           default=["precision", "recall", "f1", "event_precision", "event_recall", "event_f1"])
     fig = go.Figure([go.Bar(name=LABELS[m], x=keys, y=[comp.set_index("method").loc[m, k] for k in keys],
                             marker_color=COLORS[m]) for m in comp["method"]])

@@ -30,8 +30,9 @@ z-score baseline, Isolation Forest and an LSTM forecaster, with a Streamlit dash
 
 ## Results (final full run)
 
-LSTM: point F1 0.387, event recall 97/104, ROC-AUC 0.753. Baseline F1 0.237, IF 0.283. All methods have low
-precision because of train→test drift. See `EXPERIMENTS.md`.
+LSTM: point F1 0.387 (0.425 on the 59 calibratable channels), event recall 97/104, macro ROC-AUC 0.677 (IF 0.635,
+baseline 0.590; intervals overlap). 22 channels are uncalibratable (constant training signal) and cause 52% (baseline) /
+44% (LSTM) of point false positives. See `EXPERIMENTS.md` and the review outcome in `FABLE_REVIEW_BRIEF.md` §12.
 
 ## Open questions / next steps
 

@@ -137,7 +137,22 @@ changed. A test checks that a resumed run gives the same thresholds as an uninte
 * The sensitivity analysis itself had a flaw: multiplying a threshold is meaningless for bounded scores
   (Isolation Forest gave a fake event F1 of 0.90 at x0.5). It was caught on inspection and IF is now excluded.
   **Lesson:** sanity-check every number that looks too good, especially in diagnostics.
-**Explain independently:** why the LSTM has the best ROC-AUC *and* the highest FPR at the same time.
+**Explain independently:** why the LSTM has the best PR-AUC *and* the highest FPR at the same time.
+
+## 13. Independent review and what it changed
+
+**Files:** `src/models/thresholds.py` (`calibration_is_degenerate`), `src/evaluation/metrics.py` (`macro_auc`;
+warm-up excluded from AUC), `src/evaluation/evaluate.py` (dual reporting, KS statistic), `EXPERIMENTS.md`.
+**What the reviewer found.** The reviewer recomputed everything from the artifacts, and all headline numbers reproduced exactly. But:
+* 19 constant-training channels had "calibrated" thresholds of ~0 and produced almost half of all false positives.
+  The pipeline reported a number where no calibration existed. **Lesson:** a function that always returns a
+  value hides the cases where the value is meaningless. Return a status, and report results with and without those cases.
+* The pooled normalised-score AUC (0.753 vs ~0.60) tripled the LSTM's real ranking lead (macro 0.677 vs 0.635) and
+  reversed the baseline/IF order. **Lesson:** dividing by a per-channel constant does not make ranks comparable
+  across channels. Average per-channel metrics and give an interval.
+* "Distribution shift explains the false alarms" was a story, not a measurement. It was replaced by a per-channel KS
+  statistic, which gives moderate support for the learned models and none for the baseline.
+**Explain independently:** why macro and pooled AUC can rank two methods differently on the same predictions.
 
 ---
 

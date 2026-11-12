@@ -58,23 +58,26 @@ that warm-up and EWMA state match the test scoring (`validation_scores`). Seed 4
 * Point metrics: confusion counts summed over channels (micro). Accuracy is reported but uninformative (12.5% positives).
 * Event metrics: a labelled event is a TP if any predicted point overlaps it. Each predicted run with no overlap is one FP event.
   **No point-adjust.** Latency = first detected index − event start.
-* ROC-AUC / PR-AUC on the pooled raw scores. Note: scores are pooled across channels with different scales.
+* ROC-AUC / PR-AUC per channel (warm-up excluded), macro-averaged with a bootstrap CI. The pooled normalised AUC is kept for reference only.
+* Channels with a constant training signal or degenerate validation scores are flagged `calibratable: false`. Every comparison is reported on all channels and on calibratable channels.
+* `ks_val_test` per channel: KS distance between validation and test scores (shift diagnostic).
 * Methods are compared on the identical channel set. Post-hoc threshold multipliers are reported as a labelled diagnostic only.
 
 ## 7. Actual results (final run, 81 channels, 61.6 min CPU, 0 failures)
 
-| Method | P | R | F1 | FPR | Event R | Event P | Event F1 | Event FP | ROC-AUC | PR-AUC |
+| Method | P | R | F1 | FPR | Event R | Event P | Event F1 | Event FP | ROC-AUC macro | PR-AUC macro |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Rolling z-score | 0.301 | 0.195 | 0.237 | 0.065 | 0.827 | 0.029 | 0.056 | 2,881 | 0.603 | 0.221 |
-| Isolation Forest | 0.268 | 0.299 | 0.283 | 0.117 | 0.692 | 0.034 | 0.065 | 2,025 | 0.590 | 0.183 |
-| LSTM | 0.269 | 0.688 | 0.387 | 0.267 | 0.933 | 0.052 | 0.099 | 1,764 | 0.753 | 0.317 |
+| Rolling z-score | 0.301 | 0.195 | 0.237 | 0.065 | 0.827 | 0.029 | 0.056 | 2,881 | 0.590 | 0.260 |
+| Isolation Forest | 0.268 | 0.299 | 0.283 | 0.117 | 0.692 | 0.034 | 0.065 | 2,025 | 0.635 | 0.292 |
+| LSTM | 0.269 | 0.688 | 0.387 | 0.267 | 0.933 | 0.052 | 0.099 | 1,764 | 0.677 | 0.456 |
 
+On the 59 calibratable channels: F1 0.221 / 0.339 / 0.425, ROC-AUC macro 0.530 / 0.655 / 0.648, PR-AUC macro 0.212 / 0.329 / 0.423.
 Validation flag rate is ~0.5% by construction. Median test FPR per channel is 0.7% / 1.7% / 6.3%, and the mean is 7.8% / 13.6% / 25.2%.
 Full analysis: `EXPERIMENTS.md`.
 
 ## 8. Tests
 
-`pytest -q` → **39 passed** (~7 s). They cover:
+`pytest -q` → **42 passed** (~11 s). They cover:
 * hand-computed metrics;
 * inclusive label alignment;
 * scaler fitted on the fit part only;
@@ -94,7 +97,7 @@ Full analysis: `EXPERIMENTS.md`.
 * Single seed, no hyper-parameter search, simplified Telemanom (1-step forecasts, no dynamic thresholds or pruning).
 * The 99.5% quantile is evidently too low under train → test drift (low precision for every method).
 * The LSTM validation split is used both for early stopping and for calibration.
-* Pooled AUC mixes per-channel score scales.
+* Pooled AUC mixes per-channel score scales (now secondary; macro AUC is primary).
 
 ## 10. High-risk decisions: please scrutinise
 
@@ -112,3 +115,19 @@ Full analysis: `EXPERIMENTS.md`.
 
 `src/pipeline.py` → `src/features/windows.py` → `src/models/lstm.py` → `src/models/thresholds.py` →
 `src/evaluation/metrics.py` → `src/evaluation/evaluate.py` → `src/data/loader.py` → `src/inference/predict.py` → `tests/`.
+
+## 12. Review outcome (first independent review, 2026-11-12)
+
+Findings D1–D3 (and D6) were accepted and fixed in the evaluation without retraining. The others are documented in
+`docs/limitations.md` and remain open.
+
+| Finding | Status |
+|---|---|
+| D1 degenerate thresholds on constant-training channels (43–47% of false positives; 44–52% counting all 22 uncalibratable) | Fixed: flagged, dual reporting |
+| D2 pooled normalised AUC tripled the LSTM's ranking lead and reversed baseline/IF | Fixed: macro AUC + CI is primary |
+| D3 "distribution shift" asserted without evidence | Fixed: per-channel KS statistic, text rewritten |
+| D4 99.5% quantile on 62–300-point validation sets | Open (documented) |
+| D5 `LSTMDetector(seed=)` does not control weight init outside the pipeline | Open |
+| D6 warm-up rows counted as perfect negatives in AUC | Fixed |
+| D7 CSV read before size check; `chan_id` path interpolation | Open |
+| Event FP not comparable across methods (smoothing) | Open (documented) |

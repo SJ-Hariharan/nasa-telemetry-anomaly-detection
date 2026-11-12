@@ -62,8 +62,16 @@ threshold of ~0, so any change gets flagged.
   it. Each predicted run that overlaps no labelled sequence is one false-positive event.
   Overlapping/adjacent anomalous timesteps therefore count as one incident, not many.
   No "point-adjust".
-* **Threshold-free**: ROC-AUC and PR-AUC on `score / channel threshold`, which puts scores from
-  different channels on a comparable scale before pooling.
+* **Threshold-free**: ROC-AUC and PR-AUC computed **per channel** on raw scores (warm-up positions excluded)
+  and averaged over channels (macro), with a bootstrap-over-channels 95% interval. A pooled variant
+  (`score / channel threshold`, concatenated) is also written, for reference only. Dividing by a per-channel
+  threshold does not make ranks comparable across channels, and on this run it reversed the baseline/IF order.
+* **Calibratable vs all channels**: a channel whose training signal is constant, or whose validation scores have
+  no spread, gets a threshold of ~0, which is not a calibration. Such channels are flagged
+  (`calibratable: false` in `training_summary.json`, `uncalibratable_channels` in `metrics.json`), and every
+  comparison is reported twice: on all channels, and on calibratable channels only.
+* **Validation-to-test shift**: `per_channel.csv` has a `ks_val_test` column, the KS distance between the validation
+  scores the threshold was calibrated on and the test scores, so claims about "shift" can be checked per channel.
 * **Error analysis**: per-channel metrics, per-event detection and latency, false-alarm runs, event
   recall by anomaly class (point / contextual), per-spacecraft breakdown.
 * All methods are compared on the **same** channel set. Channels where any method failed would be

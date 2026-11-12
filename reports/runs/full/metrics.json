@@ -3,6 +3,96 @@
  "n_channels_evaluated": 81,
  "excluded_channels": [],
  "training_failures": [],
+ "n_calibratable_channels": 59,
+ "uncalibratable_channels": {
+  "A-1": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "D-2": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "G-2": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "D-5": [
+   "constant training signal"
+  ],
+  "D-7": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "P-4": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "G-3": [
+   "baseline: degenerate validation scores"
+  ],
+  "D-8": [
+   "constant training signal",
+   "baseline: degenerate validation scores",
+   "isolation_forest: degenerate validation scores"
+  ],
+  "D-9": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "D-12": [
+   "constant training signal",
+   "baseline: degenerate validation scores",
+   "lstm: degenerate validation scores"
+  ],
+  "B-1": [
+   "constant training signal",
+   "baseline: degenerate validation scores",
+   "lstm: degenerate validation scores"
+  ],
+  "R-1": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "A-5": [
+   "constant training signal"
+  ],
+  "D-13": [
+   "constant training signal",
+   "baseline: degenerate validation scores",
+   "isolation_forest: degenerate validation scores",
+   "lstm: degenerate validation scores"
+  ],
+  "M-6": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "S-2": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "T-5": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "C-2": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "D-14": [
+   "constant training signal",
+   "baseline: degenerate validation scores"
+  ],
+  "P-14": [
+   "constant training signal"
+  ],
+  "D-16": [
+   "baseline: degenerate validation scores"
+  ],
+  "M-7": [
+   "baseline: degenerate validation scores"
+  ]
+ },
  "results": {
   "baseline": {
    "overall": {
@@ -23,8 +113,55 @@
     "event_recall": 0.8269230769230769,
     "event_f1": 0.05600781504395962,
     "median_latency": 37.0,
-    "roc_auc": 0.602614116868154,
-    "pr_auc": 0.2205809049902598
+    "roc_auc_macro": 0.589676546667473,
+    "roc_auc_macro_ci": [
+     0.5527473034248342,
+     0.6298341247969897
+    ],
+    "pr_auc_macro": 0.26029431342850096,
+    "pr_auc_macro_ci": [
+     0.2145576177217442,
+     0.31061314047586097
+    ],
+    "roc_auc_pooled": 0.5966525848939472,
+    "pr_auc_pooled": 0.22088490989648157,
+    "n_channels": 81,
+    "roc_auc": 0.589676546667473,
+    "pr_auc": 0.26029431342850096
+   },
+   "calibratable": {
+    "tp": 7980,
+    "fp": 13894,
+    "tn": 317720,
+    "fn": 42346,
+    "precision": 0.36481667733382095,
+    "recall": 0.15856614871040814,
+    "f1": 0.2210526315789474,
+    "fpr": 0.041898110453720286,
+    "fnr": 0.8414338512895919,
+    "accuracy": 0.8527517411111692,
+    "event_tp": 60,
+    "event_fn": 18,
+    "event_fp": 1778,
+    "event_precision": 0.03264417845484222,
+    "event_recall": 0.7692307692307693,
+    "event_f1": 0.06263048016701461,
+    "median_latency": 47.0,
+    "roc_auc_macro": 0.5299524365856688,
+    "roc_auc_macro_ci": [
+     0.4909888101842313,
+     0.5710156787637957
+    ],
+    "pr_auc_macro": 0.2118883169972126,
+    "pr_auc_macro_ci": [
+     0.16346212552537556,
+     0.26216820978218974
+    ],
+    "roc_auc_pooled": 0.5803501283813843,
+    "pr_auc_pooled": 0.21116898774513243,
+    "n_channels": 59,
+    "roc_auc": 0.5299524365856688,
+    "pr_auc": 0.2118883169972126
    },
    "SMAP": {
     "tp": 11026,
@@ -43,7 +180,22 @@
     "event_precision": 0.03038105046343975,
     "event_recall": 0.8676470588235294,
     "event_f1": 0.05870646766169153,
-    "median_latency": 52.0
+    "median_latency": 52.0,
+    "roc_auc_macro": 0.5852530741786991,
+    "roc_auc_macro_ci": [
+     0.5334621141747344,
+     0.6361152835138187
+    ],
+    "pr_auc_macro": 0.2731238081889755,
+    "pr_auc_macro_ci": [
+     0.20990883584441283,
+     0.3387677604173901
+    ],
+    "roc_auc_pooled": 0.6001664849614788,
+    "pr_auc_pooled": 0.2622545029090353,
+    "n_channels": 54,
+    "roc_auc": 0.5852530741786991,
+    "pr_auc": 0.2731238081889755
    },
    "MSL": {
     "tp": 1393,
@@ -62,7 +214,22 @@
     "event_precision": 0.026341463414634145,
     "event_recall": 0.75,
     "event_f1": 0.05089538171536286,
-    "median_latency": 15.0
+    "median_latency": 15.0,
+    "roc_auc_macro": 0.5985234916450208,
+    "roc_auc_macro_ci": [
+     0.5354341351766763,
+     0.6585101999516332
+    ],
+    "pr_auc_macro": 0.23463532390755162,
+    "pr_auc_macro_ci": [
+     0.17021025843206725,
+     0.3052343974417235
+    ],
+    "roc_auc_pooled": 0.5813607902234034,
+    "pr_auc_pooled": 0.15726942310090847,
+    "n_channels": 27,
+    "roc_auc": 0.5985234916450208,
+    "pr_auc": 0.23463532390755162
    },
    "sensitivity": [
     {
@@ -163,8 +330,55 @@
     "event_recall": 0.6923076923076923,
     "event_f1": 0.06542480690595184,
     "median_latency": 27.0,
-    "roc_auc": 0.5896083323563607,
-    "pr_auc": 0.18311615434082096
+    "roc_auc_macro": 0.6348047725878134,
+    "roc_auc_macro_ci": [
+     0.5854594170948931,
+     0.6809645436215813
+    ],
+    "pr_auc_macro": 0.2915588758666077,
+    "pr_auc_macro_ci": [
+     0.2348603663273257,
+     0.34760892733240417
+    ],
+    "roc_auc_pooled": 0.5859218960052228,
+    "pr_auc_pooled": 0.18311615434082096,
+    "n_channels": 81,
+    "roc_auc": 0.6348047725878134,
+    "pr_auc": 0.2915588758666077
+   },
+   "calibratable": {
+    "tp": 18027,
+    "fp": 37924,
+    "tn": 293690,
+    "fn": 32299,
+    "precision": 0.3221926328394488,
+    "recall": 0.3582045066168581,
+    "f1": 0.33924555642330895,
+    "fpr": 0.11436187856966232,
+    "fnr": 0.6417954933831419,
+    "accuracy": 0.8161412787348798,
+    "event_tp": 61,
+    "event_fn": 17,
+    "event_fp": 1534,
+    "event_precision": 0.03824451410658307,
+    "event_recall": 0.782051282051282,
+    "event_f1": 0.07292289300657501,
+    "median_latency": 29.0,
+    "roc_auc_macro": 0.6551854933520072,
+    "roc_auc_macro_ci": [
+     0.5994277786472246,
+     0.7035886108508146
+    ],
+    "pr_auc_macro": 0.3289574285099602,
+    "pr_auc_macro_ci": [
+     0.25998695391508114,
+     0.3994585272724426
+    ],
+    "roc_auc_pooled": 0.6555756567870167,
+    "pr_auc_pooled": 0.2569679363555435,
+    "n_channels": 59,
+    "roc_auc": 0.6551854933520072,
+    "pr_auc": 0.3289574285099602
    },
    "SMAP": {
     "tp": 16884,
@@ -183,7 +397,22 @@
     "event_precision": 0.02640845070422535,
     "event_recall": 0.6617647058823529,
     "event_f1": 0.05079006772009029,
-    "median_latency": 32.0
+    "median_latency": 32.0,
+    "roc_auc_macro": 0.6258797534989365,
+    "roc_auc_macro_ci": [
+     0.5711160252365357,
+     0.682039647490617
+    ],
+    "pr_auc_macro": 0.29119422524161975,
+    "pr_auc_macro_ci": [
+     0.225846006063186,
+     0.37011377997069317
+    ],
+    "roc_auc_pooled": 0.5965044780765452,
+    "pr_auc_pooled": 0.23335706083192417,
+    "n_channels": 54,
+    "roc_auc": 0.6258797534989365,
+    "pr_auc": 0.29119422524161975
    },
    "MSL": {
     "tp": 2203,
@@ -202,7 +431,22 @@
     "event_precision": 0.06870229007633588,
     "event_recall": 0.75,
     "event_f1": 0.1258741258741259,
-    "median_latency": 25.0
+    "median_latency": 25.0,
+    "roc_auc_macro": 0.652654810765567,
+    "roc_auc_macro_ci": [
+     0.5663020929405023,
+     0.7316779400603075
+    ],
+    "pr_auc_macro": 0.2922881771165837,
+    "pr_auc_macro_ci": [
+     0.21110365367251197,
+     0.38869724544598855
+    ],
+    "roc_auc_pooled": 0.5362961963467947,
+    "pr_auc_pooled": 0.12547577194513893,
+    "n_channels": 27,
+    "roc_auc": 0.652654810765567,
+    "pr_auc": 0.2922881771165837
    },
    "sensitivity": [
     {
@@ -303,8 +547,55 @@
     "event_recall": 0.9326923076923077,
     "event_f1": 0.09872773536895675,
     "median_latency": 16.0,
-    "roc_auc": 0.7534784702659945,
-    "pr_auc": 0.31720571614358173
+    "roc_auc_macro": 0.6767642094798401,
+    "roc_auc_macro_ci": [
+     0.6179593976014339,
+     0.7338808220601767
+    ],
+    "pr_auc_macro": 0.4560433266089186,
+    "pr_auc_macro_ci": [
+     0.3867263402241577,
+     0.5273852046780287
+    ],
+    "roc_auc_pooled": 0.7489165629358119,
+    "pr_auc_pooled": 0.31720571614358173,
+    "n_channels": 81,
+    "roc_auc": 0.6767642094798401,
+    "pr_auc": 0.4560433266089186
+   },
+   "calibratable": {
+    "tp": 31677,
+    "fp": 66936,
+    "tn": 264678,
+    "fn": 18649,
+    "precision": 0.32122539624593105,
+    "recall": 0.6294360767793983,
+    "f1": 0.4253687751361296,
+    "fpr": 0.201849137853046,
+    "fnr": 0.37056392322060167,
+    "accuracy": 0.7759203016180551,
+    "event_tp": 71,
+    "event_fn": 7,
+    "event_fp": 1701,
+    "event_precision": 0.040067720090293454,
+    "event_recall": 0.9102564102564102,
+    "event_f1": 0.07675675675675676,
+    "median_latency": 23.0,
+    "roc_auc_macro": 0.6475574753299361,
+    "roc_auc_macro_ci": [
+     0.5799978829743169,
+     0.7125051121504573
+    ],
+    "pr_auc_macro": 0.4229295826674757,
+    "pr_auc_macro_ci": [
+     0.33656819631213863,
+     0.5018702679361963
+    ],
+    "roc_auc_pooled": 0.7498939604726909,
+    "pr_auc_pooled": 0.35660554299972935,
+    "n_channels": 59,
+    "roc_auc": 0.6475574753299361,
+    "pr_auc": 0.4229295826674757
    },
    "SMAP": {
     "tp": 40552,
@@ -323,7 +614,22 @@
     "event_precision": 0.038922155688622756,
     "event_recall": 0.9558823529411765,
     "event_f1": 0.07479861910241657,
-    "median_latency": 16.0
+    "median_latency": 16.0,
+    "roc_auc_macro": 0.6708628527063895,
+    "roc_auc_macro_ci": [
+     0.5966308992796361,
+     0.7445875623114985
+    ],
+    "pr_auc_macro": 0.4834847210548541,
+    "pr_auc_macro_ci": [
+     0.3977785383874132,
+     0.5812661426129917
+    ],
+    "roc_auc_pooled": 0.7781724077915559,
+    "pr_auc_pooled": 0.3556673461906085,
+    "n_channels": 54,
+    "roc_auc": 0.6708628527063895,
+    "pr_auc": 0.4834847210548541
    },
    "MSL": {
     "tp": 3321,
@@ -342,7 +648,22 @@
     "event_precision": 0.16753926701570682,
     "event_recall": 0.8888888888888888,
     "event_f1": 0.28193832599118945,
-    "median_latency": 17.5
+    "median_latency": 17.5,
+    "roc_auc_macro": 0.6885669230267413,
+    "roc_auc_macro_ci": [
+     0.5942369846023641,
+     0.7801011550511916
+    ],
+    "pr_auc_macro": 0.401160537717048,
+    "pr_auc_macro_ci": [
+     0.2982003283954079,
+     0.5144246044497025
+    ],
+    "roc_auc_pooled": 0.5471019772588936,
+    "pr_auc_pooled": 0.14191683879517233,
+    "n_channels": 27,
+    "roc_auc": 0.6885669230267413,
+    "pr_auc": 0.401160537717048
    },
    "sensitivity": [
     {
@@ -437,5 +758,5 @@
    "lstm": 0.984
   }
  },
- "comparison_markdown": "| method | precision | recall | f1 | fpr | accuracy | event_precision | event_recall | event_f1 | event_tp | event_fn | event_fp | roc_auc | pr_auc |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| baseline | 0.301 | 0.195 | 0.237 | 0.065 | 0.843 | 0.029 | 0.827 | 0.056 | 86 | 18 | 2881 | 0.603 | 0.221 |\n| isolation_forest | 0.268 | 0.299 | 0.283 | 0.117 | 0.810 | 0.034 | 0.692 | 0.065 | 72 | 32 | 2025 | 0.590 | 0.183 |\n| lstm | 0.269 | 0.688 | 0.387 | 0.267 | 0.727 | 0.052 | 0.933 | 0.099 | 97 | 7 | 1764 | 0.753 | 0.317 |"
+ "comparison_markdown": "All 81 channels:\n\n| method | precision | recall | f1 | fpr | event_precision | event_recall | event_f1 | event_tp | event_fn | event_fp | roc_auc_macro | pr_auc_macro | roc_auc_pooled |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| baseline | 0.301 | 0.195 | 0.237 | 0.065 | 0.029 | 0.827 | 0.056 | 86 | 18 | 2881 | 0.590 | 0.260 | 0.597 |\n| isolation_forest | 0.268 | 0.299 | 0.283 | 0.117 | 0.034 | 0.692 | 0.065 | 72 | 32 | 2025 | 0.635 | 0.292 | 0.586 |\n| lstm | 0.269 | 0.688 | 0.387 | 0.267 | 0.052 | 0.933 | 0.099 | 97 | 7 | 1764 | 0.677 | 0.456 | 0.749 |\n\n59 calibratable channels (excluding 22 with a constant training signal / degenerate validation scores):\n\n| method | precision | recall | f1 | fpr | event_precision | event_recall | event_f1 | event_tp | event_fn | event_fp | roc_auc_macro | pr_auc_macro | roc_auc_pooled |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| baseline | 0.365 | 0.159 | 0.221 | 0.042 | 0.033 | 0.769 | 0.063 | 60 | 18 | 1778 | 0.530 | 0.212 | 0.580 |\n| isolation_forest | 0.322 | 0.358 | 0.339 | 0.114 | 0.038 | 0.782 | 0.073 | 61 | 17 | 1534 | 0.655 | 0.329 | 0.656 |\n| lstm | 0.321 | 0.629 | 0.425 | 0.202 | 0.040 | 0.910 | 0.077 | 71 | 7 | 1701 | 0.648 | 0.423 | 0.750 |"
 }
