@@ -1,0 +1,14 @@
+# Visual theme for app/dashboard.py ("Spacecraft Telemetry Anomaly Lab"). Contrast checked against WCAG AA.
+[theme]
+base = "dark"
+primaryColor = "#4FC3E8"
+backgroundColor = "#0B1220"
+secondaryBackgroundColor = "#141E31"
+textColor = "#E6EDF7"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false

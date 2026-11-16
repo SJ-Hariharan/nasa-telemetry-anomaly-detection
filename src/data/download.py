@@ -19,6 +19,7 @@ from __future__ import annotations
 import hashlib
 import http.client
 import json
+import ssl
 import time
 import urllib.request
 from pathlib import Path
@@ -47,12 +48,26 @@ def sha256_of(path: Path) -> str:
     return h.hexdigest()
 
 
+def ssl_context() -> ssl.SSLContext:
+    """TLS context that verifies certificates with certifi's CA bundle when available.
+
+    The python.org macOS installers ship without system CA certificates until "Install Certificates.command" is run,
+    so the default context fails with CERTIFICATE_VERIFY_FAILED on a fresh setup. certifi (installed with the
+    requirements) gives the same verification without that manual step. Verification is never disabled."""
+    try:
+        import certifi
+    except ImportError:
+        return ssl.create_default_context()
+    return ssl.create_default_context(cafile=certifi.where())
+
+
 def _fetch(url: str, timeout: int = 60, attempts: int = 4) -> bytes:
     """GET ``url`` with retries; truncated or failed transfers are retried with backoff."""
     req = urllib.request.Request(url, headers={"User-Agent": "telemetry-anomaly-research/1.0"})
+    ctx = ssl_context()
     for attempt in range(1, attempts + 1):
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310 (fixed https URLs)
+            with urllib.request.urlopen(req, timeout=timeout, context=ctx) as resp:  # noqa: S310 (fixed https URLs)
                 return resp.read()
         except (OSError, http.client.HTTPException) as exc:  # URLError and IncompleteRead included
             if attempt == attempts:
@@ -83,8 +98,11 @@ def build_manifest() -> list[dict]:
     return sorted(entries, key=lambda e: (e["split"], e["file"]))
 
 
-def download_dataset(raw_dir: Path, force: bool = False) -> Path:
-    """Download + verify the benchmark into ``raw_dir`` (``train/``, ``test/``, labels, manifest)."""
+def download_dataset(raw_dir: Path, force: bool = False, progress=None) -> Path:
+    """Download + verify the benchmark into ``raw_dir`` (``train/``, ``test/``, labels, manifest).
+
+    ``progress``: optional callable ``(done, total, message)`` called after each telemetry file is checked or
+    downloaded (used by the dashboard's progress bar). It never changes what is downloaded or verified."""
     raw_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = raw_dir / MANIFEST_FILE
     if manifest_path.exists() and not force:
@@ -96,9 +114,12 @@ def download_dataset(raw_dir: Path, force: bool = False) -> Path:
                     "labels_source": GITHUB_LABELS_URL, "files": build_manifest()}
 
     n_downloaded = 0
-    for entry in manifest["files"]:
+    total = len(manifest["files"])
+    for i, entry in enumerate(manifest["files"], 1):
         target = raw_dir / entry["split"] / entry["file"]
         if target.exists() and target.stat().st_size == entry["size"] and sha256_of(target) == entry["sha256"]:
+            if progress:
+                progress(i, total, f"verified {entry['split']}/{entry['file']}")
             continue
         target.parent.mkdir(parents=True, exist_ok=True)
         data = _fetch(HF_FILE_URL.format(path=entry["remote_path"]))
@@ -106,6 +127,8 @@ def download_dataset(raw_dir: Path, force: bool = False) -> Path:
             raise RuntimeError(f"Checksum mismatch for {entry['remote_path']} - refusing to save it.")
         target.write_bytes(data)
         n_downloaded += 1
+        if progress:
+            progress(i, total, f"downloaded {entry['split']}/{entry['file']}")
     log.info("Telemetry files: %d downloaded, %d already present and verified.",
              n_downloaded, len(manifest["files"]) - n_downloaded)
 

@@ -20,3 +20,8 @@ reports/runs/*/scores/
 # Offline demo on SIMULATED data (`python -m src.cli demo`): always regenerated, never committed
 data/demo/
 reports/runs/demo/
+
+# Local reproductions started from the dashboard / configs/reproduce*.yaml (generated, never committed)
+reports/runs/reproduce*/
+reports/runs/*/.job.json
+reports/runs/*/job.log

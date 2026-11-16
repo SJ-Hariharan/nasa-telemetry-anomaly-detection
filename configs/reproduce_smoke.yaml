@@ -1,0 +1,4 @@
+# Quick local check on real NASA data (3 channels, tiny model, ~30 s): proves the pipeline works on this machine.
+# Same settings as smoke.yaml, separate run name so the committed `smoke` reports are never overwritten.
+inherit: smoke.yaml
+run_name: reproduce_smoke

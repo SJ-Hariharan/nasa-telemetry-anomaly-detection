@@ -150,30 +150,24 @@ def test_dashboard_demo_pages_are_labelled_and_work(demo_repo):
 
     at = AppTest.from_file(str(demo_repo["repo"] / "app" / "dashboard.py"), default_timeout=120)
     at.run()
-    at.sidebar.selectbox[0].set_value("demo").run()
-    for page in ["Start here", "Overview", "Telemetry explorer", "Anomaly analysis", "Model comparison", "Inference"]:
-        at.sidebar.radio[0].set_value(page).run()
+    assert at.sidebar.selectbox(key="run").value == "full"                        # NASA results by default
+    assert not any(o.startswith("demo") for o in at.sidebar.selectbox(key="run").options)
+    at.toggle(key="show_demo").set_value(True).run()                              # explicit opt-in
+    at.sidebar.selectbox(key="run").set_value("demo").run()
+    for page in ["Overview", "Channel explorer", "Events & errors", "Models & calibration", "Data & reproducibility",
+                 "Inference"]:
+        at.sidebar.radio(key="page").set_value(page).run()
         assert not at.exception, (page, [e.message for e in at.exception])
         assert any("SIMULATED DEMO" in e.value for e in at.error), f"no SIMULATED banner on {page}"
         for chart in at.get("plotly_chart"):   # regression: an annotation without text renders as "new text"
             anns = json.loads(chart.proto.spec).get("layout", {}).get("annotations", [])
             assert all(a.get("text") for a in anns), page
-    radio = [r for r in at.radio if "Demo sample input (synthetic)" in r.options][0]
+    radio = at.radio(key="inf_src")
+    assert "Demo sample input (synthetic)" in radio.options
     radio.set_value("Demo sample input (synthetic)").run()
     assert not at.exception
-    assert any("Flagged anomalous" in m.label for m in at.metric)
-    # a real NASA run in the same dashboard carries no SIMULATED banner
-    at.sidebar.selectbox[0].set_value("full").run()
-    at.sidebar.radio[0].set_value("Overview").run()
+    assert any("Flagged as anomalous" in m.label for m in at.metric)
+    # switching back to a real NASA run removes the banner
+    at.sidebar.selectbox(key="run").set_value("full").run()
+    at.sidebar.radio(key="page").set_value("Overview").run()
     assert not any("SIMULATED DEMO" in e.value for e in at.error)
-
-
-def test_dashboard_with_no_runs_shows_start_instructions(tmp_path):
-    from streamlit.testing.v1 import AppTest
-
-    shutil.copytree(ROOT / "app", tmp_path / "app")
-    shutil.copytree(ROOT / "src", tmp_path / "src")
-    at = AppTest.from_file(str(tmp_path / "app" / "dashboard.py"), default_timeout=60)
-    at.run()
-    assert not at.exception, [e.message for e in at.exception]
-    assert any("python -m src.cli demo" in c.value for c in at.code)

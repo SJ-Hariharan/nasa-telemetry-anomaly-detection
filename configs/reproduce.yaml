@@ -1,0 +1,5 @@
+# Local reproduction of the full NASA benchmark, started from the dashboard (Data & reproducibility) or with
+#   python -m src.cli all --config configs/reproduce.yaml --resume
+# Identical to default.yaml except the run name, so the committed `full` reports are never overwritten.
+inherit: default.yaml
+run_name: reproduce
