@@ -210,14 +210,14 @@ Clipping $\mathbf g=(3,4)$, $\|\mathbf g\|=5$, $c=1$ ⇒ $(0.6, 0.8)$; `clip_gra
 random.seed(seed); np.random.seed(seed); torch.manual_seed(seed)
 torch.use_deterministic_algorithms(True, warn_only=True)
 ```
-`src/pipeline.py` calls `set_seed(cfg["seed"])` **per channel and per method**, so channel P-1's result does not depend on which channels ran before it. `LSTMDetector.fit` re-seeds with its own `seed` (passed from `cfg["seed"]`): `torch.manual_seed(self.seed)` for weight init and dropout, and a separate `torch.Generator().manual_seed(self.seed)` for the window shuffling order, so changing the config seed changes both.
+`src/pipeline.py` calls `set_seed(cfg["seed"])` **per channel and per method**, so channel P-1's result does not depend on which channels ran before it. `LSTMDetector.fit` re-seeds with its own `seed` (passed from `cfg["seed"]`): `torch.manual_seed(self.seed)` before building the network (weight init) and again before training (dropout masks), so the detector's own seed fully determines its weights wherever it is used, and a separate `torch.Generator().manual_seed(self.seed)` for the window shuffling order, so changing the config seed changes both.
 **Alternatives.** Run several seeds and report mean ± std (stronger evidence, more CPU).
 **Limitations.** As the docstring says, bit-exact equality across hardware/OS/library versions is not guaranteed; `warn_only=True` means a non-deterministic op only warns.
 
 **Interview checkpoint**
 - *Why seed per channel?* Makes each channel's model independent of processing order and of which channels are selected.
 - *Does a seed guarantee identical results on another laptop?* No — only close results; library versions and BLAS kernels differ.
-- *Changing `seed:` in the config — what changes in the LSTM?* Initial weights and dropout masks, but not the window order (generator fixed at 0).
+- *Changing `seed:` in the config — what changes in the LSTM?* Initial weights, dropout masks and the window shuffle order: `fit` seeds both the global RNG and the shuffle generator with `self.seed`.
 
 ---
 

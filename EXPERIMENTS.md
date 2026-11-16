@@ -21,8 +21,12 @@ estimated or copied from papers. Raw outputs: `reports/runs/<run>/`.
 | `full` (attempt 2) | default | 56/81 | Corrected code | Interrupted when the agent session ended (no error). Outputs deleted. Resume support added |
 | **`full`** (final) | `configs/default.yaml`, seed 42 | **81** | Reported results | **Done.** Training 3,698 s (61.6 min, CPU), 0 failures. Re-evaluated after the review (evaluation only, ~20 s) |
 | T-9 re-run (review) | default | 1 | Determinism check | Thresholds identical to the last digit, LSTM weights bit-identical to the saved model |
+| T-9, C-2 re-run (release prep) | default | 2 | Check that the LSTM seeding fix (D5) does not change results | Thresholds and LSTM weights bit-identical to the saved `full` run |
+| `full` calibration studies | `python -m src.cli calibration --run full` | 81 | Threshold uncertainty (D4) + leave-channels-out calibration | Done, ~15 s, saved scores only |
+| **`full_seed1`, `full_seed2`** | `configs/seed1.yaml`, `seed2.yaml` | 81 each | Seed variance | **Done (both).** 81/81 channels each, 0 failures. Recorded compute: seed 1 73.9 min; seed 2 106.4 min (machine shared with other work). Seed 1's automatic evaluation step crashed with an `ImportError` (code edited while the process ran, LEARNING_LOG §14) and was re-run alone. Seed 2 was killed by a machine reboot after 72/81 channels and resumed with `--resume`. Both events are logged in each `run.log` |
 
-The final run used one seed and one configuration. Hyper-parameters were not searched. Thresholds were
+The headline results come from one configuration with seed 42. Two further seeds measure seed variance (see below).
+Hyper-parameters were not searched. Thresholds were
 fixed from validation data before any test metric was computed.
 
 ## Setup (final run)
@@ -124,6 +128,112 @@ every point (one giant "event" that overlaps every label: a meaningless event F1
 * **Timelines:** `reports/runs/full/figures/timeline_*.png` and the dashboard's Anomaly analysis page show
   scores, thresholds, predictions and labels together for any channel.
 
+## Calibration studies (saved scores, no retraining)
+
+Protocols: `docs/methodology.md` §7. Outputs: `reports/runs/full/calibration/` (`calibration.md`, `calibration.json`,
+`threshold_bootstrap.csv`). Reproduce with `python -m src.cli calibration --run full` (~15 s).
+
+### Threshold-estimation uncertainty (review finding D4)
+
+Every channel has fewer than 5 expected validation exceedances at the 99.5% quantile (62–862 validation points).
+Validation scores are strongly autocorrelated (median lag-1 autocorrelation 0.80 baseline, 0.94 Isolation Forest,
+0.98 LSTM), so the bootstrap resamples **contiguous blocks of 50 points** (circular block bootstrap). An earlier
+version resampled points independently, which understated the spread (LSTM F1 [0.385, 0.390]); the final audit
+caught this. Per-channel thresholds are noisy: the 90% range spans a median 21% of the LSTM threshold (maximum 97%),
+5% for Isolation Forest and 25% for the baseline (up to 95× on channels whose validation scores are almost constant).
+Propagated to the aggregate metrics (100 replicates, point estimate [5th, 95th percentile]):
+
+| Method | Precision | Recall | F1 | Event F1 |
+|---|---|---|---|---|
+| Rolling z-score | 0.301 [0.268, 0.303] | 0.195 [0.197, 0.212] | 0.237 [0.229, 0.247] | 0.056 [0.043, 0.060] |
+| Isolation Forest | 0.268 [0.236, 0.287] | 0.299 [0.297, 0.363] | 0.283 [0.266, 0.318] | 0.065 [0.046, 0.068] |
+| LSTM | 0.269 [0.257, 0.268] | 0.688 [0.690, 0.727] | 0.387 [0.375, 0.389] | 0.099 [0.080, 0.096] |
+
+**How to read the ranges.** A resampled 99.5% quantile can never exceed the sample's maximum, so bootstrap thresholds
+are biased *low*. Precision ranges sit at or below the point estimate and recall ranges at or above it, and several
+ranges exclude the point estimate. They show the **size** of threshold-estimation noise; they are not calibrated
+confidence intervals, and should be read as lower bounds on that noise.
+
+**Finding:** threshold-estimation noise moves the aggregate metrics by about 0.01–0.05 in F1 and 0.01–0.02 in event F1.
+That is far less than the gap between precision and recall, and far less than the effect of the calibration rule
+(next section). It does not explain the low precision.
+
+### Leave-channels-out calibration
+
+Rule chosen on four folds of channels by micro event F1 and applied to the fifth. Pooled held-out results:
+
+| Method | Channels | Rule | Precision | Recall | F1 | FPR | Event precision | Event recall | Event F1 | Event FP |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Rolling z-score | all (81) | default (q 0.995, m 1) | 0.301 | 0.195 | 0.237 | 0.065 | 0.029 | 0.827 | 0.056 | 2,881 |
+| Rolling z-score | all (81) | leave-channels-out | 0.325 | 0.177 | 0.229 | 0.053 | 0.037 | 0.596 | 0.070 | 1,613 |
+| Rolling z-score | calibratable (59) | default (q 0.995, m 1) | 0.365 | 0.159 | 0.221 | 0.042 | 0.033 | 0.769 | 0.063 | 1,778 |
+| Rolling z-score | calibratable (59) | leave-channels-out | 0.379 | 0.137 | 0.201 | 0.034 | 0.071 | 0.462 | 0.124 | 468 |
+| Isolation Forest | all (81) | default (q 0.995, m 1) | 0.268 | 0.299 | 0.283 | 0.117 | 0.034 | 0.692 | 0.065 | 2,025 |
+| Isolation Forest | all (81) | leave-channels-out | 0.271 | 0.183 | 0.219 | 0.070 | 0.072 | 0.385 | 0.121 | 518 |
+| Isolation Forest | calibratable (59) | default (q 0.995, m 1) | 0.322 | 0.358 | 0.339 | 0.114 | 0.038 | 0.782 | 0.073 | 1,534 |
+| Isolation Forest | calibratable (59) | leave-channels-out | 0.335 | 0.214 | 0.261 | 0.064 | 0.074 | 0.410 | 0.125 | 400 |
+| LSTM | all (81) | default (q 0.995, m 1) | 0.269 | 0.688 | 0.387 | 0.267 | 0.052 | 0.933 | 0.099 | 1,764 |
+| LSTM | all (81) | leave-channels-out | 0.343 | 0.500 | 0.407 | 0.137 | 0.147 | 0.548 | 0.231 | 332 |
+| LSTM | calibratable (59) | default (q 0.995, m 1) | 0.321 | 0.629 | 0.425 | 0.202 | 0.040 | 0.910 | 0.077 | 1,701 |
+| LSTM | calibratable (59) | leave-channels-out | 0.514 | 0.402 | 0.451 | 0.058 | 0.093 | 0.397 | 0.150 | 303 |
+
+Rules (q, m) chosen per fold: baseline: (0.99, 1.5), (0.995, 5.0), (0.995, 5.0), (0.995, 5.0), (0.99, 5.0); IF: (0.99, 1.5), (0.99, 1.5), (0.99, 1.5), (0.99, 1.5), (1.0, 1.5); LSTM: (1.0, 5.0), (1.0, 5.0), (1.0, 5.0), (1.0, 5.0), (0.999, 5.0).
+
+**Findings**
+1. A rule chosen on *other* channels generalises. For the LSTM, held-out false-alarm events fall from 1,764 to
+   332, event precision rises from 0.052 to 0.147 and event F1 from 0.099 to 0.231. The price is event recall
+   (0.933 → 0.548). Point F1 changes little (0.387 → 0.407) because recall drops as precision rises.
+2. On all 81 channels the LSTM keeps the highest event F1 under LCO (0.231 vs 0.121 for IF and 0.070 for the baseline).
+   **This does not hold on the 59 calibratable channels:** there the LCO event F1 is 0.150 / 0.125 / 0.124 (LSTM / IF /
+   baseline) for seed 42, but 0.122 / 0.154 / 0.124 for seed 1, where the LSTM is lowest. On calibratable channels
+   the LSTM's LCO gain is also smaller (event F1 0.077 → 0.150, event recall 0.397).
+3. Every fold chose a much more conservative rule than the default, consistent with the post-hoc sensitivity
+   analysis. Unlike that analysis, this estimate never uses the evaluated channel's labels.
+4. **Caveat: choices at the grid edge.** For the LSTM, m = 5 (the largest margin) is chosen in all 15 folds over the three
+   seeds, and q = 1.0 (the validation maximum, the largest quantile) in 14 of 15. The baseline chooses m = 5 in 4 of 5
+   folds on every seed. The optimum may lie beyond the grid. It was deliberately not widened after seeing results.
+   **Disclosure:** the grid was fixed before running this experiment, but its margins (1–5) mirror the multipliers of
+   the earlier post-hoc sensitivity analysis, which had been run with test labels on the same channels. Selection
+   *within* the grid is leak-free; the *design* of the grid was informed by that earlier look.
+5. Under LCO the "calibratable" subset still uses rules chosen on folds that include uncalibratable channels.
+
+These numbers are a cross-validated *estimate* for a different operating policy. The headline results above remain
+at the a-priori default threshold.
+
+## Seed variance
+
+Three complete runs with identical configuration except the seed: `full` (42), `full_seed1` (1), `full_seed2` (2).
+Summary: `reports/seed_summary.json` (`python -m src.cli seeds --runs full full_seed1 full_seed2`). Values are
+mean ± standard deviation [min, max] over the three seeds, all 81 channels:
+
+| Method | Point F1 | Recall | Precision | Event recall | Event F1 | False-alarm events | ROC-AUC macro | PR-AUC macro |
+|---|---|---|---|---|---|---|---|---|
+| Rolling z-score | 0.237 (identical) | 0.195 | 0.301 | 0.827 | 0.056 | 2,881 | 0.590 | 0.260 |
+| Isolation Forest | 0.302 ± 0.021 [0.283, 0.324] | 0.325 ± 0.025 | 0.282 ± 0.018 | 0.692 ± 0.010 | 0.062 ± 0.003 | 2,133 ± 94 | 0.630 ± 0.005 | 0.289 ± 0.003 |
+| LSTM | 0.390 ± 0.009 [0.382, 0.400] | 0.699 ± 0.009 | 0.270 ± 0.009 | 0.936 ± 0.006 (97, 97, 98 of 104) | 0.080 ± 0.018 [0.063, 0.099] | 2,314 ± 567 [1,764, 2,897] | 0.682 ± 0.007 | 0.456 ± 0.000 |
+
+On the 59 calibratable channels: LSTM F1 0.424 ± 0.004, IF 0.363 ± 0.026, baseline 0.221; macro ROC-AUC LSTM
+0.655 ± 0.007, IF 0.650 ± 0.006, baseline 0.530.
+
+**Findings**
+1. **The baseline is identical across seeds**, as it must be (it has no randomness). This is a sanity check on the seeding.
+2. **Point-level LSTM results are stable.** F1 varies by ±0.009, recall by ±0.009, and macro ROC-AUC by ±0.007. Its point-F1 and
+   PR-AUC lead over Isolation Forest holds in every seed. On all channels its macro ROC-AUC is also higher in every seed
+   (0.677–0.690 vs 0.626–0.635). On calibratable channels the two overlap (0.648–0.660 vs 0.644–0.655).
+3. **Event-level results are not stable.** LSTM false-alarm events range from 1,764 to 2,897 and event F1 from 0.063 to
+   0.099. **The seed-42 run used for the headline tables is the most favourable of the three on event F1, event
+   precision and false-alarm count** (not on event recall: seed 2 detects 98/104).
+   Quote the event F1 as 0.080 ± 0.018 rather than 0.099 when seed variance matters.
+4. Macro PR-AUC is 0.4560 / 0.4556 / 0.4556. Per-channel PR-AUC changes in 79 of 81 channels between seeds
+   (e.g. P-1: 0.076 vs 0.166), but the changes average out. This was checked because it looked suspicious.
+5. **The leave-channels-out result holds on every seed.** LSTM held-out false-alarm events fall 1,764 → 332, 2,897 → 375 and
+   2,281 → 434. Event F1 rises 0.099 → 0.231, 0.063 → 0.203 and 0.079 → 0.195. Event recall falls to 0.548 / 0.519 / 0.558.
+   The selected LSTM rule is m = 5 (the grid edge) in all 15 folds. For Isolation Forest the event-F1-selected rule
+   costs a lot of point F1 (0.283 → 0.219, 0.298 → 0.158, 0.324 → 0.157). Calibration outputs:
+   `reports/runs/<run>/calibration/`.
+6. Seed variance in event false alarms (±567) is larger than the threshold-estimation uncertainty measured by the
+   bootstrap. Both are smaller than the effect of the calibration rule itself.
+
 ## Comparison with the literature (qualitative only)
 
 Hundman et al. (2018) report much higher event-level precision on this benchmark. Their pipeline differs:
@@ -136,4 +246,8 @@ The ranking (LSTM forecaster > simple baselines on recall) is consistent with th
 ```bash
 python -m src.cli all --config configs/default.yaml           # ~62 min CPU; add --resume after an interruption
 python -m src.cli evaluate --config configs/default.yaml      # re-evaluate from saved scores (~20 s)
+python -m src.cli calibration --run full                      # calibration studies (~15 s)
+python -m src.cli all --config configs/seed1.yaml --resume    # seed-variance runs (~1-2 h each)
+python -m src.cli all --config configs/seed2.yaml --resume
+python -m src.cli seeds --runs full full_seed1 full_seed2
 ```

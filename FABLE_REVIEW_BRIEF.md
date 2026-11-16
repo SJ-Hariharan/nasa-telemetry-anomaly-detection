@@ -21,6 +21,7 @@ src/features/windows.py   causal forecast windows, Isolation Forest features
 src/models/{detectors,lstm,thresholds,persistence}.py
 src/pipeline.py           per channel: fit → validation scores → threshold → score test → join labels LAST
 src/evaluation/{metrics,evaluate}.py
+src/evaluation/calibration.py  threshold block bootstrap, leave-channels-out rule selection, seed summary
 src/inference/predict.py  validated CSV → saved bundle → scores / flags
 app/dashboard.py          Streamlit, reads artifacts only
 ```
@@ -77,7 +78,7 @@ Full analysis: `EXPERIMENTS.md`.
 
 ## 8. Tests
 
-`pytest -q` → **42 passed** (~11 s). They cover:
+`pytest -q` → **59 passed** (~10–60 s). They cover:
 * hand-computed metrics;
 * inclusive label alignment;
 * scaler fitted on the fit part only;
@@ -90,12 +91,17 @@ Full analysis: `EXPERIMENTS.md`.
 * an end-to-end synthetic run with reload, which reproduces the pipeline's scores;
 * threshold label-independence;
 * resume equivalence;
-* every dashboard page rendering headless.
+* every dashboard page rendering headless, including a simulated fresh clone without generated artifacts;
+* LSTM seed self-sufficiency (D5), path-like channel/run names and oversized CSVs (D7);
+* calibration status saved in bundles and surfaced at inference;
+* calibration studies: default rule reproduces the run's thresholds, folds partition and stratify,
+  held-out labels cannot influence a fold's rule.
 
 ## 9. Known limitations (abridged; full list in `docs/limitations.md`)
 
-* Single seed, no hyper-parameter search, simplified Telemanom (1-step forecasts, no dynamic thresholds or pruning).
-* The 99.5% quantile is evidently too low under train → test drift (low precision for every method).
+* No hyper-parameter search, simplified Telemanom (1-step forecasts, no dynamic thresholds or pruning). Three seeds (42, 1, 2).
+* The 99.5% quantile is evidently too low (low precision for every method). Leave-channels-out calibration shows a
+  more conservative rule generalises to unseen channels, but its LSTM choice sits at the edge of the pre-specified grid.
 * The LSTM validation split is used both for early stopping and for calibration.
 * Pooled AUC mixes per-channel score scales (now secondary; macro AUC is primary).
 
@@ -108,7 +114,7 @@ Full analysis: `EXPERIMENTS.md`.
 5. **Thresholds:** an eps floor when validation scores are constant (19 constant channels → any test deviation flagged). Is a different fallback more defensible?
 6. **Evaluation validity:** micro aggregation, "any overlap" event TP, one FP per predicted run, no point-adjust, AUC on pooled heterogeneous scores. Are any of these misleading as reported?
 7. **Inference:** `frame_to_array` fills missing command columns with 0 (with a warning) and rejects non-0/1 commands and non-finite values. Is that safe? Is the 500k-row cap adequate?
-8. **Security:** `np.load(allow_pickle=False)`, `torch.load(weights_only=True)`, but **joblib (pickle) for Isolation Forest and scaler bundles.** Loading an untrusted `models/` directory would execute code. Is the documentation of this sufficient for a portfolio project?
+8. **Security:** `np.load(allow_pickle=False)`, `torch.load(weights_only=True)`, but **joblib (pickle) for Isolation Forest models** (scaler statistics are plain JSON in `meta.json`). Loading an untrusted `models/` directory would execute code. Is the documentation of this sufficient for a portfolio project?
 9. **Reproducibility:** pinned data, lock file, per-(channel, method) seeding. Are any sources of nondeterminism still unhandled (e.g. `n_jobs=-1` in Isolation Forest, torch thread count)?
 
 ## 11. Key files for review (in priority order)
@@ -126,8 +132,53 @@ Findings D1–D3 (and D6) were accepted and fixed in the evaluation without retr
 | D1 degenerate thresholds on constant-training channels (43–47% of false positives; 44–52% counting all 22 uncalibratable) | Fixed: flagged, dual reporting |
 | D2 pooled normalised AUC tripled the LSTM's ranking lead and reversed baseline/IF | Fixed: macro AUC + CI is primary |
 | D3 "distribution shift" asserted without evidence | Fixed: per-channel KS statistic, text rewritten |
-| D4 99.5% quantile on 62–300-point validation sets | Open (documented) |
-| D5 `LSTMDetector(seed=)` does not control weight init outside the pipeline | Open |
+| D4 99.5% quantile on 62–300-point validation sets | Measured (release prep): all 81 channels < 5 expected exceedances; bootstrap shows aggregate effect is small |
+| D5 `LSTMDetector(seed=)` does not control weight init outside the pipeline | Fixed (release prep); `full` run still reproduces bit-identically |
 | D6 warm-up rows counted as perfect negatives in AUC | Fixed |
-| D7 CSV read before size check; `chan_id` path interpolation | Open |
+| D7 CSV read before size check; `chan_id` path interpolation | Fixed (release prep): name validation, bounded read, exit code 2 |
 | Event FP not comparable across methods (smoothing) | Open (documented) |
+
+## 13. Release preparation (2026-11-15): new findings and changes
+
+| ID | Finding | Status |
+|---|---|---|
+| N1 | Committed `reports/runs/full/run.log` contains absolute home-directory paths | Code now logs project-relative paths. The committed log (and Git history) still contains them: owner decision before the first push |
+| N2 | A fresh clone crashed the Telemetry explorer, Anomaly analysis and Inference pages (scores/models are gitignored) | Fixed: pages explain how to regenerate; regression test simulates a fresh clone |
+| N3 | Inference on an uncalibratable channel (e.g. M-6: 1,039/2,049 points flagged) gave no warning | Fixed: bundles record `calibratable`; CLI and dashboard warn |
+| N4 | `scipy` imported directly but only installed transitively | Fixed: listed in `requirements.txt` |
+| N5 | Broken link `docs/inference_and_deployment.md` in architecture doc | Fixed |
+| R1 | Single seed | Done: seeds 1 and 2 complete (81/81 each). Point metrics stable, event false alarms vary ±567; seed 42 is the most favourable on event metrics (EXPERIMENTS.md, Seed variance) |
+| N6 | `seeds` CLI wrote `reports/runs/seed_summary.json`, not `reports/seed_summary.json` as documented | Fixed + CLI regression test |
+| N7 | Hooks | `.githooks/pre-commit` (whitespace, secrets/data/weights/size, Python syntax) and `pre-push` (full test suite); tested incl. failure cases |
+| R2 | Leave-channels-out calibration | Implemented on saved scores (`src/evaluation/calibration.py`) |
+
+**Questions for the final review**
+1. Is the leave-channels-out protocol (`src/evaluation/calibration.py::leave_channels_out`) free of leakage into the
+   held-out fold? Is "pooled held-out predictions" the right way to report it?
+2. Is the bootstrap in `calibration_uncertainty` a fair estimate of threshold-estimation uncertainty? It resamples
+   validation points independently, ignoring autocorrelation.
+3. Does the double seeding in `LSTMDetector.fit` fully determine the result? What other nondeterminism remains
+   (`n_jobs=-1` in Isolation Forest, torch thread count)?
+4. Are the name validation and bounded CSV read sufficient for the CLI and dashboard threat model (local use)?
+5. Do README, EXPERIMENTS, methodology, limitations and this brief agree with each other and with the artifacts?
+
+## 14. Final release-candidate audit (2026-11-16): outcome
+
+No Critical or High findings. Each finding was reproduced before acting.
+
+| ID | Finding (severity) | Resolution |
+|---|---|---|
+| A1 | Default LCO rule not bit-identical to stored thresholds (Low) | Fixed: `Q + (m-1)(Q - median)`; exact-equality test; LCO results unchanged on all three runs |
+| A2 | Bootstrap test name claimed containment it did not test (Low) | Fixed: renamed, plus an order-independence regression test |
+| A3 | One RNG shared across methods (Low) | Fixed: stream keyed by method name; test |
+| A4 | Hook: word splitting, quoted non-ASCII names, `%` in names, working-tree (not staged) checks (Low) | Fixed: NUL-separated names, staged blob sizes, staged content compiled; 8 hook cases tested |
+| A5 | Dashboard inference channel list could include stray files (Low) | Fixed: filtered with `CHANNEL_ID` |
+| B1/C1 | iid bootstrap on autocorrelated scores; one-sided ranges (Medium) | Fixed: circular block bootstrap (block 50); ranges re-reported as lower bounds on noise in every doc |
+| B2 | Grid-edge caveat incomplete (Low-Medium) | Fixed: q = 1.0 edge and baseline m = 5 disclosed |
+| B3 | "LSTM best under LCO" holds only on all channels (Low-Medium) | Fixed: calibratable-subset results stated |
+| B4 | "Most favourable seed" overstated (Low) | Fixed: "event F1, precision and false alarms, not event recall" |
+| B5 | Small doc inconsistencies (Low) | Fixed (joblib scope, configs list, architecture list) |
+| B6/N1 | Committed `full/run.log` has home-directory paths | Owner decision: not rewritten (history preserved); new seed logs sanitised before first commit |
+| C2 | LCO grid design mirrors earlier test-label sensitivity analysis (Low-Medium) | Disclosed in EXPERIMENTS, methodology and limitations |
+| C3 | README installs `>=` requirements (Low) | README now points to `requirements-lock.txt` for exact versions |
+| C4 | CSV bounded by rows only (Low) | Accepted for local use (documented) |

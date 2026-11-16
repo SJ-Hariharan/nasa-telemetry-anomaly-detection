@@ -1,0 +1,140 @@
+=== seed 1 start 2026-11-15 22:10:29
+22:12:49 INFO telemetry.pipeline: [1/81] P-1 done {'baseline': 0.0, 'isolation_forest': 0.34, 'lstm': 134.8}
+22:14:45 INFO telemetry.pipeline: [2/81] S-1 done {'baseline': 0.0, 'isolation_forest': 0.34, 'lstm': 115.26}
+22:16:25 INFO telemetry.pipeline: [3/81] E-1 done {'baseline': 0.0, 'isolation_forest': 0.3, 'lstm': 99.54}
+22:17:38 INFO telemetry.pipeline: [4/81] E-2 done {'baseline': 0.0, 'isolation_forest': 0.57, 'lstm': 72.45}
+22:18:43 INFO telemetry.pipeline: [5/81] E-3 done {'baseline': 0.0, 'isolation_forest': 0.37, 'lstm': 64.75}
+22:20:38 INFO telemetry.pipeline: [6/81] E-4 done {'baseline': 0.0, 'isolation_forest': 0.34, 'lstm': 115.25}
+22:23:37 INFO telemetry.pipeline: [7/81] E-5 done {'baseline': 0.01, 'isolation_forest': 0.49, 'lstm': 178.08}
+22:25:07 INFO telemetry.pipeline: [8/81] E-6 done {'baseline': 0.01, 'isolation_forest': 0.45, 'lstm': 89.26}
+22:27:38 INFO telemetry.pipeline: [9/81] E-7 done {'baseline': 0.0, 'isolation_forest': 0.34, 'lstm': 151.02}
+22:28:56 INFO telemetry.pipeline: [10/81] E-8 done {'baseline': 0.0, 'isolation_forest': 0.3, 'lstm': 77.21}
+22:29:51 INFO telemetry.pipeline: [11/81] E-9 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 54.83}
+22:30:46 INFO telemetry.pipeline: [12/81] E-10 done {'baseline': 0.01, 'isolation_forest': 0.31, 'lstm': 54.46}
+22:32:01 INFO telemetry.pipeline: [13/81] E-11 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 75.0}
+22:32:58 INFO telemetry.pipeline: [14/81] E-12 done {'baseline': 0.0, 'isolation_forest': 0.32, 'lstm': 56.91}
+22:34:22 INFO telemetry.pipeline: [15/81] E-13 done {'baseline': 0.0, 'isolation_forest': 0.33, 'lstm': 83.0}
+22:34:22 WARNING telemetry.pipeline: A-1/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+22:34:46 INFO telemetry.pipeline: [16/81] A-1 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 23.6}
+22:35:54 INFO telemetry.pipeline: [17/81] D-1 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 68.32}
+22:37:08 INFO telemetry.pipeline: [18/81] P-2 done {'baseline': 0.0, 'isolation_forest': 0.32, 'lstm': 73.94}
+22:38:18 INFO telemetry.pipeline: [19/81] P-3 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 69.51}
+22:38:18 WARNING telemetry.pipeline: D-2/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+22:38:41 INFO telemetry.pipeline: [20/81] D-2 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 22.63}
+22:39:44 INFO telemetry.pipeline: [21/81] D-3 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 62.53}
+22:40:23 INFO telemetry.pipeline: [22/81] D-4 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 38.69}
+22:42:19 INFO telemetry.pipeline: [23/81] A-2 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 115.19}
+22:43:22 INFO telemetry.pipeline: [24/81] A-3 done {'baseline': 0.0, 'isolation_forest': 0.39, 'lstm': 62.96}
+22:44:03 INFO telemetry.pipeline: [25/81] A-4 done {'baseline': 0.0, 'isolation_forest': 0.33, 'lstm': 40.61}
+22:44:59 INFO telemetry.pipeline: [26/81] G-1 done {'baseline': 0.0, 'isolation_forest': 0.34, 'lstm': 56.03}
+22:44:59 WARNING telemetry.pipeline: G-2/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+22:45:53 INFO telemetry.pipeline: [27/81] G-2 done {'baseline': 0.01, 'isolation_forest': 0.81, 'lstm': 53.18}
+22:46:24 INFO telemetry.pipeline: [28/81] D-5 done {'baseline': 0.01, 'isolation_forest': 0.55, 'lstm': 30.25}
+22:47:12 INFO telemetry.pipeline: [29/81] D-6 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 47.77}
+22:47:12 WARNING telemetry.pipeline: D-7/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+22:47:34 INFO telemetry.pipeline: [30/81] D-7 done {'baseline': 0.0, 'isolation_forest': 0.32, 'lstm': 21.66}
+22:49:15 INFO telemetry.pipeline: [31/81] F-1 done {'baseline': 0.0, 'isolation_forest': 0.32, 'lstm': 99.85}
+22:49:15 WARNING telemetry.pipeline: P-4/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+22:49:35 INFO telemetry.pipeline: [32/81] P-4 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 19.78}
+22:49:35 WARNING telemetry.pipeline: G-3/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+22:49:51 INFO telemetry.pipeline: [33/81] G-3 done {'baseline': 0.0, 'isolation_forest': 0.48, 'lstm': 16.2}
+22:51:19 INFO telemetry.pipeline: [34/81] T-1 done {'baseline': 0.0, 'isolation_forest': 0.3, 'lstm': 87.24}
+22:53:03 INFO telemetry.pipeline: [35/81] T-2 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 103.73}
+22:53:03 WARNING telemetry.pipeline: D-8/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+22:53:21 INFO telemetry.pipeline: [36/81] D-8 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 17.75}
+22:53:21 WARNING telemetry.pipeline: D-9/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+22:53:39 INFO telemetry.pipeline: [37/81] D-9 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 17.61}
+22:54:52 INFO telemetry.pipeline: [38/81] F-2 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 72.89}
+22:56:35 INFO telemetry.pipeline: [39/81] G-4 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 102.24}
+22:58:06 INFO telemetry.pipeline: [40/81] T-3 done {'baseline': 0.0, 'isolation_forest': 0.32, 'lstm': 90.85}
+22:59:03 INFO telemetry.pipeline: [41/81] D-11 done {'baseline': 0.0, 'isolation_forest': 0.28, 'lstm': 56.93}
+22:59:03 WARNING telemetry.pipeline: D-12/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+<repo>/.venv/lib/python3.11/site-packages/sklearn/ensemble/_iforest.py:343: UserWarning: max_samples (256) is greater than the total number of samples (201). max_samples will be set to n_samples for estimation.
+  warn(
+22:59:08 WARNING telemetry.pipeline: D-12/lstm: validation scores have no spread - threshold 0.00144 is NOT a calibration
+22:59:08 INFO telemetry.pipeline: [42/81] D-12 done {'baseline': 0.0, 'isolation_forest': 0.25, 'lstm': 4.99}
+22:59:08 WARNING telemetry.pipeline: B-1/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+22:59:30 WARNING telemetry.pipeline: B-1/lstm: validation scores have no spread - threshold 0.00078 is NOT a calibration
+22:59:30 INFO telemetry.pipeline: [43/81] B-1 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 21.64}
+23:00:04 INFO telemetry.pipeline: [44/81] G-6 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 33.42}
+23:00:46 INFO telemetry.pipeline: [45/81] G-7 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 41.57}
+23:02:18 INFO telemetry.pipeline: [46/81] P-7 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 91.75}
+23:02:18 WARNING telemetry.pipeline: R-1/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+23:02:18 WARNING telemetry.pipeline: R-1/isolation_forest: validation scores have no spread - threshold 0.413 is NOT a calibration
+23:02:41 INFO telemetry.pipeline: [47/81] R-1 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 22.42}
+23:02:49 INFO telemetry.pipeline: [48/81] A-5 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 8.21}
+23:03:01 INFO telemetry.pipeline: [49/81] A-6 done {'baseline': 0.0, 'isolation_forest': 0.25, 'lstm': 11.55}
+23:04:02 INFO telemetry.pipeline: [50/81] A-7 done {'baseline': 0.0, 'isolation_forest': 0.31, 'lstm': 60.34}
+23:04:02 WARNING telemetry.pipeline: D-13/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+23:04:02 WARNING telemetry.pipeline: D-13/isolation_forest: validation scores have no spread - threshold 0.5 is NOT a calibration
+23:04:19 WARNING telemetry.pipeline: D-13/lstm: validation scores have no spread - threshold 0.000666 is NOT a calibration
+23:04:19 INFO telemetry.pipeline: [51/81] D-13 done {'baseline': 0.0, 'isolation_forest': 0.24, 'lstm': 17.26}
+23:04:32 INFO telemetry.pipeline: [52/81] A-8 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 12.2}
+23:04:48 INFO telemetry.pipeline: [53/81] A-9 done {'baseline': 0.01, 'isolation_forest': 0.42, 'lstm': 15.64}
+23:05:47 INFO telemetry.pipeline: [54/81] F-3 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 58.78}
+23:05:47 WARNING telemetry.pipeline: M-6/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+23:05:55 INFO telemetry.pipeline: [55/81] M-6 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 8.33}
+23:07:02 INFO telemetry.pipeline: [56/81] M-1 done {'baseline': 0.0, 'isolation_forest': 0.25, 'lstm': 66.74}
+23:08:36 INFO telemetry.pipeline: [57/81] M-2 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 93.02}
+23:08:36 WARNING telemetry.pipeline: S-2/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+23:08:44 INFO telemetry.pipeline: [58/81] S-2 done {'baseline': 0.0, 'isolation_forest': 0.25, 'lstm': 7.9}
+23:09:14 INFO telemetry.pipeline: [59/81] P-10 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 29.63}
+23:09:58 INFO telemetry.pipeline: [60/81] T-4 done {'baseline': 0.0, 'isolation_forest': 0.44, 'lstm': 43.39}
+23:09:58 WARNING telemetry.pipeline: T-5/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+23:10:13 INFO telemetry.pipeline: [61/81] T-5 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 15.21}
+23:11:15 INFO telemetry.pipeline: [62/81] F-7 done {'baseline': 0.0, 'isolation_forest': 0.3, 'lstm': 61.64}
+23:12:33 INFO telemetry.pipeline: [63/81] M-3 done {'baseline': 0.01, 'isolation_forest': 0.27, 'lstm': 77.78}
+23:13:17 INFO telemetry.pipeline: [64/81] M-4 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 43.8}
+23:14:16 INFO telemetry.pipeline: [65/81] M-5 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 58.46}
+23:16:30 INFO telemetry.pipeline: [66/81] P-15 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 133.34}
+23:18:03 INFO telemetry.pipeline: [67/81] C-1 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 92.74}
+23:18:03 WARNING telemetry.pipeline: C-2/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+23:18:09 INFO telemetry.pipeline: [68/81] C-2 done {'baseline': 0.0, 'isolation_forest': 0.24, 'lstm': 5.66}
+23:18:23 INFO telemetry.pipeline: [69/81] T-12 done {'baseline': 0.0, 'isolation_forest': 0.25, 'lstm': 14.2}
+23:18:45 INFO telemetry.pipeline: [70/81] T-13 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 21.28}
+23:20:21 INFO telemetry.pipeline: [71/81] F-4 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 96.01}
+23:20:41 INFO telemetry.pipeline: [72/81] F-5 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 19.61}
+23:20:41 WARNING telemetry.pipeline: D-14/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+23:21:05 INFO telemetry.pipeline: [73/81] D-14 done {'baseline': 0.0, 'isolation_forest': 0.25, 'lstm': 24.1}
+23:21:09 INFO telemetry.pipeline: [74/81] T-9 done {'baseline': 0.0, 'isolation_forest': 0.24, 'lstm': 3.37}
+23:21:32 INFO telemetry.pipeline: [75/81] P-14 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 22.51}
+23:21:36 INFO telemetry.pipeline: [76/81] T-8 done {'baseline': 0.0, 'isolation_forest': 0.25, 'lstm': 4.01}
+23:22:41 INFO telemetry.pipeline: [77/81] P-11 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 64.85}
+23:23:21 INFO telemetry.pipeline: [78/81] D-15 done {'baseline': 0.0, 'isolation_forest': 0.27, 'lstm': 39.36}
+23:23:21 WARNING telemetry.pipeline: D-16/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+23:23:36 INFO telemetry.pipeline: [79/81] D-16 done {'baseline': 0.0, 'isolation_forest': 0.26, 'lstm': 15.26}
+23:23:36 WARNING telemetry.pipeline: M-7/baseline: validation scores have no spread - threshold 1.19e-07 is NOT a calibration
+23:23:48 INFO telemetry.pipeline: [80/81] M-7 done {'baseline': 0.0, 'isolation_forest': 0.25, 'lstm': 11.34}
+23:24:28 INFO telemetry.pipeline: [81/81] F-8 done {'baseline': 0.0, 'isolation_forest': 0.29, 'lstm': 39.59}
+23:24:28 INFO telemetry.pipeline: Training finished in 4434.1s; failures: none
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "<repo>/src/cli.py", line 85, in <module>
+    out = seed_summary([reports / n for n in names])
+     ^^^^^^
+  File "<repo>/src/cli.py", line 63, in main
+
+  File "<repo>/src/evaluation/evaluate.py", line 170, in evaluate_run
+    from src.utils.config import display_path
+ImportError: cannot import name 'display_path' from 'src.utils.config' (<repo>/src/utils/config.py)
+=== seed 1 exit 1 2026-11-15 23:24:38
+=== evaluation re-run 2026-11-15 23:25:26: the automatic evaluation above failed because this long-running process had loaded src/utils/config.py before display_path was added (code edited mid-run). Training outputs are complete; only 'python -m src.cli evaluate --config configs/seed1.yaml' is re-run with the current code.
+OMP: Warning #179: Function Can't set size of /tmp file failed:
+23:25:39 INFO telemetry.evaluate: Evaluation written to reports/runs/full_seed1
+All 81 channels:
+
+| method | precision | recall | f1 | fpr | event_precision | event_recall | event_f1 | event_tp | event_fn | event_fp | roc_auc_macro | pr_auc_macro | roc_auc_pooled |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| baseline | 0.301 | 0.195 | 0.237 | 0.065 | 0.029 | 0.827 | 0.056 | 86 | 18 | 2881 | 0.590 | 0.260 | 0.597 |
+| isolation_forest | 0.274 | 0.325 | 0.298 | 0.123 | 0.032 | 0.702 | 0.062 | 73 | 31 | 2180 | 0.629 | 0.290 | 0.590 |
+| lstm | 0.262 | 0.704 | 0.382 | 0.283 | 0.032 | 0.933 | 0.063 | 97 | 7 | 2897 | 0.690 | 0.456 | 0.743 |
+
+59 calibratable channels (excluding 22 with a constant training signal / degenerate validation scores):
+
+| method | precision | recall | f1 | fpr | event_precision | event_recall | event_f1 | event_tp | event_fn | event_fp | roc_auc_macro | pr_auc_macro | roc_auc_pooled |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| baseline | 0.365 | 0.159 | 0.221 | 0.042 | 0.033 | 0.769 | 0.063 | 60 | 18 | 1778 | 0.530 | 0.212 | 0.580 |
+| isolation_forest | 0.333 | 0.391 | 0.360 | 0.119 | 0.035 | 0.795 | 0.067 | 62 | 16 | 1702 | 0.651 | 0.329 | 0.659 |
+| lstm | 0.311 | 0.650 | 0.420 | 0.219 | 0.035 | 0.910 | 0.068 | 71 | 7 | 1932 | 0.660 | 0.423 | 0.752 |
+=== evaluation exit 0 2026-11-15 23:25:40

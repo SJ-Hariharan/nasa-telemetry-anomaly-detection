@@ -34,6 +34,12 @@ LSTM: point F1 0.387 (0.425 on the 59 calibratable channels), event recall 97/10
 baseline 0.590; intervals overlap). 22 channels are uncalibratable (constant training signal) and cause 52% (baseline) /
 44% (LSTM) of point false positives. See `EXPERIMENTS.md` and the review outcome in `FABLE_REVIEW_BRIEF.md` §12.
 
+## Release preparation (2026-11-15)
+
+See `SHIP_PLAN.md`. Seed-variance runs `full_seed1` / `full_seed2` (configs `seed1.yaml` / `seed2.yaml`) and
+calibration studies (`python -m src.cli calibration --run full`) were added. The `full` run is unchanged and
+still reproduces bit-identically.
+
 ## Open questions / next steps
 
 See "Remaining limitations" in `README.md` and the questions in `FABLE_REVIEW_BRIEF.md`.

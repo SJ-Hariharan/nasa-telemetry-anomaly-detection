@@ -154,6 +154,33 @@ warm-up excluded from AUC), `src/evaluation/evaluate.py` (dual reporting, KS sta
   statistic, which gives moderate support for the learned models and none for the baseline.
 **Explain independently:** why macro and pooled AUC can rank two methods differently on the same predictions.
 
+## 14. Release preparation: what checking from a fresh clone found
+
+**Files:** `src/evaluation/calibration.py`, `src/models/persistence.py`, `src/inference/predict.py`, `app/dashboard.py`,
+`src/models/lstm.py`, `SHIP_PLAN.md`.
+* **A fresh environment finds what the dev environment hides.** Installing from `requirements.txt` into a new venv
+  and running the tests on a copy without generated files exposed two problems. Three dashboard pages crashed
+  without the gitignored scores, and `scipy` was only installed by accident (transitively).
+* **A "fix" can change results silently.** The first D5 fix (seed before building the LSTM) changed the dropout
+  stream, and a re-run of two channels no longer matched the saved model. Seeding both before construction and
+  before training fixed the bug *and* reproduced the published run bit-identically. **Always re-run a reference
+  case after touching anything random.**
+* **Measure a suspicion before acting on it.** Small validation sets (D4) were suspected of driving the results.
+  The bootstrap showed the aggregate effect is small (block bootstrap: LSTM F1 [0.375, 0.389]), so the explanation lies elsewhere.
+  The *first* bootstrap resampled points independently and understated the spread about 3×, because the scores are
+  autocorrelated (lag-1 ≈ 0.8–0.98). The final audit caught it. **Lesson:** a bootstrap must respect the dependence
+  structure of the data, and a resampled extreme quantile cannot go above the sample maximum.
+* **Leave-channels-out is how to use labels honestly for calibration.** A rule chosen on other channels and applied
+  to held-out channels gives a fair estimate. Choosing it on the evaluated channels would not.
+  Pre-register the grid and objective, and report a grid-edge choice instead of widening the grid afterwards.
+* **Don't edit code under a running job.** The seed-1 run had already imported `src/utils/config.py` when a new
+  helper was added to it. Seventy-four minutes later its final evaluation step imported the *new* `evaluate.py`,
+  which expected that helper, and crashed with `ImportError`. Training outputs were complete, so only the
+  evaluation was re-run (logged in its `run.log`). **Lesson:** a long job runs a mix of the code it loaded at
+  start and code it imports later. Freeze the tree, or work in a separate checkout, while experiments run.
+* **Inference must carry the caveats the evaluation knows about.** A threshold flagged uncalibratable in the
+  report was silently used by `predict`. The flag now travels with the model.
+
 ---
 
 Results and their interpretation: `EXPERIMENTS.md`. Next study steps: the "Files to study first" list in `README.md`.

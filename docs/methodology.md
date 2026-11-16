@@ -51,8 +51,10 @@ data, about 0.5% of points would exceed it. The quantile is fixed a priori in `c
 (multipliers 0.5–5×), but it is a post-hoc diagnostic, explicitly not a selection step.
 
 Known weaknesses: the validation part is assumed nominal (it is unlabelled). The LSTM's validation errors
-are slightly optimistic because the same split selects its best epoch. And constant channels give a
-threshold of ~0, so any change gets flagged.
+are slightly optimistic because the same split selects its best epoch. Constant channels give a
+threshold of ~0, so any change gets flagged. Such thresholds are marked `calibratable: false` in the run summary
+and in each saved model, and inference warns when it uses one. Every validation set is small (62–862 points), so
+a 99.5% quantile rests on fewer than 5 expected exceedances in **every** channel. §7 measures what that costs.
 
 ## 5. Evaluation
 
@@ -79,6 +81,40 @@ threshold of ~0, so any change gets flagged.
 
 ## 6. Reproducibility
 
-Seed 42 is reset before every (channel, method) fit. Configs are saved with each run, the dataset revision
+Seed 42 is reset before every (channel, method) fit. The LSTM also seeds itself before building the network and
+again before training, so its own `seed` parameter fully determines its weights wherever it is used
+(`test_lstm_seed_alone_controls_weights`). This was checked to reproduce the reported run bit-identically. Configs are saved with each run, the dataset revision
 and hashes are pinned, and package lower bounds are in `requirements.txt`. PyTorch CPU results should
 reproduce closely on the same machine. Bit-exactness across hardware is not guaranteed.
+
+## 7. Calibration studies (on saved scores, no retraining)
+
+`python -m src.cli calibration --run full` writes `reports/runs/full/calibration/`.
+
+**Threshold-estimation uncertainty.** For each channel and method, the validation scores are resampled 100 times
+with a circular block bootstrap (blocks of 50 contiguous points, because the scores are strongly autocorrelated)
+and the 99.5% quantile is recomputed. Each replicate applies one resampled threshold per channel to the unchanged
+test scores and recomputes the micro metrics; the random stream is keyed by method name. No label influences any
+threshold. Limitation: a resampled quantile cannot exceed the sample maximum, so the ranges are biased towards lower
+thresholds and indicate the size of the noise, not a calibrated confidence interval.
+
+**Leave-channels-out (LCO) calibration.** This tests whether a *rule* chosen on some channels generalises to unseen
+channels. The protocol was fixed before running:
+* Rule family, computed from each channel's own validation scores: `thr = median + m · (Q_q − median)`,
+  q ∈ {0.99, 0.995, 0.999, 1.0}, m ∈ {1, 1.5, 2, 3, 5}. (q = 0.995, m = 1) is the default threshold.
+  The form is location-invariant, so it is also meaningful for Isolation Forest scores.
+* 5 folds of channels, stratified by spacecraft, fold seed 0.
+* For each fold, the rule with the best micro **event F1** on the other four folds is selected (ties → smaller m,
+  then smaller q). It is then applied to the held-out fold.
+* The held-out predictions of all folds are pooled and reported next to the default rule.
+
+The grid's margins mirror the multipliers of the earlier post-hoc sensitivity analysis (EXPERIMENTS.md discloses
+this). The held-out fold's labels never influence its rule (`test_lco_rule_ignores_heldout_labels`). Labels of the
+other folds' channels *are* used, as in any cross-validation. The LCO numbers therefore estimate how a rule
+selected this way performs on new channels. They are a separate, labelled experiment, not a replacement for the
+headline results, which stay at the a-priori default. The grid was not changed after seeing results.
+
+**Seed variance.** `configs/seed1.yaml` and `seed2.yaml` repeat the full experiment with seeds 1 and 2 (run
+directories `full_seed1`, `full_seed2`). `python -m src.cli seeds --runs full full_seed1 full_seed2` summarises
+mean, standard deviation and range per metric. Only Isolation Forest and the LSTM are seed-dependent; the
+baseline is deterministic.

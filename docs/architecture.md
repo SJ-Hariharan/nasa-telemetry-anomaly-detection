@@ -13,10 +13,16 @@ python -m src.cli train        src/pipeline.py           per channel:
    detectors (src/models/detectors.py, src/models/lstm.py)  fit on fit part
    threshold calibration on validation scores (src/models/thresholds.py)
    score + threshold TEST                                    -> reports/runs/<run>/scores/<chan>.parquet
+                                                                (+ <chan>.val.parquet: validation scores)
    save bundles (src/models/persistence.py)                  -> models/<run>/<method>/<chan>/
+                                                                (meta.json records calibration status)
 python -m src.cli evaluate     src/evaluation/evaluate.py + metrics.py
                                                           -> metrics.json, comparison.csv/.md, per_channel.csv,
                                                              events.csv, false_alarms.csv, sensitivity.csv, figures/
+python -m src.cli calibration  src/evaluation/calibration.py  saved validation + test scores
+                                                          -> calibration/ (threshold bootstrap, leave-channels-out)
+python -m src.cli seeds        src/evaluation/calibration.py  metrics.json of runs differing only in seed
+                                                          -> reports/seed_summary.json
 streamlit run app/dashboard.py reads only the files above (+ models for inference)
 python -m src.cli predict      src/inference/predict.py  saved bundle + new CSV -> scores/predictions
 ```
@@ -32,9 +38,10 @@ python -m src.cli predict      src/inference/predict.py  saved bundle + new CSV 
 | Features | `src/features/windows.py` | Causal windows / tabular features. |
 | Models | `src/models/detectors.py`, `src/models/lstm.py` | `fit(train_scaled, split_idx)` / `score(array)`. No labels. |
 | Decisions | `src/models/thresholds.py` | Validation-quantile threshold, post-processing. |
-| Persistence | `src/models/persistence.py` | Bundle = scaler + threshold + weights + params. |
+| Persistence | `src/models/persistence.py` | Bundle = scaler + threshold + weights + params + calibration status. Validates channel/run names before they become paths. |
 | Orchestration | `src/pipeline.py` | Order of steps; labels attached last. |
-| Evaluation | `src/evaluation/` | Labels, metrics, error analysis, figures. |
+| Evaluation | `src/evaluation/evaluate.py`, `metrics.py` | Labels, metrics, error analysis, figures. |
+| Calibration studies | `src/evaluation/calibration.py` | Threshold uncertainty, leave-channels-out rule selection, seed summary. Uses saved scores only. |
 | Inference | `src/inference/predict.py` | Input validation + scoring with a saved bundle. |
 | Presentation | `app/dashboard.py` | Reads artifacts; no training. |
 
@@ -56,5 +63,17 @@ python -m src.cli predict      src/inference/predict.py  saved bundle + new CSV 
 ## What is deliberately absent
 
 No experiment tracker, database, web API, Docker or hyper-parameter search framework. For 81 channels
-on a laptop they would add complexity without improving the science. See `docs/inference_and_deployment.md`
-(learning folder) for what a production system would need.
+on a laptop they would add complexity without improving the science. See `docs/learning/inference_and_deployment.md`
+for what a production system would need.
+
+## Committed vs generated artifacts
+
+| Committed (small, reviewable) | Generated, gitignored (recreate with the commands in README) |
+|---|---|
+| `reports/data_validation.json`, `reports/figures/` | `data/raw/` (~170 MB, `python -m src.cli download`) |
+| `reports/runs/<run>/` summaries: metrics, tables, figures, configs, calibration studies | `reports/runs/<run>/scores/` per-channel score tables (~18 MB per full run) |
+| `reports/seed_summary.json` | `models/<run>/` saved bundles (~186 MB per full run) |
+
+The dashboard's Overview and Model comparison pages work from the committed files alone. The Telemetry explorer,
+Anomaly analysis and Inference pages need the generated files, and say so (with the command to recreate them)
+when they are missing.

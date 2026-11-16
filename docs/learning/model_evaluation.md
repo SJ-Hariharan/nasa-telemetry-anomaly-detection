@@ -169,4 +169,4 @@ Example: validation scores $0.01, 0.02, \dots, 2.00$ â‡’ `calibrate_threshold` â
 2. After `python -m src.cli all --config configs/smoke.yaml`, open `reports/runs/smoke/per_channel.csv` and compute macro F1 per method; compare with the micro F1 in `comparison.csv`.
 3. Implement point-adjust in a scratch script (not in `src/`) and apply it to `reports/runs/smoke/scores/P-1.parquet`. How much does point F1 rise for each method?
 4. Using `false_alarms.csv`, count how many FP events are shorter than 5 points. What would `postprocess.min_event_length: 5` do, and why must that choice be justified without test labels?
-5. Write a short paragraph explaining why `threshold_free` sets NaN warm-up scores to 0, and whether that choice favours any method.
+5. Write a short paragraph explaining why `threshold_free` excludes NaN warm-up scores instead of setting them to 0 (as an earlier version did), and how much the old choice would have inflated AUC.
