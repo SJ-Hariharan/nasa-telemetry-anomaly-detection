@@ -92,11 +92,12 @@ def process_channel(chan_id: str, label_row, raw_dir: Path, cfg: dict, methods: 
         table[f"{method}_pred"] = pred
         if method == "lstm":  # forecast in original units, for explanation plots
             table["lstm_forecast"] = det.predict(test_s) * scaler.std + scaler.mean
-        DetectorBundle(method, chan_id, det, scaler, thr, train.shape[1], post).save(models_dir)
         val_table[f"{method}_score"] = val_scores
         degenerate = calibration_is_degenerate(val_scores, thr)
         if degenerate:
             log.warning("%s/%s: validation scores have no spread - threshold %.3g is NOT a calibration", chan_id, method, thr)
+        DetectorBundle(method, chan_id, det, scaler, thr, train.shape[1], post,
+                       calibratable=not (degenerate or scaler.constant)).save(models_dir)
         m_info = {"status": "ok", "threshold": thr, "seconds": round(time.perf_counter() - t0, 2),
                   "val_flag_rate": float(np.mean(np.nan_to_num(val_scores, nan=-np.inf) > thr)),
                   "calibratable": not degenerate, "val_len": int(len(val_scores))}

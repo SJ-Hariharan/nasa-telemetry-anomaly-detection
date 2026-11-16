@@ -28,6 +28,9 @@ def test_end_to_end_pipeline(tiny_config, synthetic_raw_dir, tmp_path):
         o, c = metrics["results"][m]["overall"], metrics["results"][m]["calibratable"]
         assert 0.0 <= o["f1"] <= 1.0 and o["event_tp"] + o["event_fn"] == 5 and c["event_tp"] + c["event_fn"] == 4
         assert c["n_channels"] == 2 and o["roc_auc_macro_ci"][0] <= o["roc_auc_macro"] <= o["roc_auc_macro_ci"][1]
+    from src.models.persistence import load_bundle
+    assert load_bundle(tmp_path / "models" / "pytest", "baseline", "C-1").calibratable is False
+    assert load_bundle(tmp_path / "models" / "pytest", "lstm", "S-1").calibratable is True
     per = pd.read_csv(reports / "per_channel.csv")
     assert {"roc_auc", "pr_auc", "ks_val_test", "calibratable", "val_len"} <= set(per.columns)
     assert per["ks_val_test"].between(0, 1).all() and (reports / "scores" / "S-1.val.parquet").exists()
@@ -79,3 +82,42 @@ def test_resume_skips_completed_channels_and_matches_full_run(tiny_config):
     import pytest
     with pytest.raises(ValueError):
         run_training(tiny_config, ["baseline"], resume=True)
+
+
+def test_cli_predict_rejects_bad_names_and_input(tmp_path, capsys):
+    import pytest
+
+    csv = tmp_path / "x.csv"
+    csv.write_text("value\n0.1\n")
+    with pytest.raises(SystemExit):                       # argparse error for a path-like run name
+        cli_main(["predict", "--run", "../models", "--method", "lstm", "--channel", "P-1", "--input", str(csv)])
+    assert cli_main(["predict", "--run", "full", "--method", "lstm", "--channel", "../P-1", "--input", str(csv)]) == 2
+    assert "Invalid channel id" in capsys.readouterr().err
+
+
+def test_calibration_and_seed_studies_on_a_run(tiny_config):
+    from src.evaluation.calibration import run_calibration_studies, seed_summary
+
+    methods = ["baseline", "isolation_forest"]
+    r1 = run_training(tiny_config, methods)
+    evaluate_run(r1)
+    out = run_calibration_studies(r1, n_boot=10)
+    assert (r1 / "calibration" / "calibration.md").exists() and (r1 / "calibration" / "threshold_bootstrap.csv").exists()
+    lco = out["leave_channels_out"]
+    assert sum(len(f) for f in lco["protocol"]["folds"]) == 3
+    assert lco["baseline"]["all"]["default"]["event_tp"] == json.loads((r1 / "metrics.json").read_text())[
+        "results"]["baseline"]["overall"]["event_tp"]          # default rule == the run's own thresholds
+    import shutil
+    other = r1.parent / "pytest_seed7"
+    shutil.copytree(r1, other)
+    cfg = json.loads((other / "config_used.json").read_text()); cfg["seed"] = 7
+    (other / "config_used.json").write_text(json.dumps(cfg))
+    s = seed_summary([r1, other])
+    assert s["seeds"] == [7, 42] and s["summary"]["overall/baseline"]["f1"]["std"] == 0.0
+    # CLI writes the summary to <reports_dir>/../seed_summary.json (reports/seed_summary.json by default)
+    import yaml
+    cfg_file = r1.parent.parent / "cfg.yaml"
+    cfg_file.write_text(yaml.safe_dump({"data": {"raw_dir": str(r1.parent)},
+                                        "output": {"reports_dir": str(r1.parent), "models_dir": str(r1.parent)}}))
+    assert cli_main(["seeds", "--config", str(cfg_file), "--runs", r1.name, other.name]) == 0
+    assert (r1.parent.parent / "seed_summary.json").exists() and not (r1.parent / "seed_summary.json").exists()

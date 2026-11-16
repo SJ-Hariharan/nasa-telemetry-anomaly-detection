@@ -23,10 +23,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from src.data.loader import load_channel  # noqa: E402
-from src.inference.predict import detect, frame_to_array, warmup_length  # noqa: E402
-from src.models.persistence import METHODS, load_bundle  # noqa: E402
+from src.inference.predict import detect, frame_to_array, read_telemetry_csv, warmup_length  # noqa: E402
+from src.models.persistence import CHANNEL_ID, METHODS, load_bundle  # noqa: E402
 from src.models.thresholds import runs  # noqa: E402
 
+RUN_CONFIGS = {"full": "configs/default.yaml", "smoke": "configs/smoke.yaml",
+               "full_seed1": "configs/seed1.yaml", "full_seed2": "configs/seed2.yaml"}
 RUNS_DIR, MODELS_DIR, RAW_DIR = ROOT / "reports" / "runs", ROOT / "models", ROOT / "data" / "raw" / "telemanom"
 LABELS = {"baseline": "Rolling z-score (baseline)", "isolation_forest": "Isolation Forest", "lstm": "LSTM forecaster"}
 COLORS = {"baseline": "#7f7f7f", "isolation_forest": "#2a9d8f", "lstm": "#6c5ce7", "truth": "#e63946"}
@@ -67,6 +69,17 @@ def load_train_values(chan: str) -> np.ndarray | None:
         return load_channel(RAW_DIR, chan, "train")[:, 0]
     except FileNotFoundError:
         return None
+
+
+def scores_available(run: str, chan: str) -> bool:
+    """Per-channel score tables are generated files (gitignored, ~18 MB for the full run). A fresh clone has the
+    run's summary reports but not these, so pages that need them explain how to regenerate them instead of crashing."""
+    if (RUNS_DIR / run / "scores" / f"{chan}.parquet").exists():
+        return True
+    st.info(f"Per-channel scores for run `{run}` are not in this checkout (they are generated, not version-controlled). "
+            "Recreate them by re-running the experiment; the summary pages (Overview, Model comparison) work without them.")
+    st.code(f"python -m src.cli download\npython -m src.cli all --config {RUN_CONFIGS.get(run, 'configs/<run>.yaml')} --resume")
+    return False
 
 
 def ok_methods(run_data: dict, chan: str) -> list[str]:
@@ -188,6 +201,8 @@ def page_explorer(run: str, rd: dict):
     methods = ok_methods(rd, chan)
     method = c2.radio("Overlay predictions from", ["none"] + methods, horizontal=True,
                       format_func=lambda m: LABELS.get(m, "none"))
+    if not scores_available(run, chan):
+        return
     t = load_scores(run, chan)
     info = rd["channels"][chan]
     lo, hi = st.slider("Test time range", 0, len(t) - 1, (0, len(t) - 1))
@@ -217,6 +232,8 @@ def page_anomalies(run: str, rd: dict):
         st.error("No method succeeded on this channel.")
         return
     method = c2.selectbox("Method", methods, format_func=LABELS.get)
+    if not scores_available(run, chan):
+        return
     t = load_scores(run, chan)
     thr = rd["channels"][chan]["methods"][method]["threshold"]
     st.markdown(f"**How to read this:** the score measures how unusual each timestep is for `{LABELS[method]}`. "
@@ -295,16 +312,21 @@ def page_inference(run: str, rd: dict):
     st.info("Scores new telemetry with a detector saved during training (its scaler and threshold are reused, "
             "never refitted). " + DISCLAIMER)
     run_models = MODELS_DIR / run
-    chans = sorted(p.name for p in (run_models / "lstm").glob("*")) or sorted(rd["channels"])
+    # only real channel directories (a stray .DS_Store etc. must not reach load_bundle)
+    chans = sorted(p.name for p in (run_models / "lstm").glob("*") if CHANNEL_ID.fullmatch(p.name)) or sorted(rd["channels"])
     c1, c2, c3 = st.columns(3)
     chan = c1.selectbox("Channel model", chans, key="inf_chan")
     method = c2.selectbox("Method", METHODS, format_func=LABELS.get, key="inf_method")
     source = c3.radio("Input", ["Upload CSV", "Benchmark test file (historical)", "Simulated signal"])
     try:
         bundle = load_bundle(run_models, method, chan)
-    except FileNotFoundError as exc:
-        st.error(str(exc))
+    except FileNotFoundError:
+        st.info(f"Saved models for run `{run}` are not in this checkout (they are generated, ~186 MB for the full run, "
+                "and not version-controlled). Recreate them by re-running the experiment:")
+        st.code(f"python -m src.cli all --config {RUN_CONFIGS.get(run, 'configs/<run>.yaml')} --resume")
         return
+    if bundle.calibration_warning():
+        st.warning(bundle.calibration_warning())
     st.caption(f"Model expects {bundle.n_features} columns: `value` + `cmd_0..cmd_{bundle.n_features - 2}` "
                f"(commands optional). Needs > {warmup_length(bundle)} rows of history.")
     df = None
@@ -314,7 +336,7 @@ def page_inference(run: str, rd: dict):
         st.download_button("Download CSV template", template.to_csv(index=False), "telemetry_template.csv")
         if up is not None:
             try:
-                df = pd.read_csv(up)
+                df = read_telemetry_csv(up)
             except (pd.errors.ParserError, UnicodeDecodeError, ValueError) as exc:
                 st.error(f"Could not read CSV: {exc}")
     elif source == "Benchmark test file (historical)":

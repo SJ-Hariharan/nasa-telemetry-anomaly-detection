@@ -167,7 +167,9 @@ def evaluate_run(run_dir: Path) -> dict:
         run_dir / "sensitivity.csv", index=False)
     (run_dir / "metrics.json").write_text(json.dumps(metrics, indent=1, default=float))
     _figures(run_dir, comp, results, methods, common)
-    log.info("Evaluation written to %s", run_dir)
+    from src.utils.config import display_path
+
+    log.info("Evaluation written to %s", display_path(run_dir))
     return metrics
 
 

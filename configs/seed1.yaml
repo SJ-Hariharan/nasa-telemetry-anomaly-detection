@@ -1,0 +1,5 @@
+# Seed-variance run (review recommendation): identical to default.yaml except the random seed.
+# Writes to reports/runs/full_seed1 and models/full_seed1; the original 'full' run (seed 42) is untouched.
+inherit: default.yaml
+run_name: full_seed1
+seed: 1

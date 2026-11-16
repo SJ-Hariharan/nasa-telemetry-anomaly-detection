@@ -93,10 +93,14 @@ class LSTMDetector:
             keep = np.linspace(0, len(Xtr) - 1, self.max_train_windows).round().astype(int)
             Xtr, ytr = Xtr[keep], ytr[keep]
 
+        # Seed twice: before construction (weight init) and again before training (dropout masks). The detector's
+        # own seed then fully determines the result, independent of the caller's global RNG state, and runs made
+        # before this fix (where the pipeline's set_seed() supplied the first seeding) are reproduced exactly.
+        torch.manual_seed(self.seed)
         self.model = LSTMForecaster(arr.shape[1], self.hidden_size, self.num_layers, self.dropout).to(self.device)
         opt = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
         loss_fn = nn.MSELoss()
-        torch.manual_seed(self.seed)                      # weight init + dropout masks
+        torch.manual_seed(self.seed)
         gen = torch.Generator().manual_seed(self.seed)    # window shuffling order
         best_val, best_state, bad_epochs = np.inf, None, 0
         for epoch in range(self.epochs):

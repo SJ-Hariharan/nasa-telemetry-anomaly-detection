@@ -1,0 +1,9 @@
+#!/bin/sh
+# pre-push: run the full test suite before anything leaves this machine (~20-60 s).
+# Note: it tests the WORKING TREE as it is now (commit or stash unrelated edits first for a faithful check).
+# Enable once: git config core.hooksPath .githooks . Bypass only deliberately: git push --no-verify
+cd "$(git rev-parse --show-toplevel)" || exit 1
+PY=.venv/bin/python; [ -x "$PY" ] || PY=python3
+echo "pre-push: running pytest -q ..."
+MPLCONFIGDIR="${TMPDIR:-/tmp}/mpl" "$PY" -m pytest -q || { echo "pre-push: tests failed - push aborted" >&2; exit 1; }
+echo "pre-push: OK"

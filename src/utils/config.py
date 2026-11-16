@@ -44,6 +44,15 @@ def load_config(path: str | Path) -> dict[str, Any]:
     return cfg
 
 
+def display_path(path) -> str:
+    """Path relative to the project root for logs and reports (no machine-specific absolute paths)."""
+    p = Path(path).resolve()
+    try:
+        return str(p.relative_to(PROJECT_ROOT))
+    except ValueError:
+        return p.name
+
+
 def resolve_path(p: str | Path) -> Path:
     """Resolve a config path relative to the project root."""
     p = Path(p)

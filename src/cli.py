@@ -6,6 +6,8 @@
     python -m src.cli evaluate --config configs/smoke.yaml
     python -m src.cli all      --config configs/default.yaml   # train + evaluate
     python -m src.cli predict  --run full --method lstm --channel P-1 --input my.csv
+    python -m src.cli calibration --run full             # threshold uncertainty + leave-channels-out study
+    python -m src.cli seeds --runs full full_seed1 full_seed2   # mean/std over seed-variance runs
 """
 from __future__ import annotations
 
@@ -23,7 +25,8 @@ VALIDATION_REPORT = "reports/data_validation.json"
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m src.cli", description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("command", choices=["download", "validate", "train", "evaluate", "all", "predict"])
+    parser.add_argument("command", choices=["download", "validate", "train", "evaluate", "all", "predict",
+                                                   "calibration", "seeds"])
     parser.add_argument("--config", default="configs/default.yaml")
     parser.add_argument("--force", action="store_true", help="re-download even if files verify")
     parser.add_argument("--methods", nargs="*", help="subset of methods to train")
@@ -33,6 +36,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--channel", help="[predict] channel id, e.g. P-1")
     parser.add_argument("--input", help="[predict] CSV with a 'value' column (+ optional cmd_* columns)")
     parser.add_argument("--output", help="[predict] where to write the result CSV")
+    parser.add_argument("--runs", nargs="*", help="[seeds] run names under reports/runs/ that differ only in seed")
+    parser.add_argument("--n-boot", type=int, default=100, help="[calibration] bootstrap resamples")
     args = parser.parse_args(argv)
     cfg = load_config(args.config)
     raw_dir = resolve_path(cfg["data"]["raw_dir"])
@@ -62,6 +67,26 @@ def main(argv: list[str] | None = None) -> int:
 
             metrics = evaluate_run(run_paths(cfg)[1])
             print(metrics["comparison_markdown"])
+    elif args.command in ("calibration", "seeds"):
+        from src.evaluation.calibration import run_calibration_studies, seed_summary
+        from src.models.persistence import RUN_NAME, check_name
+
+        reports = resolve_path(cfg["output"]["reports_dir"])
+        try:
+            names = [check_name(r, RUN_NAME, "run name") for r in ([args.run] if args.command == "calibration" else args.runs or [])]
+        except ValueError as exc:
+            parser.error(str(exc))
+        if not names or (args.command == "seeds" and len(names) < 2):
+            parser.error("calibration needs --run; seeds needs --runs with at least two runs")
+        if args.command == "calibration":
+            run_calibration_studies(reports / names[0], n_boot=args.n_boot)
+            print((reports / names[0] / "calibration" / "calibration.md").read_text())
+        else:
+            out = seed_summary([reports / n for n in names])
+            dest = reports.parent / "seed_summary.json"         # reports/seed_summary.json, beside (not inside) runs/
+            dest.write_text(json.dumps(out, indent=1, default=float))
+            print(f"wrote {dest.name} next to {reports.name}/")
+            print(json.dumps(out["summary"], indent=1)[:4000])
     elif args.command == "predict":
         import pandas as pd
 
@@ -69,8 +94,17 @@ def main(argv: list[str] | None = None) -> int:
 
         if not all([args.run, args.method, args.channel, args.input]):
             parser.error("predict needs --run, --method, --channel and --input")
-        models_dir = resolve_path(cfg["output"]["models_dir"]) / args.run
-        result: pd.DataFrame = detect_from_csv(models_dir, args.method, args.channel, args.input)
+        from src.models.persistence import RUN_NAME, check_name
+
+        try:
+            models_dir = resolve_path(cfg["output"]["models_dir"]) / check_name(args.run, RUN_NAME, "run name")
+        except ValueError as exc:
+            parser.error(str(exc))
+        try:
+            result: pd.DataFrame = detect_from_csv(models_dir, args.method, args.channel, args.input)
+        except (ValueError, FileNotFoundError) as exc:   # bad input -> clear message + exit code 2, no traceback
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
         if args.output:
             result.to_csv(args.output, index=False)
         n = int(result["is_anomaly"].sum())

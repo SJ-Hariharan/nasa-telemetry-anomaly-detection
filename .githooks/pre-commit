@@ -1,0 +1,44 @@
+#!/bin/sh
+# pre-commit: fast checks on what is being committed. Enable once: git config core.hooksPath .githooks
+#   1. no whitespace errors in the staged diff
+#   2. no secrets, data, model weights, generated scores or oversized files staged by accident
+#   3. staged Python files compile (the STAGED content, not the working copy)
+# Bypass deliberately with `git commit --no-verify` (and say why in the commit message).
+cd "$(git rev-parse --show-toplevel)" || exit 1
+fail() { printf 'pre-commit: %s\n' "$1" >&2; exit 1; }
+
+git diff --cached --check || fail "whitespace errors above (trailing spaces / conflict markers). Fix and re-stage."
+
+PY=.venv/bin/python; [ -x "$PY" ] || PY=python3
+# Python does the per-file checks: NUL-separated names (spaces, non-ASCII), staged blob sizes, staged content.
+git diff --cached --name-only -z --diff-filter=ACMR | "$PY" -c '
+import fnmatch, subprocess, sys
+MAX = 5 * 1024 * 1024
+SECRET = [".env", "*.env", "*.pem", "*.key", "*id_rsa*", "*.p12", "*credentials*", "*secret*"]
+BLOB = ["data/raw/*", "data/processed/*", "*.npy", "*.npz", "*.pt", "*.pth", "*.joblib", "*.pkl", "*.ckpt",
+        "reports/runs/*/scores/*"]
+names = [n for n in sys.stdin.buffer.read().decode("utf-8", "surrogateescape").split("\0") if n]
+bad = []
+for f in names:
+    base, low = f.rsplit("/", 1)[-1], f.lower()
+    if f.endswith(".gitkeep"):
+        continue
+    if any(fnmatch.fnmatch(base.lower(), p) for p in SECRET):
+        bad.append(f"{f}  (looks like a secret)")
+    elif any(fnmatch.fnmatch(low, p) for p in BLOB):
+        bad.append(f"{f}  (data, model weights or generated scores: regenerate, do not commit)")
+    else:
+        size = int(subprocess.run(["git", "cat-file", "-s", ":" + f], capture_output=True, text=True).stdout or 0)
+        if size > MAX:
+            bad.append(f"{f}  ({size // 1024} KB > {MAX // 1024} KB)")
+    if f.endswith(".py"):
+        src = subprocess.run(["git", "show", ":" + f], capture_output=True).stdout
+        try:
+            compile(src, f, "exec")
+        except SyntaxError as e:
+            bad.append(f"{f}  (Python syntax error, line {e.lineno})")
+if bad:
+    print("pre-commit: refusing to commit:", *("  " + b for b in bad), sep="\n", file=sys.stderr)
+    sys.exit(1)
+' || exit 1
+echo "pre-commit: OK"

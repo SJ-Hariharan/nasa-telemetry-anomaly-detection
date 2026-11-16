@@ -11,6 +11,7 @@ this project produced. LSTM weights are loaded with ``weights_only=True`` (no co
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -22,6 +23,16 @@ from src.models.lstm import LSTMDetector, LSTMForecaster
 from src.preprocessing.scaling import ValueScaler
 
 METHODS = ("baseline", "isolation_forest", "lstm")
+CHANNEL_ID = re.compile(r"^[A-Z]-\d{1,3}$")      # benchmark channel ids: P-1, M-6, T-13 ...
+RUN_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$")
+
+
+def check_name(value: str, pattern: re.Pattern, what: str) -> str:
+    """Reject names that would escape the models directory (e.g. '../x') before they become a path.
+    Loading a joblib file executes code, so the location must never be attacker-chosen."""
+    if not isinstance(value, str) or not pattern.fullmatch(value) or ".." in value:
+        raise ValueError(f"Invalid {what}: {value!r}")
+    return value
 
 
 @dataclass
@@ -35,13 +46,24 @@ class DetectorBundle:
     threshold: float
     n_features: int
     postprocess: dict
+    calibratable: bool | None = None     # False: constant training signal / no-spread validation scores; None: unknown
+
+    def calibration_warning(self) -> str | None:
+        if self.calibratable is False:
+            return (f"The {self.method} threshold for {self.chan_id} is NOT calibrated: the channel's training signal is "
+                    "constant (or its validation scores have no spread), so the threshold is ~0 and almost any change is "
+                    "flagged. Treat these flags as 'differs from training', not as calibrated anomalies.")
+        if self.calibratable is None:
+            return "Calibration status was not recorded for this model; check the run's training_summary.json."
+        return None
 
     def save(self, models_dir: Path) -> Path:
         out = Path(models_dir) / self.method / self.chan_id
         out.mkdir(parents=True, exist_ok=True)
         meta = {"method": self.method, "chan_id": self.chan_id, "scaler": self.scaler.to_dict(),
                 "threshold": self.threshold, "n_features": self.n_features,
-                "params": self.detector.get_params(), "postprocess": self.postprocess}
+                "params": self.detector.get_params(), "postprocess": self.postprocess,
+                "calibratable": self.calibratable}
         if self.method == "lstm":
             torch.save(self.detector.model.state_dict(), out / "model.pt")
             meta["best_epoch"] = self.detector.best_epoch
@@ -55,6 +77,7 @@ class DetectorBundle:
 def load_bundle(models_dir: Path, method: str, chan_id: str) -> DetectorBundle:
     if method not in METHODS:
         raise ValueError(f"Unknown method {method!r}")
+    check_name(chan_id, CHANNEL_ID, "channel id")
     path = Path(models_dir) / method / chan_id
     meta_path = path / "meta.json"
     if not meta_path.exists():
@@ -74,4 +97,5 @@ def load_bundle(models_dir: Path, method: str, chan_id: str) -> DetectorBundle:
         det.model.load_state_dict(torch.load(path / "model.pt", map_location="cpu", weights_only=True))
         det.model.eval()
     return DetectorBundle(method, chan_id, det, ValueScaler.from_dict(meta["scaler"]),
-                          float(meta["threshold"]), int(meta["n_features"]), meta.get("postprocess", {}))
+                          float(meta["threshold"]), int(meta["n_features"]), meta.get("postprocess", {}),
+                          meta.get("calibratable"))

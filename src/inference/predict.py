@@ -70,9 +70,19 @@ def detect(bundle: DetectorBundle, array: np.ndarray) -> pd.DataFrame:
                          "is_anomaly": pred, "scored": np.isfinite(scores)})
 
 
+def read_telemetry_csv(source) -> pd.DataFrame:
+    """Read at most MAX_ROWS + 1 rows, so an oversized file is rejected without loading all of it."""
+    df = pd.read_csv(source, nrows=MAX_ROWS + 1)
+    if len(df) > MAX_ROWS:
+        raise ValueError(f"Input has more than {MAX_ROWS} rows")
+    return df
+
+
 def detect_from_csv(models_dir: Path, method: str, chan_id: str, csv_path) -> pd.DataFrame:
     bundle = load_bundle(models_dir, method, chan_id)
-    arr, warnings = frame_to_array(pd.read_csv(csv_path), bundle.n_features)
+    arr, warnings = frame_to_array(read_telemetry_csv(csv_path), bundle.n_features)
+    if bundle.calibration_warning():
+        warnings.append(bundle.calibration_warning())
     for w in warnings:
         print(f"warning: {w}")
     return detect(bundle, arr)

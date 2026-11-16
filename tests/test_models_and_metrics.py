@@ -117,6 +117,16 @@ def test_lstm_forward_shape_and_learning():
     assert np.isnan(pred[:20]).all() and np.isfinite(pred[20:]).all()
 
 
+def test_lstm_seed_alone_controls_weights():
+    """Regression (review D5): the detector's own seed must fix the weights, whatever the global RNG state."""
+    weights = []
+    for prior in (0, 1):
+        torch.manual_seed(prior)
+        det = LSTMDetector(window=20, hidden_size=8, num_layers=1, epochs=1, seed=42).fit(_signal(), 480)
+        weights.append({k: v.clone() for k, v in det.model.state_dict().items()})
+    assert all(torch.equal(weights[0][k], weights[1][k]) for k in weights[0])
+
+
 # ---------- persistence + inference ----------
 @pytest.mark.parametrize("method", ["baseline", "isolation_forest", "lstm"])
 def test_bundle_roundtrip_gives_identical_scores(tmp_path, method):
@@ -129,7 +139,7 @@ def test_bundle_roundtrip_gives_identical_scores(tmp_path, method):
     bundle = DetectorBundle(method, "X-1", det, scaler, 1.23, raw.shape[1], {"min_event_length": 1, "merge_gap": 0})
     bundle.save(tmp_path)
     loaded = load_bundle(tmp_path, method, "X-1")
-    assert loaded.threshold == 1.23
+    assert loaded.threshold == 1.23 and loaded.calibratable is None and loaded.calibration_warning()
     np.testing.assert_allclose(detect(loaded, raw)["score"], detect(bundle, raw)["score"], rtol=1e-5, equal_nan=True)
 
 
@@ -143,6 +153,25 @@ def test_frame_to_array_validation():
         frame_to_array(pd.DataFrame({"value": [1.0, np.nan]}), 1)
     with pytest.raises(ValueError):
         frame_to_array(pd.DataFrame({"value": [0.1], "cmd_0": [2]}), 2)
+
+
+@pytest.mark.parametrize("bad", ["../lstm/P-1", "P-1/../../x", "/etc/passwd", "p-1", "", "P-1\n"])
+def test_load_bundle_rejects_path_like_channel_ids(tmp_path, bad):
+    """Regression (review D7): a channel id must never be able to point outside the models directory."""
+    with pytest.raises(ValueError):
+        load_bundle(tmp_path, "lstm", bad)
+
+
+def test_read_telemetry_csv_bounds_rows(tmp_path, monkeypatch):
+    from src.inference import predict
+
+    monkeypatch.setattr(predict, "MAX_ROWS", 5)
+    f = tmp_path / "big.csv"
+    f.write_text("value\n" + "0.1\n" * 6)
+    with pytest.raises(ValueError):
+        predict.read_telemetry_csv(f)
+    f.write_text("value\n" + "0.1\n" * 5)
+    assert len(predict.read_telemetry_csv(f)) == 5
 
 
 def test_detect_rejects_too_short_input(tmp_path):
@@ -167,3 +196,82 @@ def test_validation_scores_use_test_like_conditions(method):
     v2 = validation_scores(det, b, 480)
     assert len(v1) == 120 and np.isfinite(v1).all()
     np.testing.assert_allclose(v1, v2)
+
+
+# ---------- calibration studies (review D4 + leave-channels-out) ----------
+def _records(n_chan=10, seed=0):
+    rng = np.random.default_rng(seed)
+    recs = []
+    for i in range(n_chan):
+        y = np.zeros(400, dtype=np.int8); y[200:220] = 1
+        test = rng.random(400); test[200:220] += 1.0
+        recs.append({"chan_id": f"X-{i}", "spacecraft": "SMAP" if i % 3 else "MSL", "y": y, "seqs": [[200, 219]],
+                     "calibratable": True, "threshold": {"lstm": float(np.quantile(v := rng.random(150), 0.995))},
+                     "test": {"lstm": test}, "val": {"lstm": v}})
+    return recs
+
+
+def test_rule_threshold_default_reproduces_calibrated_threshold():
+    from src.evaluation.calibration import rule_threshold
+
+    v = np.abs(np.random.default_rng(1).standard_normal(300))
+    assert rule_threshold(v, 0.995, 1.0) == calibrate_threshold(v, "quantile", quantile=0.995)   # exactly (audit A1)
+    assert rule_threshold(np.zeros(50), 0.995, 3.0) > 0                       # same eps floor
+
+
+def test_lco_folds_partition_and_stratify():
+    from src.evaluation.calibration import make_folds
+
+    recs = _records(12)
+    folds = make_folds(recs, k=3)
+    assert sorted(i for f in folds for i in f) == list(range(12))
+    assert all(sum(recs[i]["spacecraft"] == "MSL" for i in f) >= 1 for f in folds)
+
+
+def test_lco_rule_ignores_heldout_labels():
+    """The rule applied to a held-out fold must not change when that fold's labels change."""
+    from src.evaluation.calibration import leave_channels_out, make_folds
+
+    recs = _records(10)
+    base = leave_channels_out(recs, ["lstm"], k=5)
+    held = make_folds(recs, k=5)[0]
+    for i in held:                                            # scramble fold 0's labels only
+        recs[i]["y"] = np.roll(recs[i]["y"], 100); recs[i]["seqs"] = [[300, 319]]
+    again = leave_channels_out(recs, ["lstm"], k=5)
+    assert again["lstm"]["chosen_rules"][0] == base["lstm"]["chosen_rules"][0]
+
+
+def test_calibration_uncertainty_shapes_and_order_independence():
+    """Intervals are well formed, and (regression, final audit A3) one method's interval must not depend on
+    which other methods are evaluated in the same call."""
+    from src.evaluation.calibration import calibration_uncertainty
+
+    recs = _records(6)
+    for r in recs:                                          # a second "method" with different scores
+        r["val"]["other"], r["test"]["other"], r["threshold"]["other"] = r["val"]["lstm"] * 2, r["test"]["lstm"] * 2, 1.0
+    alone = calibration_uncertainty(recs, ["lstm"], n_boot=30)["lstm"]
+    together = calibration_uncertainty(recs, ["other", "lstm"], n_boot=30)["lstm"]
+    assert alone["interval_90"] == together["interval_90"]
+    assert len(alone["per_channel"]) == 6 and alone["per_channel"][0]["expected_exceedances"] == pytest.approx(0.75)
+    lo, hi = alone["interval_90"]["f1"]
+    assert 0.0 <= lo <= hi <= 1.0
+
+
+def test_block_bootstrap_resamples_contiguous_blocks():
+    from src.evaluation.calibration import block_bootstrap_indices
+
+    idx = block_bootstrap_indices(100, 5, 10, np.random.default_rng(0))
+    assert idx.shape == (5, 100)
+    steps = np.diff(idx, axis=1) % 100
+    assert (steps[:, :9] == 1).all()                        # first block is a contiguous (circular) run
+    assert block_bootstrap_indices(7, 3, 50, np.random.default_rng(0)).shape == (3, 7)   # block longer than series
+
+
+def test_bundle_records_calibration_status(tmp_path):
+    """An uncalibratable model must say so at inference time (constant training channel -> threshold ~0)."""
+    det = RollingZScoreDetector(window=30)
+    DetectorBundle("baseline", "X-1", det, ValueScaler(), 1e-7, 2, {}, calibratable=False).save(tmp_path)
+    loaded = load_bundle(tmp_path, "baseline", "X-1")
+    assert loaded.calibratable is False and "NOT calibrated" in loaded.calibration_warning()
+    DetectorBundle("baseline", "X-2", det, ValueScaler(), 1.0, 2, {}, calibratable=True).save(tmp_path)
+    assert load_bundle(tmp_path, "baseline", "X-2").calibration_warning() is None
