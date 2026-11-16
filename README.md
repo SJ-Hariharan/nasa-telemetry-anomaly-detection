@@ -1,12 +1,74 @@
 # NASA Spacecraft Telemetry Anomaly Detection Using Machine Learning and LSTM Networks
 
-Unsupervised anomaly detection on the public **NASA SMAP & MSL telemetry benchmark** (Hundman et al., KDD 2018,
-"Telemanom"). The project compares three detectors (a rolling z-score baseline, Isolation Forest and an LSTM
-forecaster) under one leakage-controlled pipeline. It includes point- and event-level evaluation, error analysis
-and an interactive Streamlit dashboard.
+**Spacecraft Telemetry Anomaly Lab**: a reproducible comparison of three unsupervised anomaly detectors (rolling
+z-score, Isolation Forest and an LSTM forecaster) on the public **NASA SMAP & MSL telemetry benchmark**
+(Hundman et al., KDD 2018, "Telemanom"). It covers 81 expert-labelled channels from the SMAP satellite and the MSL
+Curiosity rover, evaluated with point- and event-level metrics, calibration studies and seed variance, plus an
+interactive dashboard and a verified download-and-reproduce workflow.
 
-> **Scope:** historical benchmark analysis. It does not monitor real spacecraft or run in NASA systems.
-> An "anomaly" is a statistically unusual observation, not a confirmed fault.
+> **Scope.** Historical, offline benchmark analysis. This is not a live NASA feed, NASA software, or a fault-diagnosis
+> system, and NASA does not endorse it. A flagged "anomaly" is a statistically unusual sample, not a confirmed fault.
+> The benchmark has no timestamps, units or subsystem names, so everything is indexed by sample number.
+
+![Dashboard overview: committed NASA benchmark results](docs/images/overview.jpg)
+
+## Quick start (about 3 minutes, no data download)
+
+```bash
+git clone https://github.com/SJ-Hariharan/nasa-telemetry-anomaly-detection.git
+cd nasa-telemetry-anomaly-detection
+python3.11 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt        # CPU-only; works on Apple Silicon. requirements-lock.txt = exact versions used
+streamlit run app/dashboard.py         # opens http://localhost:8501
+```
+
+The dashboard opens on the **real NASA benchmark results**, read from reports committed in this repository: the
+headline comparison, seed variability, calibration studies, per-channel and per-event analysis, and every caveat.
+Nothing is downloaded or trained when the page loads.
+
+| Page | Fresh clone (committed reports) | After `download` (~170 MB) | After a local training run |
+|---|---|---|---|
+| Overview | ✓ results, seed error bars, caveats | | |
+| Channel explorer | ✓ labelled-event timeline per channel | ✓ real train/test telemetry | ✓ model scores, thresholds and flags overlaid |
+| Events & errors | ✓ all 104 events, false alarms, latency | ✓ each event plotted in context | ✓ with scores |
+| Models & calibration | ✓ all vs calibratable, seeds, leave-channels-out, bootstrap | | |
+| Data & reproducibility | ✓ status, one-click download/validate/reproduce | | |
+| Inference | guidance only | | ✓ score a CSV or a test file with a saved model |
+
+## Explore the real NASA telemetry
+
+In the dashboard, open **Data & reproducibility** → *Download and verify NASA data*, or use the command line:
+
+```bash
+python -m src.cli download     # ~170 MB, 1-5 min; pinned mirror, SHA-256 verified per file; resumable
+python -m src.cli validate     # seconds; shapes, labels, ranges -> reports/data_validation.json
+```
+
+Then click **Reload data**. The Channel explorer plots the real train/test values of any SMAP or MSL channel, with
+the historical expert-labelled anomaly intervals.
+
+![Channel explorer: real telemetry, labelled events and LSTM scores](docs/images/channel_explorer.jpg)
+
+## Reproduce the results on your machine (CPU)
+
+| Run | What | Time (Apple M1, CPU) | Disk | How |
+|---|---|---|---|---|
+| Quick check | 3 real channels, tiny model; proves the pipeline works here (metrics not meaningful) | ~30 s | small | dashboard button, or `python -m src.cli all --config configs/reproduce_smoke.yaml` |
+| Full benchmark | 81 channels, all three detectors, published settings (seed 42) | ~1–2 h | ~20 MB scores + ~190 MB models | dashboard button (needs a confirmation tick), or `python -m src.cli all --config configs/reproduce.yaml --resume` |
+
+Dashboard-started runs continue in the background if you close the tab, and show live progress. `--resume` (or
+starting again) continues an interrupted run. They write to new run folders (`reproduce_smoke`, `reproduce`, both
+gitignored), so the committed reports are never overwritten. When a run finishes, click *Load results* on the
+Data page (or pick the run in the sidebar). Then:
+
+```bash
+python -m src.cli calibration --run reproduce                # threshold bootstrap + leave-channels-out (~15 s)
+python -m src.cli predict --run reproduce --method lstm --channel P-1 --input my.csv --output scored.csv
+```
+
+`predict` reuses the saved scaler and threshold (never refits). Malformed input is rejected with a message and exit
+code 2. It warns when commands are missing, when values are out of range, or when the channel's threshold is not a
+real calibration. Saved Isolation Forest models are joblib (pickle) files: only load `models/` folders you produced.
 
 ## Results (full run: 81 channels, thresholds calibrated without labels)
 
@@ -38,90 +100,59 @@ ROC-AUC 0.682 ± 0.007, so point-level results are stable. Event-level results a
 1,764–2,897 and event F1 0.063–0.099. The seed-42 run in the table above is the most favourable of the three on
 event F1 and false alarms. The leave-channels-out improvement holds on every seed.
 
-## Quick start
+![Events & errors: detection by class and false-alarm concentration](docs/images/events.jpg)
 
-Three paths, from fastest to most complete. You need Python 3.11 and about 2 GB of disk for the dependencies.
+## Data source, citation and licences
 
-### 1. First run: offline demo on simulated data (~2 minutes including install, no NASA data, no network after install)
+* **Data:** NASA SMAP and MSL telemetry released with the Telemanom benchmark. Values are anonymised and min-max
+  scaled by the dataset authors (using test-set statistics, a known benchmark property; see
+  [`docs/limitations.md`](docs/limitations.md)).
+* **Labels:** historical expert annotations derived from incident reports (`labeled_anomalies.csv`). Boundaries are
+  approximate; T-10 has no labels; P-2's duplicate rows are merged.
+* **Provenance:** the original S3 archive now returns HTTP 403, so the downloader uses the Hugging Face mirror
+  `lxr11111/telemanom` pinned to one commit, verifies every file's SHA-256, and cross-checks the labels against
+  the canonical repository ([`docs/dataset.md`](docs/dataset.md)).
+* **Cite:** K. Hundman, V. Constantinou, C. Laporte, I. Colwell, T. Söderström. *Detecting Spacecraft Anomalies
+  Using LSTMs and Nonparametric Dynamic Thresholding.* KDD 2018 ([arXiv:1802.04431](https://arxiv.org/abs/1802.04431)).
+  Code: [github.com/khundman/telemanom](https://github.com/khundman/telemanom).
+* **Licences:** this project's code is MIT ([`LICENSE`](LICENSE)). The data is © Caltech under BSD-3-clause-style
+  terms and is downloaded separately, never committed.
 
-```bash
-git clone https://github.com/SJ-Hariharan/nasa-telemetry-anomaly-detection.git
-cd nasa-telemetry-anomaly-detection
-python3.11 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt        # or requirements-lock.txt for the exact versions used for the reported runs
+## Optional: synthetic demo (not NASA data)
 
-python -m src.cli demo                 # ~10-30 s: synthetic data -> validate -> train -> evaluate -> inference
-streamlit run app/dashboard.py         # opens http://localhost:8501
-```
+`python -m src.cli demo` runs the whole pipeline in about 30 seconds on 4 **synthetic** channels with hand-made
+anomalies, for trying the code with no download at all. It is hidden in the dashboard unless you enable *Show the
+synthetic demo run* in the sidebar, and every page then carries a red *SIMULATED DEMO — NOT NASA BENCHMARK
+RESULTS* banner. Its outputs go to `data/demo/`, `reports/runs/demo/` and `models/demo/` (gitignored), and it
+never touches NASA runs. It demonstrates the workflow only, never NASA performance.
 
-In the dashboard, choose **`demo (SIMULATED demo)`** in the sidebar and open each page: telemetry with injected
-anomalies, scores and thresholds, method comparison, and inference on a new sample (*Demo sample input*). From the
-command line:
+## Troubleshooting
 
-```bash
-python -m src.cli predict --run demo --method lstm --channel Z-1 --input reports/runs/demo/sample_input.csv
-```
+| Symptom | Fix |
+|---|---|
+| `streamlit: command not found` | Activate the venv (`source .venv/bin/activate`) or run `python -m streamlit run app/dashboard.py`. |
+| Dashboard looks unstyled / light | Start it from the repository root so `.streamlit/config.toml` is found. |
+| Download fails with `CERTIFICATE_VERIFY_FAILED` | Update to this version (it verifies with `certifi`), or `pip install -r requirements.txt`. On python.org macOS Python you can also run *Install Certificates.command*. |
+| Download fails or is slow | Re-run `python -m src.cli download`: it resumes and re-verifies. A proxy that truncates large files shows as a checksum error, which is a refusal, not corruption. |
+| Explorer says "Telemetry: not downloaded" after downloading | Click **Reload data** in the sidebar. |
+| Inference page shows guidance only | Saved models are generated locally: run the quick check or the full reproduction first. |
+| A run shows "stopped" | The machine slept or rebooted. Start it again: completed channels are skipped. |
+| Port 8501 busy | `streamlit run app/dashboard.py --server.port 8502` |
 
-> **The demo is not evidence about NASA data.** It generates 4 synthetic channels with 8 hand-made, deliberately
-> easy anomalies, then runs the project's *real* detectors, thresholds, metrics and inference code on them with
-> small settings (`configs/demo.yaml`). It shows how the pipeline works, nothing more. Every demo page carries a red
-> *SIMULATED DEMO — NOT NASA BENCHMARK RESULTS* banner. Demo outputs go only to `data/demo/`,
-> `reports/runs/demo/` and `models/demo/` (all gitignored). A rerun replaces them and never touches the NASA runs.
+## Deployment
 
-### 2. Read the real NASA results (no extra work)
+The project is built to run **locally** (`streamlit run app/dashboard.py`); no hosted instance is provided.
+A static host such as Streamlit Community Cloud could serve the committed-report views (Overview, Models &
+calibration, event tables) because they need no data. Downloading 170 MB and training for an hour are not
+suitable for free hosted tiers, and a public instance should disable those buttons. Anything hosted remains a
+historical benchmark viewer, not a monitoring service.
 
-The repository already contains the summary reports of the real runs (`full`, `full_seed1`, `full_seed2`). In the
-dashboard, choose `full` for the **Overview** and **Model comparison** pages; the numbers and their caveats are in
-[`EXPERIMENTS.md`](EXPERIMENTS.md). The per-channel pages and inference for these runs need path 3.
-
-### 3. Reproduce the NASA benchmark (~170 MB download, ~1 hour on a laptop CPU)
-
-```bash
-python -m src.cli download                              # ~170 MB, SHA-256 verified, idempotent
-python -m src.cli validate                              # -> reports/data_validation.json
-python -m src.cli all --config configs/smoke.yaml       # ~30 s end-to-end check on NASA data (3 channels, tiny model)
-python -m src.cli all --config configs/default.yaml     # full experiment (~1 h on CPU; add --resume after an interruption)
-python -m src.cli calibration --run full                # threshold uncertainty + leave-channels-out (~15 s)
-pytest -q                                               # tests (~1-2 min, offline)
-```
-
-Optional seed-variance runs (~1–2 h each on CPU, resumable, written to new run directories):
-
-```bash
-python -m src.cli all --config configs/seed1.yaml --resume
-python -m src.cli all --config configs/seed2.yaml --resume
-python -m src.cli seeds --runs full full_seed1 full_seed2   # -> reports/seed_summary.json
-```
-
-**Git hooks (one-time setup, recommended for contributors):**
+## Development
 
 ```bash
-git config core.hooksPath .githooks
+pytest -q                               # ~1-2 min, offline; unit, integration, dashboard (AppTest), demo
+git config core.hooksPath .githooks     # pre-commit: whitespace/secrets/data/size/syntax; pre-push: test suite
 ```
-
-* `pre-commit` (instant) rejects whitespace errors, likely secrets (`.env`, keys), data and model files
-  (`data/raw/`, `*.npy`, `*.pt`, `*.joblib`, generated scores) and files over 5 MB. It also checks that staged Python
-  files compile.
-* `pre-push` (~20–60 s) runs the full test suite and aborts the push if anything fails.
-* Plain shell scripts, no framework. Bypass deliberately with `--no-verify`.
-
-**What a fresh clone contains.** The repository includes every NASA run's summary reports (metrics, tables,
-figures, calibration studies). It does not include the raw data, the per-channel score tables or the saved models,
-which are generated (~170 MB, ~18 MB and ~186 MB). Without them the dashboard's Overview and Model comparison pages
-work for the NASA runs; the Telemetry explorer, Anomaly analysis and Inference pages say what is missing and give the
-exact command (the demo, or `download` + training). The dashboard's **Start here** page lists what each run has.
-
-Inference on new data with a saved model (CSV with a `value` column, optional `cmd_0..` columns):
-
-```bash
-python -m src.cli predict --run full --method lstm --channel P-1 --input my_telemetry.csv --output scored.csv
-```
-
-Inference reuses the saved scaler and threshold (never refits). It rejects malformed input with a message and exit
-code 2: a missing `value` column, non-finite values, non-0/1 commands, partial command columns, too few rows,
-more than 500,000 rows, or a path-like channel or run name. It warns when commands are missing, when values fall
-outside the benchmark range, and when the channel's threshold is not a real calibration (constant training signal).
-Saved Isolation Forest models are joblib (pickle) files: only load `models/` directories this project produced.
 
 ## How it works
 
@@ -154,9 +185,11 @@ src/inference/       input validation + scoring with saved models
 src/pipeline.py      per-channel training/scoring orchestration
 src/cli.py           command-line entry point
 src/demo.py          offline demo: synthetic telemetry generator + end-to-end run (SIMULATED, not NASA data)
-app/dashboard.py     Streamlit + Plotly dashboard
+app/dashboard.py     Streamlit + Plotly dashboard ("Spacecraft Telemetry Anomaly Lab"); app/lab_theme.py visual system
+.streamlit/          dashboard theme
+src/jobs.py          background reproduction runs started from the dashboard (explicit click, lock, progress)
 configs/             default.yaml (full), smoke.yaml (quick), seed1.yaml / seed2.yaml (seed variance),
-                     demo.yaml (offline demo on simulated data)
+                     reproduce*.yaml (local reproductions), demo.yaml (synthetic demo)
 notebooks/           exploratory_analysis.ipynb (executed)
 reports/             data_validation.json, figures/, runs/<run>/ (metrics, tables, figures)
 models/              saved per-channel detectors (generated)
@@ -172,7 +205,7 @@ docs/                architecture, methodology, dataset, limitations, learning/ 
 | Download (pinned, SHA-256 verified), validation, EDA notebook | Implemented, run on real data |
 | Preprocessing, three detectors, thresholds, evaluation, error analysis | Implemented, full run on 81 channels |
 | Persistence + inference (`predict` CLI, dashboard upload) | Implemented, round-trip tested |
-| Streamlit dashboard (Start here + 5 pages) | Implemented, render-tested headless and checked in a browser |
+| Dashboard: NASA-first, 6 pages, provenance labels, mission filter, one-click download/validate/reproduce | Implemented; AppTest for routes, data states and demo separation; checked in a browser at desktop and phone width |
 | Offline first-run demo on simulated data (`python -m src.cli demo`) | Implemented; tested offline in a clean copy (deterministic, labelled SIMULATED, real runs untouched) |
 | Resume after interruption (`--resume`) | Implemented, tested |
 | Tests | Unit + integration + dashboard (`pytest -q`) |

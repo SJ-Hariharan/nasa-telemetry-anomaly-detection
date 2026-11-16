@@ -46,7 +46,8 @@ python -m src.cli predict      src/inference/predict.py  saved bundle + new CSV 
 | Evaluation | `src/evaluation/evaluate.py`, `metrics.py` | Labels, metrics, error analysis, figures. |
 | Calibration studies | `src/evaluation/calibration.py` | Threshold uncertainty, leave-channels-out rule selection, seed summary. Uses saved scores only. |
 | Inference | `src/inference/predict.py` | Input validation + scoring with a saved bundle. |
-| Presentation | `app/dashboard.py` | Reads artifacts; no training. Labels any run with `"simulated": true` on every page and reads each run's own raw-data folder. |
+| Presentation | `app/dashboard.py`, `app/lab_theme.py`, `.streamlit/config.toml` | Reads artifacts; never trains in-process. Six pages; provenance chips on every view; labels any run with `"simulated": true` on every page and reads each run's own raw-data folder. |
+| Background runs | `src/jobs.py` | Starts allow-listed local reproductions on an explicit click; lock, progress, resume. |
 | First-run demo | `src/demo.py` | Synthetic generator + orchestration of the real pipeline; writes only `data/demo/`, `reports/runs/demo/`, `models/demo/` (marker files guard reruns). |
 
 ## Key design choices
@@ -79,7 +80,12 @@ for what a production system would need.
 | `reports/seed_summary.json` | `models/<run>/` saved bundles (~186 MB per full run) |
 | | The whole `demo` run: `data/demo/`, `reports/runs/demo/`, `models/demo/` (`python -m src.cli demo`, ~30 s) |
 
-For the NASA runs, the dashboard's Overview and Model comparison pages work from the committed files alone. The
-Telemetry explorer, Anomaly analysis and Inference pages need the generated files, and say so (with the command to
-recreate them) when they are missing. The offline demo produces a complete run, so every page works on simulated
-data from a fresh clone.
+The dashboard ("Spacecraft Telemetry Anomaly Lab") opens on the `full` NASA run and labels every view with its data
+source: *committed report*, *downloaded NASA source data*, or *local artifact*. From a fresh clone, the Overview,
+Models & calibration and Events & errors pages work from committed files alone, and the Channel explorer shows each
+channel's committed label timeline. After `download`, the explorer and event views plot the real telemetry. After a
+local training run, scores, thresholds and flags are overlaid and Inference works. Missing pieces produce a
+specific next step with a button to the Data & reproducibility page. Nothing is downloaded or trained on page load:
+download and validation run in-process on a click (with a progress bar); training runs as a detached background job
+(`src/jobs.py`: allow-listed `reproduce*` configs only, PID lock against duplicates, progress from per-channel
+completion files, zombie-safe status). The synthetic demo run is hidden unless enabled in the sidebar.

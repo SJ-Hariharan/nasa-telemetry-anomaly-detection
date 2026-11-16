@@ -125,7 +125,7 @@ every point (one giant "event" that overlaps every label: a meaningless event F1
   channels whose test regimes are absent from training (F-1, E-9, T-1, E-8, E-2) and on the uncalibratable channels.
 * **Misses:** `events.csv` gives every labelled event with detected / latency / peak score per method. The LSTM's 7 misses are
   G-1, D-11, F-3, M-1, M-4 and T-13 (×2): mostly long contextual events where the signal stays in a familiar range.
-* **Timelines:** `reports/runs/full/figures/timeline_*.png` and the dashboard's Anomaly analysis page show
+* **Timelines:** `reports/runs/full/figures/timeline_*.png` and the dashboard's Channel explorer and Events & errors pages show
   scores, thresholds, predictions and labels together for any channel.
 
 ## Calibration studies (saved scores, no retraining)

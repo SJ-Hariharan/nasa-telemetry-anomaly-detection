@@ -1,5 +1,25 @@
 # Release notes
 
+## Unreleased (on master, not tagged)
+
+**Dashboard: "Spacecraft Telemetry Anomaly Lab".**
+* **NASA results first.** The app opens on the real `full` run from committed reports, with seed error bars, the
+  caveats directly under the headline table, and per-mission and per-channel views. It works from a fresh clone with
+  no download.
+* **Six pages:** Overview, Channel explorer, Events & errors, Models & calibration, Inference, Data &
+  reproducibility. A mission filter (SMAP/MSL) and a run selector apply across pages.
+* **Provenance labels** on every view: committed report, downloaded NASA source data, or local artifact.
+* **One-click verified download and validation, and background reproduction runs** with live progress. They never
+  start on page load, the full run needs a confirmation, and outputs go to new `reproduce*` runs.
+* **Explorer:** real train/test telemetry with labelled intervals, *Jump to event*, and score and threshold overlays
+  when scores exist.
+* **Optional synthetic demo** hidden unless enabled, and labelled SIMULATED on every page when shown.
+* **Fixes:**
+  * downloads now verify TLS with `certifi` (python.org macOS Python lacked CA certificates);
+  * cached loaders are keyed by the repository root;
+  * marker-overflow flags are visible on log axes;
+  * a background run's status is correct after it exits.
+
 ## v1.0.0 (release candidate, not yet tagged)
 
 First complete release of **nasa-telemetry-anomaly-detection**: an offline, leakage-controlled comparison of a
@@ -27,7 +47,7 @@ smaller on the 59 calibratable channels, and the rule choices sit at the edge of
 * Calibration studies on saved scores: threshold-estimation bootstrap and leave-channels-out rule selection.
 * Seed-variance runs (seeds 42, 1, 2) and `python -m src.cli seeds`.
 * Saved-model inference (CLI and dashboard) with input validation and calibration warnings.
-* Streamlit dashboard (5 pages); unit, integration and dashboard tests; teaching documentation.
+* Streamlit dashboard; unit, integration and dashboard tests; teaching documentation.
 
 ### Fixed since the first independent review
 D1 uncalibratable channels flagged · D2 macro AUC with CIs · D3 shift claim replaced by a KS measurement ·

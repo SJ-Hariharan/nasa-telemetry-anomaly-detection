@@ -78,3 +78,15 @@ Seed summary: `reports/seed_summary.json`. Calibration studies exist for all thr
 | Calibration studies | `python -m src.cli calibration --run full` | Done in ~15 s; outputs in `reports/runs/full/calibration/` |
 | Dashboard (browser) | Streamlit on localhost, in-app browser | Overview table equals `metrics.json`; calibratable section lists the 22 channels; Inference on M-6 shows the uncalibrated-threshold warning, 411 flags = run table; Telemetry explorer renders; no console errors |
 | Lint / type check | not configured in the repository | Not run |
+
+## Dashboard milestone (2026-11-16): checks
+
+| Check | Command / method | Outcome |
+|---|---|---|
+| Full test suite | `pytest -q` | 79 passed (dashboard AppTest: routes, demo separation, fresh-clone and data-present states, mission filter, missing reports; jobs; download progress; TLS) |
+| Browser, desktop 1440×900 | Streamlit from the repo root, every page | Overview numbers equal `metrics.json`; explorer, events, models, data pages render; no console errors |
+| Browser, phone 375×812 | same | Sidebar collapses; metrics in a 2×2 grid; charts and tables usable; header no longer overlaps the hero |
+| Fresh-clone journey in a browser | clean copy (no data/scores/models), fresh venv | Committed results on open → **Download** button fetched and verified 164 files + labels (166 MB, ~4 min) → **Validate** passed (81 channels, 0 errors) → explorer plotted real P-1 telemetry |
+| Background job | **Start quick check** button in the repo | `reproduce_smoke` trained 3 real channels; progress shown; *Load results* switched to it |
+| Found and fixed during checks | | TLS failure on python.org macOS Python (certifi); zombie job reported as running; cache shared across app copies; flags invisible on log axes; Styler formats ignored by `st.dataframe`; mobile header overlap |
+| Independent critique | Fable (read-only) on screenshots + code | 10 concrete items, all addressed |
