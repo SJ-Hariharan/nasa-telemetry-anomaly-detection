@@ -1,5 +1,6 @@
 """Command-line entry point.
 
+    python -m src.cli demo                           # START HERE: offline demo on SIMULATED data (~30 s, no download)
     python -m src.cli download                       # fetch + verify the benchmark (idempotent)
     python -m src.cli validate                       # data checks -> reports/data_validation.json
     python -m src.cli train    --config configs/smoke.yaml
@@ -26,7 +27,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m src.cli", description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("command", choices=["download", "validate", "train", "evaluate", "all", "predict",
-                                                   "calibration", "seeds"])
+                                                   "calibration", "seeds", "demo"])
     parser.add_argument("--config", default="configs/default.yaml")
     parser.add_argument("--force", action="store_true", help="re-download even if files verify")
     parser.add_argument("--methods", nargs="*", help="subset of methods to train")
@@ -39,6 +40,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--runs", nargs="*", help="[seeds] run names under reports/runs/ that differ only in seed")
     parser.add_argument("--n-boot", type=int, default=100, help="[calibration] bootstrap resamples")
     args = parser.parse_args(argv)
+    if args.command == "demo":                       # self-contained: its own config, no NASA data needed
+        from src.demo import DemoRefused, run_demo
+
+        try:
+            run_demo()
+        except DemoRefused as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+        return 0
     cfg = load_config(args.config)
     raw_dir = resolve_path(cfg["data"]["raw_dir"])
 
@@ -104,6 +114,10 @@ def main(argv: list[str] | None = None) -> int:
             result: pd.DataFrame = detect_from_csv(models_dir, args.method, args.channel, args.input)
         except (ValueError, FileNotFoundError) as exc:   # bad input -> clear message + exit code 2, no traceback
             print(f"error: {exc}", file=sys.stderr)
+            if isinstance(exc, FileNotFoundError) and "saved" in str(exc):
+                print("hint: saved models are generated files, not part of the repository. Recreate them with "
+                      f"`python -m src.cli all --config <the run's config> --resume`, or try "
+                      "`python -m src.cli demo` and then `--run demo --channel Z-1`.", file=sys.stderr)
             return 2
         if args.output:
             result.to_csv(args.output, index=False)

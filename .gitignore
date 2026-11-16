@@ -16,3 +16,7 @@ data/processed/*
 models/*
 !models/.gitkeep
 reports/runs/*/scores/
+
+# Offline demo on SIMULATED data (`python -m src.cli demo`): always regenerated, never committed
+data/demo/
+reports/runs/demo/

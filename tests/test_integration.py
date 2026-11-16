@@ -93,6 +93,10 @@ def test_cli_predict_rejects_bad_names_and_input(tmp_path, capsys):
         cli_main(["predict", "--run", "../models", "--method", "lstm", "--channel", "P-1", "--input", str(csv)])
     assert cli_main(["predict", "--run", "full", "--method", "lstm", "--channel", "../P-1", "--input", str(csv)]) == 2
     assert "Invalid channel id" in capsys.readouterr().err
+    # missing generated models -> exit 2 with an actionable hint, not a traceback
+    assert cli_main(["predict", "--run", "no_such_run", "--method", "lstm", "--channel", "P-1", "--input", str(csv)]) == 2
+    err = capsys.readouterr().err
+    assert "No saved lstm model" in err and "hint:" in err and "python -m src.cli demo" in err
 
 
 def test_calibration_and_seed_studies_on_a_run(tiny_config):
