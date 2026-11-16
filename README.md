@@ -40,17 +40,49 @@ event F1 and false alarms. The leave-channels-out improvement holds on every see
 
 ## Quick start
 
+Three paths, from fastest to most complete. You need Python 3.11 and about 2 GB of disk for the dependencies.
+
+### 1. First run: offline demo on simulated data (~2 minutes including install, no NASA data, no network after install)
+
 ```bash
+git clone https://github.com/SJ-Hariharan/nasa-telemetry-anomaly-detection.git
+cd nasa-telemetry-anomaly-detection
 python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt        # or requirements-lock.txt for the exact versions used for the reported runs
 
+python -m src.cli demo                 # ~10-30 s: synthetic data -> validate -> train -> evaluate -> inference
+streamlit run app/dashboard.py         # opens http://localhost:8501
+```
+
+In the dashboard, choose **`demo (SIMULATED demo)`** in the sidebar and open each page: telemetry with injected
+anomalies, scores and thresholds, method comparison, and inference on a new sample (*Demo sample input*). From the
+command line:
+
+```bash
+python -m src.cli predict --run demo --method lstm --channel Z-1 --input reports/runs/demo/sample_input.csv
+```
+
+> **The demo is not evidence about NASA data.** It generates 4 synthetic channels with 8 hand-made, deliberately
+> easy anomalies, then runs the project's *real* detectors, thresholds, metrics and inference code on them with
+> small settings (`configs/demo.yaml`). It shows how the pipeline works, nothing more. Every demo page carries a red
+> *SIMULATED DEMO — NOT NASA BENCHMARK RESULTS* banner. Demo outputs go only to `data/demo/`,
+> `reports/runs/demo/` and `models/demo/` (all gitignored). A rerun replaces them and never touches the NASA runs.
+
+### 2. Read the real NASA results (no extra work)
+
+The repository already contains the summary reports of the real runs (`full`, `full_seed1`, `full_seed2`). In the
+dashboard, choose `full` for the **Overview** and **Model comparison** pages; the numbers and their caveats are in
+[`EXPERIMENTS.md`](EXPERIMENTS.md). The per-channel pages and inference for these runs need path 3.
+
+### 3. Reproduce the NASA benchmark (~170 MB download, ~1 hour on a laptop CPU)
+
+```bash
 python -m src.cli download                              # ~170 MB, SHA-256 verified, idempotent
 python -m src.cli validate                              # -> reports/data_validation.json
-python -m src.cli all --config configs/smoke.yaml       # ~30 s end-to-end check (3 channels, tiny model)
-python -m src.cli all --config configs/default.yaml     # full experiment (~1 h on CPU; --resume after interruption)
+python -m src.cli all --config configs/smoke.yaml       # ~30 s end-to-end check on NASA data (3 channels, tiny model)
+python -m src.cli all --config configs/default.yaml     # full experiment (~1 h on CPU; add --resume after an interruption)
 python -m src.cli calibration --run full                # threshold uncertainty + leave-channels-out (~15 s)
-streamlit run app/dashboard.py                          # dashboard at http://localhost:8501
-pytest -q                                               # tests
+pytest -q                                               # tests (~1-2 min, offline)
 ```
 
 Optional seed-variance runs (~1–2 h each on CPU, resumable, written to new run directories):
@@ -73,10 +105,11 @@ git config core.hooksPath .githooks
 * `pre-push` (~20–60 s) runs the full test suite and aborts the push if anything fails.
 * Plain shell scripts, no framework. Bypass deliberately with `--no-verify`.
 
-**What a fresh clone contains.** The repository includes every run's summary reports (metrics, tables, figures,
-calibration studies). It does not include the raw data, the per-channel score tables or the saved models, which are
-generated (~170 MB, ~18 MB and ~186 MB). Without them the dashboard's Overview and Model comparison pages work; the
-Telemetry explorer, Anomaly analysis and Inference pages tell you to run `download` and the training command first.
+**What a fresh clone contains.** The repository includes every NASA run's summary reports (metrics, tables,
+figures, calibration studies). It does not include the raw data, the per-channel score tables or the saved models,
+which are generated (~170 MB, ~18 MB and ~186 MB). Without them the dashboard's Overview and Model comparison pages
+work for the NASA runs; the Telemetry explorer, Anomaly analysis and Inference pages say what is missing and give the
+exact command (the demo, or `download` + training). The dashboard's **Start here** page lists what each run has.
 
 Inference on new data with a saved model (CSV with a `value` column, optional `cmd_0..` columns):
 
@@ -120,8 +153,10 @@ src/evaluation/      metrics (point/event/AUC), evaluation + error analysis + fi
 src/inference/       input validation + scoring with saved models
 src/pipeline.py      per-channel training/scoring orchestration
 src/cli.py           command-line entry point
+src/demo.py          offline demo: synthetic telemetry generator + end-to-end run (SIMULATED, not NASA data)
 app/dashboard.py     Streamlit + Plotly dashboard
-configs/             default.yaml (full), smoke.yaml (quick), seed1.yaml / seed2.yaml (seed variance)
+configs/             default.yaml (full), smoke.yaml (quick), seed1.yaml / seed2.yaml (seed variance),
+                     demo.yaml (offline demo on simulated data)
 notebooks/           exploratory_analysis.ipynb (executed)
 reports/             data_validation.json, figures/, runs/<run>/ (metrics, tables, figures)
 models/              saved per-channel detectors (generated)
@@ -137,7 +172,8 @@ docs/                architecture, methodology, dataset, limitations, learning/ 
 | Download (pinned, SHA-256 verified), validation, EDA notebook | Implemented, run on real data |
 | Preprocessing, three detectors, thresholds, evaluation, error analysis | Implemented, full run on 81 channels |
 | Persistence + inference (`predict` CLI, dashboard upload) | Implemented, round-trip tested |
-| Streamlit dashboard (5 pages) | Implemented, render-tested headless and checked in a browser |
+| Streamlit dashboard (Start here + 5 pages) | Implemented, render-tested headless and checked in a browser |
+| Offline first-run demo on simulated data (`python -m src.cli demo`) | Implemented; tested offline in a clean copy (deterministic, labelled SIMULATED, real runs untouched) |
 | Resume after interruption (`--resume`) | Implemented, tested |
 | Tests | Unit + integration + dashboard (`pytest -q`) |
 | Calibration status, macro AUC with CIs, validation-vs-test shift (KS) | Implemented, tested (review fixes D1–D3, D6) |

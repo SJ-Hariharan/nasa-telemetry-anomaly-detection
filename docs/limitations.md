@@ -51,8 +51,9 @@
   validated (`^[A-Z]-\d{1,3}$`, no `..`) before they become paths, so a CLI argument cannot point the loader elsewhere.
   A tampered file *inside* `models/` would still execute on load.
 * Per-channel score tables and saved models are generated, not version-controlled (~18 MB + ~186 MB per full run).
-  A fresh clone needs `download` + a training run before the Telemetry explorer, Anomaly analysis and Inference
-  pages have data. The pages say so.
+  A fresh clone needs `download` + a ~1 h training run before the per-channel pages and inference work **for the NASA
+  runs**. The offline demo (`python -m src.cli demo`) makes every page usable in seconds, but only on synthetic data
+  with easy, hand-made anomalies. It demonstrates the workflow and changes none of the scientific limitations above.
 * Inference warns when a saved model's threshold is not a calibration (constant training channel). It does not
   refuse to score.
 * Inference assumes input in the benchmark's scaled units with the same command columns as the
