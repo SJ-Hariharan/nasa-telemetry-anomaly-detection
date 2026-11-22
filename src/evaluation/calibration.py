@@ -22,7 +22,13 @@
    Labels of the *other* channels are used, as in any cross-validation; the result is therefore an estimate
    of how a rule chosen this way would perform on new channels, not a re-tuned headline number.
 
-3. ``seed_summary``: mean / std / min / max of headline metrics over runs that differ only in the seed.
+3. ``dynamic_lco`` (dynamic-threshold methods: telemanom, lstm_dynamic)
+   These have no validation quantile to change; their operating-point knob is the pruning parameter p. Same
+   protocol as (2): p is chosen on 4 folds' labels from P_GRID and applied to the held-out fold; the published
+   p = 0.13 is the predeclared default. The per-p results over all channels are also written, as a post-hoc
+   trade-off curve that is NOT used to choose anything.
+
+4. ``seed_summary``: mean / std / min / max of headline metrics over runs that differ only in the seed.
 """
 from __future__ import annotations
 
@@ -33,6 +39,8 @@ import numpy as np
 import pandas as pd
 
 from src.evaluation.metrics import event_counts, event_metrics, point_counts, point_metrics
+from src.models.decision import DYNAMIC_METHODS, postprocess
+from src.models.dynamic_threshold import dynamic_threshold
 from src.models.persistence import METHODS
 from src.utils.reproducibility import get_logger
 
@@ -41,6 +49,8 @@ QUANTILES = (0.99, 0.995, 0.999, 1.0)
 MARGINS = (1.0, 1.5, 2.0, 3.0, 5.0)
 DEFAULT_RULE = (0.995, 1.0)
 HEADLINE = ("precision", "recall", "f1", "fpr", "event_precision", "event_recall", "event_f1")
+P_GRID = (0.05, 0.13, 0.2, 0.3, 0.4, 0.5)
+DEFAULT_P = 0.13
 
 
 # ---------------------------------------------------------------- data access
@@ -61,6 +71,7 @@ def load_channel_records(run_dir: Path) -> list[dict]:
             raise FileNotFoundError(f"{val_path} missing: rerun training with the current pipeline")
         t, v = pd.read_parquet(run_dir / "scores" / f"{chan}.parquet"), pd.read_parquet(val_path)
         records.append({"chan_id": chan, "spacecraft": c["spacecraft"], "y": t["label"].to_numpy(),
+                        "values": t["value"].to_numpy(),
                         "seqs": seqs[chan], "calibratable": not c.get("constant_train", False) and
                         all(c["methods"][m].get("calibratable", True) for m in methods),
                         "threshold": {m: c["methods"][m]["threshold"] for m in methods},
@@ -178,7 +189,47 @@ def leave_channels_out(records: list[dict], methods: list[str], k: int = 5, seed
     return out
 
 
-# ---------------------------------------------------------------- 3. seed variance
+# ---------------------------------------------------------------- 3. dynamic thresholds: pruning parameter p
+def dynamic_predictions(records: list[dict], method: str, dyn_cfg: dict | None, post: dict | None) -> dict:
+    """{p: [(point_counts, event_counts) per record]} for every p in P_GRID (computed once, label-free)."""
+    out = {}
+    for p_ in P_GRID:
+        cfg = {**(dyn_cfg or {}), "p": p_}
+        pairs = []
+        for r in records:
+            pred = postprocess(dynamic_threshold(r["test"][method], r["values"], cfg)[0], post)
+            pairs.append((point_counts(r["y"], pred), event_counts(r["seqs"], pred)))
+        out[p_] = pairs
+    return out
+
+
+def dynamic_lco(records: list[dict], method: str, dyn_cfg: dict | None, post: dict | None, k: int = 5,
+                seed: int = 0, objective: str = "event_f1") -> dict:
+    preds = dynamic_predictions(records, method, dyn_cfg, post)
+    folds = make_folds(records, k, seed)
+    chosen, held = [], {}
+    for f, fold in enumerate(folds):
+        train = [i for i in range(len(records)) if i not in set(fold)]
+        best, best_val = None, -np.inf
+        for p_ in P_GRID:                                   # ties -> smaller p
+            v = micro_metrics([preds[p_][i] for i in train])[objective]
+            if v > best_val + 1e-12:
+                best, best_val = p_, v
+        chosen.append({"fold": f, "p": best})
+        for i in fold:
+            held[i] = best
+    res = {}
+    for subset, keep in (("all", lambda r: True), ("calibratable", lambda r: r["calibratable"])):
+        idx = [i for i, r in enumerate(records) if keep(r)]
+        res[subset] = {"n_channels": len(idx),
+                       "lco": micro_metrics([preds[held[i]][i] for i in idx]),
+                       "default": micro_metrics([preds[DEFAULT_P][i] for i in idx])}
+    curve = [{"p": p_, **micro_metrics(preds[p_])} for p_ in P_GRID]
+    return {"protocol": {"k": k, "seed": seed, "objective": objective, "p_grid": P_GRID, "default_p": DEFAULT_P},
+            "chosen_rules": chosen, **res, "posthoc_curve": curve}
+
+
+# ---------------------------------------------------------------- 4. seed variance
 def seed_summary(run_dirs: list[Path]) -> dict:
     rows = []
     for d in run_dirs:
@@ -206,26 +257,35 @@ def _fmt(x) -> str:
 def run_calibration_studies(run_dir: Path, n_boot: int = 100) -> dict:
     run_dir = Path(run_dir)
     records = load_channel_records(run_dir)
-    methods = [m for m in METHODS if m in records[0]["test"]]
-    unc = calibration_uncertainty(records, methods, n_boot=n_boot)
-    lco = leave_channels_out(records, methods)
+    present = [m for m in METHODS if m in records[0]["test"]]
+    methods = [m for m in present if m not in DYNAMIC_METHODS]
+    dyn_methods = [m for m in present if m in DYNAMIC_METHODS]
+    cfg = json.loads((run_dir / "config_used.json").read_text())
+    unc = calibration_uncertainty(records, methods, n_boot=n_boot) if methods else {}
+    lco = leave_channels_out(records, methods) if methods else {}
+    dyn = {m: dynamic_lco(records, m, cfg.get("dynamic_threshold"), cfg.get("postprocess")) for m in dyn_methods}
     out_dir = run_dir / "calibration"
     out_dir.mkdir(exist_ok=True)
     pd.DataFrame([row for m in methods for row in unc[m]["per_channel"]]).to_csv(out_dir / "threshold_bootstrap.csv", index=False)
+    pd.DataFrame([{"method": m, **r} for m in dyn_methods for r in dyn[m]["posthoc_curve"]]).to_csv(
+        out_dir / "dynamic_p_curve.csv", index=False)
     result = {"n_boot": n_boot, "uncertainty": {m: {k: v for k, v in unc[m].items() if k != "per_channel"} for m in methods},
-              "leave_channels_out": lco}
+              "leave_channels_out": lco, "dynamic_threshold_lco": dyn}
     (out_dir / "calibration.json").write_text(json.dumps(result, indent=1, default=float))
-    lines = [f"# Calibration studies: run `{run_dir.name}`", "",
-             f"## Threshold-estimation uncertainty ({n_boot} circular block-bootstrap resamples, block length 50, "
+    lines = [f"# Calibration studies: run `{run_dir.name}`", ""]
+    static_lines = [f"## Threshold-estimation uncertainty ({n_boot} circular block-bootstrap resamples, block length 50, "
              "of each channel's validation scores; one-sided near the top, read as lower bounds)", "",
              "| Method | Metric | Point estimate | 90% interval |", "|---|---|---|---|"]
+    if methods:
+        lines += static_lines
     for m in methods:
         for k in ("precision", "recall", "f1", "event_f1"):
             lo, hi = unc[m]["interval_90"][k]
             lines.append(f"| {m} | {k} | {unc[m]['point_estimate'][k]:.3f} | [{lo:.3f}, {hi:.3f}] |")
-    lines += ["", "## Leave-channels-out calibration (held-out folds, rule chosen on the other folds by event F1)", "",
-              "| Method | Channels | Rule | Precision | Recall | F1 | FPR | Event precision | Event recall | Event F1 | Event FP |",
-              "|---|---|---|---|---|---|---|---|---|---|---|"]
+    if methods:
+        lines += ["", "## Leave-channels-out calibration (held-out folds, rule chosen on the other folds by event F1)", "",
+                  "| Method | Channels | Rule | Precision | Recall | F1 | FPR | Event precision | Event recall | Event F1 | Event FP |",
+                  "|---|---|---|---|---|---|---|---|---|---|---|"]
     for m in methods:
         for subset in ("all", "calibratable"):
             for name in ("default", "lco"):
@@ -234,9 +294,28 @@ def run_calibration_studies(run_dir: Path, n_boot: int = 100) -> dict:
                              f"{'default q=0.995, m=1' if name == 'default' else 'LCO-selected'} | "
                              + " | ".join(_fmt(r[k]) for k in ("precision", "recall", "f1", "fpr", "event_precision",
                                                                 "event_recall", "event_f1", "event_fp")) + " |")
-    lines += ["", "Rules chosen per fold (q, m):", ""]
+    if methods:
+        lines += ["", "Rules chosen per fold (q, m):", ""]
     for m in methods:
         lines.append(f"* {m}: " + ", ".join(f"fold {c['fold']}: ({c['q']}, {c['m']})" for c in lco[m]["chosen_rules"]))
+    for m in dyn_methods:
+        d = dyn[m]
+        lines += ["", f"## {m}: dynamic-threshold pruning parameter p (leave-channels-out, event F1)", "",
+                  "| Channels | Rule | Precision | Recall | F1 | Event precision | Event recall | Event F1 | Event FP |",
+                  "|---|---|---|---|---|---|---|---|---|"]
+        for subset in ("all", "calibratable"):
+            for name in ("default", "lco"):
+                r = d[subset][name]
+                lines.append(f"| {subset} ({d[subset]['n_channels']}) | "
+                             f"{'default p=0.13' if name == 'default' else 'LCO-selected p'} | "
+                             + " | ".join(_fmt(r[k]) for k in ("precision", "recall", "f1", "event_precision",
+                                                                "event_recall", "event_f1", "event_fp")) + " |")
+        lines += ["", "p chosen per fold: " + ", ".join(f"fold {c['fold']}: {c['p']}" for c in d["chosen_rules"]), "",
+                  "Post-hoc trade-off over all channels (diagnostic only, not used to choose p):", "",
+                  "| p | Event recall | Event precision | Event F1 | Event FP | Point F1 |", "|---|---|---|---|---|---|"]
+        for r in d["posthoc_curve"]:
+            lines.append(f"| {r['p']} | {r['event_recall']:.3f} | {r['event_precision']:.3f} | {r['event_f1']:.3f} | "
+                         f"{r['event_fp']} | {r['f1']:.3f} |")
     (out_dir / "calibration.md").write_text("\n".join(lines) + "\n")
     from src.utils.config import display_path
 

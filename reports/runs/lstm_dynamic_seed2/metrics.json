@@ -1,0 +1,238 @@
+{
+ "run_name": "lstm_dynamic_seed2",
+ "n_channels_evaluated": 81,
+ "excluded_channels": [],
+ "training_failures": [],
+ "n_calibratable_channels": 60,
+ "uncalibratable_channels": {
+  "A-1": [
+   "constant training signal"
+  ],
+  "D-2": [
+   "constant training signal"
+  ],
+  "G-2": [
+   "constant training signal"
+  ],
+  "D-5": [
+   "constant training signal"
+  ],
+  "D-7": [
+   "constant training signal"
+  ],
+  "P-4": [
+   "constant training signal"
+  ],
+  "D-8": [
+   "constant training signal"
+  ],
+  "D-9": [
+   "constant training signal"
+  ],
+  "D-12": [
+   "constant training signal",
+   "lstm_dynamic: degenerate validation scores"
+  ],
+  "B-1": [
+   "constant training signal",
+   "lstm_dynamic: degenerate validation scores"
+  ],
+  "R-1": [
+   "constant training signal"
+  ],
+  "A-5": [
+   "constant training signal",
+   "lstm_dynamic: degenerate validation scores"
+  ],
+  "D-13": [
+   "constant training signal",
+   "lstm_dynamic: degenerate validation scores"
+  ],
+  "M-6": [
+   "constant training signal"
+  ],
+  "S-2": [
+   "constant training signal"
+  ],
+  "T-5": [
+   "constant training signal"
+  ],
+  "C-2": [
+   "constant training signal"
+  ],
+  "T-12": [
+   "lstm_dynamic: degenerate validation scores"
+  ],
+  "D-14": [
+   "constant training signal"
+  ],
+  "T-9": [
+   "lstm_dynamic: degenerate validation scores"
+  ],
+  "P-14": [
+   "constant training signal"
+  ]
+ },
+ "results": {
+  "lstm_dynamic": {
+   "overall": {
+    "tp": 13875,
+    "fp": 10116,
+    "tn": 435701,
+    "fn": 49863,
+    "precision": 0.5783418782043266,
+    "recall": 0.21768803539489787,
+    "f1": 0.31631501555927916,
+    "fpr": 0.022690924751635762,
+    "fnr": 0.7823119646051021,
+    "accuracy": 0.8822914111332437,
+    "event_tp": 63,
+    "event_fn": 41,
+    "event_fp": 14,
+    "event_precision": 0.8181818181818182,
+    "event_recall": 0.6057692307692307,
+    "event_f1": 0.6961325966850829,
+    "median_latency": 16.0,
+    "median_decision_latency": 119.0,
+    "false_alarms_per_10k": 0.27474953636015736,
+    "threshold_mode": "dynamic",
+    "roc_auc_macro": 0.6792591681052161,
+    "roc_auc_macro_ci": [
+     0.6166853170657056,
+     0.737776178090891
+    ],
+    "pr_auc_macro": 0.46504558449263705,
+    "pr_auc_macro_ci": [
+     0.3900297536319188,
+     0.5372218898920137
+    ],
+    "roc_auc_pooled": 0.48662179457515653,
+    "pr_auc_pooled": 0.23955187681741685,
+    "n_channels": 81,
+    "roc_auc": 0.6792591681052161,
+    "pr_auc": 0.46504558449263705
+   },
+   "calibratable": {
+    "tp": 10247,
+    "fp": 7877,
+    "tn": 331895,
+    "fn": 40649,
+    "precision": 0.5653829176782167,
+    "recall": 0.20133212826155297,
+    "f1": 0.29692842654303103,
+    "fpr": 0.02318319343559799,
+    "fnr": 0.798667871738447,
+    "accuracy": 0.8757871133545619,
+    "event_tp": 47,
+    "event_fn": 31,
+    "event_fp": 14,
+    "event_precision": 0.7704918032786885,
+    "event_recall": 0.6025641025641025,
+    "event_f1": 0.6762589928057554,
+    "median_latency": 20.0,
+    "median_decision_latency": 99.0,
+    "false_alarms_per_10k": 0.3583605516704721,
+    "threshold_mode": "dynamic",
+    "roc_auc_macro": 0.6601629871769668,
+    "roc_auc_macro_ci": [
+     0.5886400930101542,
+     0.7259790558623495
+    ],
+    "pr_auc_macro": 0.4586311168755415,
+    "pr_auc_macro_ci": [
+     0.37215625446442263,
+     0.5392756129849154
+    ],
+    "roc_auc_pooled": 0.4757749377912882,
+    "pr_auc_pooled": 0.23993776801437866,
+    "n_channels": 60,
+    "roc_auc": 0.6601629871769668,
+    "pr_auc": 0.4586311168755415
+   },
+   "SMAP": {
+    "tp": 11568,
+    "fp": 6582,
+    "tn": 373272,
+    "fn": 44404,
+    "precision": 0.6373553719008265,
+    "recall": 0.2066747659544058,
+    "f1": 0.3121340492701222,
+    "fpr": 0.01732771012020408,
+    "fnr": 0.7933252340455942,
+    "accuracy": 0.8830129455333091,
+    "event_tp": 45,
+    "event_fn": 23,
+    "event_fp": 10,
+    "event_precision": 0.8181818181818182,
+    "event_recall": 0.6617647058823529,
+    "event_f1": 0.7317073170731708,
+    "median_latency": 26.0,
+    "median_decision_latency": 99.0,
+    "false_alarms_per_10k": 0.22944936740809405,
+    "threshold_mode": "dynamic",
+    "roc_auc_macro": 0.6784713537748428,
+    "roc_auc_macro_ci": [
+     0.604341949959772,
+     0.7572608142620674
+    ],
+    "pr_auc_macro": 0.4853715650679163,
+    "pr_auc_macro_ci": [
+     0.40293218706732714,
+     0.582295780407484
+    ],
+    "roc_auc_pooled": 0.46777575585592956,
+    "pr_auc_pooled": 0.24157977761288696,
+    "n_channels": 54,
+    "roc_auc": 0.6784713537748428,
+    "pr_auc": 0.4853715650679163
+   },
+   "MSL": {
+    "tp": 2307,
+    "fp": 3534,
+    "tn": 62429,
+    "fn": 5459,
+    "precision": 0.39496661530559835,
+    "recall": 0.2970641256760237,
+    "f1": 0.339090174175057,
+    "fpr": 0.05357548928945015,
+    "fnr": 0.7029358743239763,
+    "accuracy": 0.8780262854507724,
+    "event_tp": 18,
+    "event_fn": 18,
+    "event_fp": 4,
+    "event_precision": 0.8181818181818182,
+    "event_recall": 0.5,
+    "event_f1": 0.6206896551724137,
+    "median_latency": 0.0,
+    "median_decision_latency": 717.5,
+    "false_alarms_per_10k": 0.5425273637239079,
+    "threshold_mode": "dynamic",
+    "roc_auc_macro": 0.6808347967659628,
+    "roc_auc_macro_ci": [
+     0.5839690189339545,
+     0.7794206898203739
+    ],
+    "pr_auc_macro": 0.4243936233420786,
+    "pr_auc_macro_ci": [
+     0.32342767041057296,
+     0.5381280292022322
+    ],
+    "roc_auc_pooled": 0.6163732899021976,
+    "pr_auc_pooled": 0.2523901923860003,
+    "n_channels": 27,
+    "roc_auc": 0.6808347967659628,
+    "pr_auc": 0.4243936233420786
+   },
+   "sensitivity": []
+  }
+ },
+ "event_recall_by_class": {
+  "contextual": {
+   "lstm_dynamic": 0.535
+  },
+  "point": {
+   "lstm_dynamic": 0.656
+  }
+ },
+ "comparison_markdown": "All 81 channels:\n\n| method | precision | recall | f1 | fpr | event_precision | event_recall | event_f1 | event_tp | event_fn | event_fp | false_alarms_per_10k | median_decision_latency | roc_auc_macro | pr_auc_macro |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| lstm_dynamic | 0.578 | 0.218 | 0.316 | 0.023 | 0.818 | 0.606 | 0.696 | 63 | 41 | 14 | 0.275 | 119.000 | 0.679 | 0.465 |\n\n60 calibratable channels (excluding 21 with a constant training signal / degenerate validation scores):\n\n| method | precision | recall | f1 | fpr | event_precision | event_recall | event_f1 | event_tp | event_fn | event_fp | false_alarms_per_10k | median_decision_latency | roc_auc_macro | pr_auc_macro |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| lstm_dynamic | 0.565 | 0.201 | 0.297 | 0.023 | 0.770 | 0.603 | 0.676 | 47 | 31 | 14 | 0.358 | 99.000 | 0.660 | 0.459 |"
+}

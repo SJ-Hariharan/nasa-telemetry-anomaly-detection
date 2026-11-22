@@ -1,0 +1,1632 @@
+{
+ "run_name": "lstm_dynamic",
+ "methods": [
+  "lstm_dynamic"
+ ],
+ "derived_from": "full",
+ "n_channels": 81,
+ "total_seconds": 1016.4,
+ "channels": [
+  {
+   "chan_id": "P-1",
+   "spacecraft": "SMAP",
+   "train_len": 2872,
+   "test_len": 8505,
+   "split_idx": 2298,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.13714878852945728,
+     "threshold_mode": "dynamic",
+     "seconds": 12.48,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 574,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "S-1",
+   "spacecraft": "SMAP",
+   "train_len": 2818,
+   "test_len": 7331,
+   "split_idx": 2254,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.3682603195453111,
+     "threshold_mode": "dynamic",
+     "seconds": 10.69,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 564,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-1",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8516,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.03997914804745177,
+     "threshold_mode": "dynamic",
+     "seconds": 13.25,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-2",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8532,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.2981596854853801,
+     "threshold_mode": "dynamic",
+     "seconds": 12.42,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-3",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8307,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.18944450419194153,
+     "threshold_mode": "dynamic",
+     "seconds": 11.67,
+     "val_flag_rate": 0.4045138888888889,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-4",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8354,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.16258381238825126,
+     "threshold_mode": "dynamic",
+     "seconds": 12.99,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-5",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8294,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.37480836285309177,
+     "threshold_mode": "dynamic",
+     "seconds": 12.9,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-6",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8300,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0019334483661660419,
+     "threshold_mode": "dynamic",
+     "seconds": 12.06,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-7",
+   "spacecraft": "SMAP",
+   "train_len": 2769,
+   "test_len": 8310,
+   "split_idx": 2215,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.024350747646088744,
+     "threshold_mode": "dynamic",
+     "seconds": 12.99,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 554,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-8",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8532,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.11619169965873904,
+     "threshold_mode": "dynamic",
+     "seconds": 12.56,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-9",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8302,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.12139862170554278,
+     "threshold_mode": "dynamic",
+     "seconds": 13.22,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-10",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8505,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0459642542453084,
+     "threshold_mode": "dynamic",
+     "seconds": 12.15,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-11",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8514,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.03220896816339314,
+     "threshold_mode": "dynamic",
+     "seconds": 12.8,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-12",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8512,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.034791779251949206,
+     "threshold_mode": "dynamic",
+     "seconds": 13.41,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "E-13",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8640,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.11613584750282217,
+     "threshold_mode": "dynamic",
+     "seconds": 12.19,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "A-1",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8640,
+   "split_idx": 2304,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0023107943293534396,
+     "threshold_mode": "dynamic",
+     "seconds": 17.75,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-1",
+   "spacecraft": "SMAP",
+   "train_len": 2849,
+   "test_len": 8509,
+   "split_idx": 2279,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.028294038761619626,
+     "threshold_mode": "dynamic",
+     "seconds": 15.64,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 570,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "P-2",
+   "spacecraft": "SMAP",
+   "train_len": 2821,
+   "test_len": 8209,
+   "split_idx": 2257,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.02468181675357681,
+     "threshold_mode": "dynamic",
+     "seconds": 14.47,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 564,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "P-3",
+   "spacecraft": "SMAP",
+   "train_len": 2855,
+   "test_len": 8493,
+   "split_idx": 2284,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.029643223878429888,
+     "threshold_mode": "dynamic",
+     "seconds": 13.57,
+     "val_flag_rate": 0.2539404553415061,
+     "calibratable": true,
+     "val_len": 571,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-2",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8595,
+   "split_idx": 2304,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0019688376979849027,
+     "threshold_mode": "dynamic",
+     "seconds": 13.4,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-3",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8640,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.002578158405673219,
+     "threshold_mode": "dynamic",
+     "seconds": 12.82,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-4",
+   "spacecraft": "SMAP",
+   "train_len": 2833,
+   "test_len": 8473,
+   "split_idx": 2266,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.002103268681294941,
+     "threshold_mode": "dynamic",
+     "seconds": 13.17,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 567,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "A-2",
+   "spacecraft": "SMAP",
+   "train_len": 2648,
+   "test_len": 7914,
+   "split_idx": 2118,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.1762987786139053,
+     "threshold_mode": "dynamic",
+     "seconds": 12.39,
+     "val_flag_rate": 0.4056603773584906,
+     "calibratable": true,
+     "val_len": 530,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "A-3",
+   "spacecraft": "SMAP",
+   "train_len": 2736,
+   "test_len": 8205,
+   "split_idx": 2189,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.1157108870815001,
+     "threshold_mode": "dynamic",
+     "seconds": 13.29,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 547,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "A-4",
+   "spacecraft": "SMAP",
+   "train_len": 2690,
+   "test_len": 8080,
+   "split_idx": 2152,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.12275255453653651,
+     "threshold_mode": "dynamic",
+     "seconds": 13.51,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 538,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "G-1",
+   "spacecraft": "SMAP",
+   "train_len": 2820,
+   "test_len": 8469,
+   "split_idx": 2256,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.11823139790772813,
+     "threshold_mode": "dynamic",
+     "seconds": 14.78,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 564,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "G-2",
+   "spacecraft": "SMAP",
+   "train_len": 2478,
+   "test_len": 7361,
+   "split_idx": 1982,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0007973324762563384,
+     "threshold_mode": "dynamic",
+     "seconds": 13.88,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 496,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-5",
+   "spacecraft": "SMAP",
+   "train_len": 2561,
+   "test_len": 7628,
+   "split_idx": 2049,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 2.0129483850065704,
+     "threshold_mode": "dynamic",
+     "seconds": 14.96,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 512,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-6",
+   "spacecraft": "SMAP",
+   "train_len": 2594,
+   "test_len": 7884,
+   "split_idx": 2075,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.041598613963388056,
+     "threshold_mode": "dynamic",
+     "seconds": 14.78,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 519,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-7",
+   "spacecraft": "SMAP",
+   "train_len": 2583,
+   "test_len": 7642,
+   "split_idx": 2066,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0006273610308467255,
+     "threshold_mode": "dynamic",
+     "seconds": 14.94,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 517,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "F-1",
+   "spacecraft": "SMAP",
+   "train_len": 2869,
+   "test_len": 8584,
+   "split_idx": 2295,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.2021878227233628,
+     "threshold_mode": "dynamic",
+     "seconds": 16.7,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 574,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "P-4",
+   "spacecraft": "SMAP",
+   "train_len": 2609,
+   "test_len": 7783,
+   "split_idx": 2087,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.05655492966656242,
+     "threshold_mode": "dynamic",
+     "seconds": 15.87,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 522,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "G-3",
+   "spacecraft": "SMAP",
+   "train_len": 2624,
+   "test_len": 7907,
+   "split_idx": 2099,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.006562740501583841,
+     "threshold_mode": "dynamic",
+     "seconds": 15.63,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 525,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "T-1",
+   "spacecraft": "SMAP",
+   "train_len": 2875,
+   "test_len": 8612,
+   "split_idx": 2300,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.06768545380430617,
+     "threshold_mode": "dynamic",
+     "seconds": 17.26,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 575,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "T-2",
+   "spacecraft": "SMAP",
+   "train_len": 2855,
+   "test_len": 8625,
+   "split_idx": 2284,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0462818162381428,
+     "threshold_mode": "dynamic",
+     "seconds": 17.52,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 571,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-8",
+   "spacecraft": "SMAP",
+   "train_len": 2602,
+   "test_len": 7874,
+   "split_idx": 2082,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0006551196889627513,
+     "threshold_mode": "dynamic",
+     "seconds": 16.28,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 520,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-9",
+   "spacecraft": "SMAP",
+   "train_len": 2583,
+   "test_len": 7406,
+   "split_idx": 2066,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.00037659056032662196,
+     "threshold_mode": "dynamic",
+     "seconds": 14.66,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 517,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "F-2",
+   "spacecraft": "SMAP",
+   "train_len": 2861,
+   "test_len": 8626,
+   "split_idx": 2289,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.10419635453654064,
+     "threshold_mode": "dynamic",
+     "seconds": 18.55,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 572,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "G-4",
+   "spacecraft": "SMAP",
+   "train_len": 2551,
+   "test_len": 7632,
+   "split_idx": 2041,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0028367039254129887,
+     "threshold_mode": "dynamic",
+     "seconds": 16.4,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 510,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "T-3",
+   "spacecraft": "SMAP",
+   "train_len": 2876,
+   "test_len": 8579,
+   "split_idx": 2301,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0134882936449671,
+     "threshold_mode": "dynamic",
+     "seconds": 21.54,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 575,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-11",
+   "spacecraft": "SMAP",
+   "train_len": 2611,
+   "test_len": 7431,
+   "split_idx": 2089,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.1274875126911598,
+     "threshold_mode": "dynamic",
+     "seconds": 18.02,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 522,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-12",
+   "spacecraft": "SMAP",
+   "train_len": 312,
+   "test_len": 7918,
+   "split_idx": 250,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0036323489794275934,
+     "threshold_mode": "dynamic",
+     "seconds": 18.73,
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 62,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "B-1",
+   "spacecraft": "SMAP",
+   "train_len": 2435,
+   "test_len": 8044,
+   "split_idx": 1948,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0003697693038329398,
+     "threshold_mode": "dynamic",
+     "seconds": 19.64,
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 487,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "G-6",
+   "spacecraft": "SMAP",
+   "train_len": 2881,
+   "test_len": 8640,
+   "split_idx": 2305,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.1987801971157935,
+     "threshold_mode": "dynamic",
+     "seconds": 19.85,
+     "val_flag_rate": 0.1753472222222222,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "G-7",
+   "spacecraft": "SMAP",
+   "train_len": 2446,
+   "test_len": 8029,
+   "split_idx": 1957,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.13895749940170968,
+     "threshold_mode": "dynamic",
+     "seconds": 18.32,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 489,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "P-7",
+   "spacecraft": "SMAP",
+   "train_len": 2853,
+   "test_len": 8071,
+   "split_idx": 2282,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.06328813127626419,
+     "threshold_mode": "dynamic",
+     "seconds": 19.48,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 571,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "R-1",
+   "spacecraft": "SMAP",
+   "train_len": 2874,
+   "test_len": 7244,
+   "split_idx": 2299,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0021486836251486427,
+     "threshold_mode": "dynamic",
+     "seconds": 19.83,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 575,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "A-5",
+   "spacecraft": "SMAP",
+   "train_len": 705,
+   "test_len": 4693,
+   "split_idx": 564,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0006865250135442776,
+     "threshold_mode": "dynamic",
+     "seconds": 13.01,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 141,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "A-6",
+   "spacecraft": "SMAP",
+   "train_len": 682,
+   "test_len": 4453,
+   "split_idx": 546,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.8147521602144185,
+     "threshold_mode": "dynamic",
+     "seconds": 12.06,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 136,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "A-7",
+   "spacecraft": "SMAP",
+   "train_len": 2879,
+   "test_len": 8631,
+   "split_idx": 2303,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.09173871071228944,
+     "threshold_mode": "dynamic",
+     "seconds": 24.14,
+     "val_flag_rate": 0.3576388888888889,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-13",
+   "spacecraft": "SMAP",
+   "train_len": 1490,
+   "test_len": 7663,
+   "split_idx": 1192,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.01412837587385778,
+     "threshold_mode": "dynamic",
+     "seconds": 19.22,
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 298,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "A-8",
+   "spacecraft": "SMAP",
+   "train_len": 762,
+   "test_len": 8375,
+   "split_idx": 610,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.7479018237579196,
+     "threshold_mode": "dynamic",
+     "seconds": 19.25,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 152,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "A-9",
+   "spacecraft": "SMAP",
+   "train_len": 762,
+   "test_len": 8434,
+   "split_idx": 610,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.2990103825274206,
+     "threshold_mode": "dynamic",
+     "seconds": 20.06,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 152,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "F-3",
+   "spacecraft": "SMAP",
+   "train_len": 2880,
+   "test_len": 8376,
+   "split_idx": 2304,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.10719565418286749,
+     "threshold_mode": "dynamic",
+     "seconds": 19.75,
+     "val_flag_rate": 0.18229166666666666,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "M-6",
+   "spacecraft": "MSL",
+   "train_len": 1565,
+   "test_len": 2049,
+   "split_idx": 1252,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 84.77728842668908,
+     "threshold_mode": "dynamic",
+     "seconds": 5.27,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 313,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "M-1",
+   "spacecraft": "MSL",
+   "train_len": 2209,
+   "test_len": 2277,
+   "split_idx": 1767,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.4902709585231028,
+     "threshold_mode": "dynamic",
+     "seconds": 5.7,
+     "val_flag_rate": 0.2850678733031674,
+     "calibratable": true,
+     "val_len": 442,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "M-2",
+   "spacecraft": "MSL",
+   "train_len": 2208,
+   "test_len": 2277,
+   "split_idx": 1766,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 1.0704408286628362,
+     "threshold_mode": "dynamic",
+     "seconds": 5.7,
+     "val_flag_rate": 0.2647058823529412,
+     "calibratable": true,
+     "val_len": 442,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "S-2",
+   "spacecraft": "MSL",
+   "train_len": 926,
+   "test_len": 1827,
+   "split_idx": 741,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.038016371664257746,
+     "threshold_mode": "dynamic",
+     "seconds": 4.33,
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 185,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "P-10",
+   "spacecraft": "MSL",
+   "train_len": 4308,
+   "test_len": 6100,
+   "split_idx": 3446,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0010299705948449683,
+     "threshold_mode": "dynamic",
+     "seconds": 14.91,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 862,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "T-4",
+   "spacecraft": "MSL",
+   "train_len": 2272,
+   "test_len": 2217,
+   "split_idx": 1818,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.1711231752512955,
+     "threshold_mode": "dynamic",
+     "seconds": 5.51,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 454,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "T-5",
+   "spacecraft": "MSL",
+   "train_len": 2272,
+   "test_len": 2218,
+   "split_idx": 1818,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.05292549044074718,
+     "threshold_mode": "dynamic",
+     "seconds": 5.29,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 454,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "F-7",
+   "spacecraft": "MSL",
+   "train_len": 2511,
+   "test_len": 5054,
+   "split_idx": 2009,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.5051576067523856,
+     "threshold_mode": "dynamic",
+     "seconds": 10.98,
+     "val_flag_rate": 0.4123505976095618,
+     "calibratable": true,
+     "val_len": 502,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "M-3",
+   "spacecraft": "MSL",
+   "train_len": 2037,
+   "test_len": 2127,
+   "split_idx": 1630,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.15289651683602545,
+     "threshold_mode": "dynamic",
+     "seconds": 4.82,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 407,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "M-4",
+   "spacecraft": "MSL",
+   "train_len": 2076,
+   "test_len": 2038,
+   "split_idx": 1661,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.23072922463532605,
+     "threshold_mode": "dynamic",
+     "seconds": 4.71,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 415,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "M-5",
+   "spacecraft": "MSL",
+   "train_len": 2032,
+   "test_len": 2303,
+   "split_idx": 1626,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.17168899410168742,
+     "threshold_mode": "dynamic",
+     "seconds": 5.28,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 406,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "P-15",
+   "spacecraft": "MSL",
+   "train_len": 3682,
+   "test_len": 2856,
+   "split_idx": 2946,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 10.784878013665097,
+     "threshold_mode": "dynamic",
+     "seconds": 6.77,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 736,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "C-1",
+   "spacecraft": "MSL",
+   "train_len": 2158,
+   "test_len": 2264,
+   "split_idx": 1726,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.07557244336439245,
+     "threshold_mode": "dynamic",
+     "seconds": 5.35,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 432,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "C-2",
+   "spacecraft": "MSL",
+   "train_len": 764,
+   "test_len": 2051,
+   "split_idx": 611,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 1.103385482228143,
+     "threshold_mode": "dynamic",
+     "seconds": 4.38,
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 153,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "T-12",
+   "spacecraft": "MSL",
+   "train_len": 1145,
+   "test_len": 2430,
+   "split_idx": 916,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.10508640216888998,
+     "threshold_mode": "dynamic",
+     "seconds": 5.66,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 229,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "T-13",
+   "spacecraft": "MSL",
+   "train_len": 1145,
+   "test_len": 2430,
+   "split_idx": 916,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 1.1616801568622543,
+     "threshold_mode": "dynamic",
+     "seconds": 5.37,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 229,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "F-4",
+   "spacecraft": "MSL",
+   "train_len": 2244,
+   "test_len": 3422,
+   "split_idx": 1795,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.07209510454355045,
+     "threshold_mode": "dynamic",
+     "seconds": 7.74,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 449,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "F-5",
+   "spacecraft": "MSL",
+   "train_len": 2598,
+   "test_len": 3922,
+   "split_idx": 2078,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.2623037301768204,
+     "threshold_mode": "dynamic",
+     "seconds": 8.98,
+     "val_flag_rate": 0.40576923076923077,
+     "calibratable": true,
+     "val_len": 520,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-14",
+   "spacecraft": "MSL",
+   "train_len": 3675,
+   "test_len": 2625,
+   "split_idx": 2940,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 1.3151932027148057,
+     "threshold_mode": "dynamic",
+     "seconds": 6.79,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 735,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "T-9",
+   "spacecraft": "MSL",
+   "train_len": 439,
+   "test_len": 1096,
+   "split_idx": 351,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.5947436850600187,
+     "threshold_mode": "dynamic",
+     "seconds": 2.78,
+     "val_flag_rate": 0.0,
+     "calibratable": false,
+     "val_len": 88,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "P-14",
+   "spacecraft": "MSL",
+   "train_len": 2880,
+   "test_len": 6100,
+   "split_idx": 2304,
+   "constant_train": true,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.008156261243004326,
+     "threshold_mode": "dynamic",
+     "seconds": 15.69,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 576,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "T-8",
+   "spacecraft": "MSL",
+   "train_len": 748,
+   "test_len": 1519,
+   "split_idx": 598,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.0977632259150365,
+     "threshold_mode": "dynamic",
+     "seconds": 3.56,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 150,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "P-11",
+   "spacecraft": "MSL",
+   "train_len": 3969,
+   "test_len": 3535,
+   "split_idx": 3175,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.10452586568799854,
+     "threshold_mode": "dynamic",
+     "seconds": 10.45,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 794,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-15",
+   "spacecraft": "MSL",
+   "train_len": 2074,
+   "test_len": 2158,
+   "split_idx": 1659,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.3194793684427296,
+     "threshold_mode": "dynamic",
+     "seconds": 5.54,
+     "val_flag_rate": 0.25060240963855424,
+     "calibratable": true,
+     "val_len": 415,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "D-16",
+   "spacecraft": "MSL",
+   "train_len": 1451,
+   "test_len": 2191,
+   "split_idx": 1161,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.7378516402850814,
+     "threshold_mode": "dynamic",
+     "seconds": 6.51,
+     "val_flag_rate": 0.41724137931034483,
+     "calibratable": true,
+     "val_len": 290,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "M-7",
+   "spacecraft": "MSL",
+   "train_len": 1587,
+   "test_len": 2156,
+   "split_idx": 1270,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.4372514149572078,
+     "threshold_mode": "dynamic",
+     "seconds": 8.35,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 317,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  },
+  {
+   "chan_id": "F-8",
+   "spacecraft": "MSL",
+   "train_len": 3342,
+   "test_len": 2487,
+   "split_idx": 2674,
+   "constant_train": false,
+   "methods": {
+    "lstm_dynamic": {
+     "status": "ok",
+     "threshold": 0.2720683483355358,
+     "threshold_mode": "dynamic",
+     "seconds": 6.92,
+     "val_flag_rate": 0.0,
+     "calibratable": true,
+     "val_len": 668,
+     "forecast_max_abs_diff": 0.0
+    }
+   }
+  }
+ ],
+ "failures": []
+}

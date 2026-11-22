@@ -43,11 +43,16 @@ def point_metrics(c: dict) -> dict:
             "accuracy": _safe_div(tp + tn, tp + fp + tn + fn)}
 
 
-def event_counts(sequences: list[list[int]], y_pred: np.ndarray) -> dict:
-    """Event-level TP/FN/FP plus detection latency (points from event start to first hit)."""
+def event_counts(sequences: list[list[int]], y_pred: np.ndarray, release: np.ndarray | None = None) -> dict:
+    """Event-level TP/FN/FP plus detection latency (points from event start to first hit).
+
+    ``release[i]`` = the timestep at which the decision about position i was available (default: i itself). With
+    it, ``decision_latencies`` = release[first hit] - event start, which includes any batching delay of the method.
+    """
     y_pred = np.asarray(y_pred).astype(bool)
     tp = fn = 0
     latencies: list[int] = []
+    decision: list[int] = []
     truth = np.zeros(len(y_pred), dtype=bool)
     for s, e in sequences:
         truth[s : e + 1] = True
@@ -55,19 +60,21 @@ def event_counts(sequences: list[list[int]], y_pred: np.ndarray) -> dict:
         if hits.size:
             tp += 1
             latencies.append(int(hits[0]))
+            decision.append(int(release[s + hits[0]] - s) if release is not None else int(hits[0]))
         else:
             fn += 1
     fp = sum(1 for s, e in runs(y_pred) if not truth[s : e + 1].any())
-    return {"event_tp": tp, "event_fn": fn, "event_fp": fp, "latencies": latencies}
+    return {"event_tp": tp, "event_fn": fn, "event_fp": fp, "latencies": latencies, "decision_latencies": decision}
 
 
 def event_metrics(c: dict) -> dict:
     tp, fn, fp = c["event_tp"], c["event_fn"], c["event_fp"]
     p, r = _safe_div(tp, tp + fp), _safe_div(tp, tp + fn)
-    lat = c.get("latencies", [])
+    lat, dec = c.get("latencies", []), c.get("decision_latencies", [])
     return {"event_tp": tp, "event_fn": fn, "event_fp": fp, "event_precision": p, "event_recall": r,
             "event_f1": _safe_div(2 * p * r, p + r),
-            "median_latency": float(np.median(lat)) if lat else None}
+            "median_latency": float(np.median(lat)) if lat else None,
+            "median_decision_latency": float(np.median(dec)) if dec else None}
 
 
 def threshold_free(y_true: np.ndarray, norm_scores: np.ndarray) -> dict:

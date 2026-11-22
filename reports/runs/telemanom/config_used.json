@@ -1,0 +1,83 @@
+{
+ "run_name": "telemanom",
+ "seed": 42,
+ "methods": [
+  "baseline",
+  "isolation_forest",
+  "telemanom"
+ ],
+ "data": {
+  "raw_dir": "data/raw/telemanom",
+  "channels": "all",
+  "spacecraft": "all"
+ },
+ "split": {
+  "val_fraction": 0.2
+ },
+ "baseline": {
+  "window": 100,
+  "min_std": 0.01
+ },
+ "isolation_forest": {
+  "lags": 10,
+  "stat_window": 50,
+  "n_estimators": 200,
+  "max_samples": 256,
+  "contamination": "auto"
+ },
+ "lstm": {
+  "window": 100,
+  "hidden_size": 64,
+  "num_layers": 2,
+  "dropout": 0.3,
+  "batch_size": 128,
+  "epochs": 60,
+  "learning_rate": 0.002,
+  "patience": 6,
+  "max_train_windows": 4000,
+  "use_commands": true,
+  "smoothing_span": 30,
+  "device": "cpu"
+ },
+ "threshold": {
+  "method": "quantile",
+  "quantile": 0.995,
+  "margin": 1.0,
+  "k_std": 4.0
+ },
+ "postprocess": {
+  "min_event_length": 1,
+  "merge_gap": 0
+ },
+ "output": {
+  "models_dir": "models",
+  "reports_dir": "reports/runs"
+ },
+ "telemanom": {
+  "raw_units": true,
+  "window": 250,
+  "n_predictions": 10,
+  "hidden_size": 80,
+  "num_layers": 2,
+  "dropout": 0.3,
+  "batch_size": 64,
+  "epochs": 35,
+  "learning_rate": 0.001,
+  "patience": 10,
+  "min_delta": 0.0003,
+  "restore_best": false,
+  "max_train_windows": 0,
+  "use_commands": true,
+  "smoothing_span": 105,
+  "warmup_fill": 250,
+  "device": "cpu"
+ },
+ "dynamic_threshold": {
+  "batch_size": 70,
+  "window_size": 30,
+  "error_buffer": 100,
+  "p": 0.13,
+  "sd_lim": 12.0,
+  "l_s": 250
+ }
+}

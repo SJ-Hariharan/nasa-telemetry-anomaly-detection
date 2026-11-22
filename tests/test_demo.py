@@ -143,31 +143,3 @@ def test_demo_refuses_to_replace_folders_it_did_not_create(demo_repo):
         assert _tree_hash(repo / "models/demo") == before                         # nothing deleted or changed
     finally:
         marker.write_text(saved)
-
-
-def test_dashboard_demo_pages_are_labelled_and_work(demo_repo):
-    from streamlit.testing.v1 import AppTest
-
-    at = AppTest.from_file(str(demo_repo["repo"] / "app" / "dashboard.py"), default_timeout=120)
-    at.run()
-    assert at.sidebar.selectbox(key="run").value == "full"                        # NASA results by default
-    assert not any(o.startswith("demo") for o in at.sidebar.selectbox(key="run").options)
-    at.toggle(key="show_demo").set_value(True).run()                              # explicit opt-in
-    at.sidebar.selectbox(key="run").set_value("demo").run()
-    for page in ["Overview", "Channel explorer", "Events & errors", "Models & calibration", "Data & reproducibility",
-                 "Inference"]:
-        at.sidebar.radio(key="page").set_value(page).run()
-        assert not at.exception, (page, [e.message for e in at.exception])
-        assert any("SIMULATED DEMO" in e.value for e in at.error), f"no SIMULATED banner on {page}"
-        for chart in at.get("plotly_chart"):   # regression: an annotation without text renders as "new text"
-            anns = json.loads(chart.proto.spec).get("layout", {}).get("annotations", [])
-            assert all(a.get("text") for a in anns), page
-    radio = at.radio(key="inf_src")
-    assert "Demo sample input (synthetic)" in radio.options
-    radio.set_value("Demo sample input (synthetic)").run()
-    assert not at.exception
-    assert any("Flagged as anomalous" in m.label for m in at.metric)
-    # switching back to a real NASA run removes the banner
-    at.sidebar.selectbox(key="run").set_value("full").run()
-    at.sidebar.radio(key="page").set_value("Overview").run()
-    assert not any("SIMULATED DEMO" in e.value for e in at.error)

@@ -1,0 +1,9 @@
+# Ablation: the reference LSTM (saved models of run 'full', no retraining) + Telemanom's dynamic threshold.
+# Only the error smoothing and the decision rule change. Run: python -m src.cli derive --config configs/lstm_dynamic.yaml
+inherit: telemanom.yaml
+run_name: lstm_dynamic
+derived_from: full
+methods: [lstm_dynamic]
+lstm_dynamic:
+  smoothing_span: 105       # same smoothing as the telemanom method
+  warmup_fill: 250

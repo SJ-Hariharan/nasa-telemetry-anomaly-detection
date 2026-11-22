@@ -151,3 +151,52 @@ def download_dataset(raw_dir: Path, force: bool = False, progress=None) -> Path:
 
     manifest_path.write_text(json.dumps(manifest, indent=1))
     return raw_dir
+
+
+CHECKSUMS = Path(__file__).with_name("checksums.json")   # committed copy of the verified manifest
+
+
+def find_dataset_dir(search_root: Path) -> Path | None:
+    """Locate a benchmark copy (a folder with labeled_anomalies.csv next to train/ and test/), e.g. /kaggle/input."""
+    for labels in sorted(Path(search_root).rglob(LABELS_FILE)):
+        for base in (labels.parent, labels.parent / "data"):
+            if (base / "train").is_dir() and (base / "test").is_dir():
+                return base
+    return None
+
+
+def import_local_copy(source: Path, raw_dir: Path, allow_unverified: bool = False) -> dict:
+    """Copy an already-available benchmark (e.g. an attached Kaggle dataset) into ``raw_dir`` after checking every
+    file against the committed checksums. Mismatches stop the import unless ``allow_unverified`` (then the manifest
+    records them, and results from that data must not be called a reproduction)."""
+    source = Path(source)
+    labels = next((p for p in (source / LABELS_FILE, source.parent / LABELS_FILE) if p.exists()), None)
+    if labels is None or not (source / "train").is_dir():
+        raise FileNotFoundError(f"{source} does not look like the benchmark (need train/, test/, {LABELS_FILE})")
+    ref = json.loads(CHECKSUMS.read_text())
+    bad, missing = [], []
+    for rel, (sha, size) in ref["files"].items():
+        p = source / rel
+        if not p.exists():
+            missing.append(rel)
+        elif p.stat().st_size != size or sha256_of(p) != sha:
+            bad.append(rel)
+    labels_ok = sha256_of(labels) == ref["labels_sha256"]
+    if (bad or missing or not labels_ok) and not allow_unverified:
+        raise RuntimeError(f"Local copy differs from the verified benchmark: {len(bad)} changed, {len(missing)} missing"
+                           f"{'' if labels_ok else ', labels changed'} (e.g. {(bad + missing)[:3]}). "
+                           "Use the downloader instead, or allow_unverified=True for an explicitly unverified run.")
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    for rel in ref["files"]:
+        if (source / rel).exists():
+            (raw_dir / rel).parent.mkdir(parents=True, exist_ok=True)
+            (raw_dir / rel).write_bytes((source / rel).read_bytes())
+    (raw_dir / LABELS_FILE).write_bytes(labels.read_bytes())
+    status = {"source": "local copy", "verified": not (bad or missing or not labels_ok), "changed": bad,
+              "missing": missing, "labels_sha256_ok": labels_ok, "reference": ref["source"],
+              "files": [{"split": r.split("/")[0], "file": r.split("/")[1], "sha256": s, "size": z}
+                        for r, (s, z) in ref["files"].items() if r not in missing]}
+    (raw_dir / MANIFEST_FILE).write_text(json.dumps(status, indent=1))
+    log.info("Imported %d files from a local copy (%s)", len(ref["files"]) - len(missing),
+             "verified" if status["verified"] else "UNVERIFIED")
+    return status

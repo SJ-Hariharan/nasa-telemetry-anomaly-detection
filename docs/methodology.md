@@ -118,3 +118,38 @@ headline results, which stay at the a-priori default. The grid was not changed a
 directories `full_seed1`, `full_seed2`). `python -m src.cli seeds --runs full full_seed1 full_seed2` summarises
 mean, standard deviation and range per metric. Only Isolation Forest and the LSTM are seed-dependent; the
 baseline is deterministic.
+
+## 8. Telemanom-aligned method and the dynamic threshold
+
+Two methods use the nonparametric dynamic threshold of Hundman et al. (2018), implemented in
+`src/models/dynamic_threshold.py` from the reference code (`telemanom/errors.py`, `config.yaml`):
+
+| Method | Forecaster | Decision rule |
+|---|---|---|
+| `telemanom` | new LSTM with the paper's settings: l_s = 250, 2 x 80 units, dropout 0.3, 10-step horizon (1-step forecast scored), batch 64, <= 35 epochs, patience 10, min_delta 3e-4, last epoch kept, raw [-1, 1] units, all training windows | dynamic threshold |
+| `lstm_dynamic` | the **saved reference LSTM models** of `full` / `full_seed1` / `full_seed2`, unchanged | dynamic threshold |
+
+`lstm_dynamic` is an ablation: comparing it with `lstm` changes only the decision rule; comparing it with
+`telemanom` changes only the forecaster. Both use EWMA span 105 and the start-up fill of the first 250 smoothed errors.
+
+**Why it is protocol-valid.** The dynamic threshold reads no labels; it is computed from the smoothed errors and
+values of the series being judged, with the published parameters (p = 0.13, 30 x 70 windows, buffer 100, z in
+2.5-11.5), fixed before any run here. Those constants were chosen by the paper's authors on this benchmark, which
+may favour the method slightly; we did not tune them.
+
+**Causality.** Each window decides only its newest 70-sample batch (the first window decides its whole 2,100 samples
+at once), so a decision uses at most 69 samples after the flagged point. The evaluation reports both the first
+flagged point (`median_latency`) and when the alert could be raised (`median_decision_latency`). The historical
+replay in the app uses only windows completed by the replay time.
+
+**Known differences from the reference implementation** (so this is "aligned", not an exact reproduction):
+* PyTorch instead of Keras 2 / TensorFlow 1; different initialisation and numerics.
+* Our chronological 80/20 train split feeds early stopping (Keras `validation_split=0.2` also takes the last 20%).
+* The final, partial window decides every remaining position (the reference leaves up to 69 positions undecided).
+* Channels shorter than one window are a single window (the reference shrinks the window count but not its length).
+* Evaluation merges P-2's overlapping label rows and scores 81 channels (T-10 has no labels); the paper reports
+  105 sequences across 82 channels. Event matching is "any overlap", as in the paper; no point-adjust.
+
+**Operating point.** The pruning parameter p is the knob. `python -m src.cli calibration --run telemanom` selects p
+by leave-channels-out (p chosen on 4 folds' labels, applied to the 5th) and writes a post-hoc p curve that is
+labelled diagnostic and not used for any choice.

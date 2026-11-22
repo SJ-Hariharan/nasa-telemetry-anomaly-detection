@@ -1,0 +1,11 @@
+# ~1-2 minute end-to-end check of the Telemanom-aligned path (3 channels, tiny model). Metrics NOT meaningful.
+inherit: telemanom.yaml
+run_name: telemanom_smoke
+data:
+  channels: [P-1, T-1, M-6]
+telemanom:
+  hidden_size: 16
+  epochs: 2
+  max_train_windows: 400
+isolation_forest:
+  n_estimators: 50

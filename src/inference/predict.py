@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 
 from src.models.persistence import DetectorBundle, load_bundle
-from src.models.thresholds import apply_threshold
+from src.models.decision import decide, threshold_mode
 
 MAX_ROWS = 500_000  # protects the dashboard from accidentally huge uploads
 
@@ -62,12 +62,14 @@ def detect(bundle: DetectorBundle, array: np.ndarray) -> pd.DataFrame:
     w = warmup_length(bundle)
     if len(array) <= w:
         raise ValueError(f"Need more than {w} timesteps for {bundle.method} (warm-up), got {len(array)}")
-    scores = bundle.detector.score(bundle.scaler.transform(array))
-    pred = apply_threshold(scores, bundle.threshold, bundle.postprocess.get("min_event_length", 1),
-                           bundle.postprocess.get("merge_gap", 0))
+    raw = bundle.detector.score(bundle.scaler.transform(array))
+    scores, pred, thr = decide(bundle.method, raw, array[:, 0], threshold=bundle.threshold,
+                               unit_scale=bundle.scaler.std, post=bundle.postprocess, dynamic_cfg=bundle.dynamic)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        norm = scores / thr
     return pd.DataFrame({"timestep": np.arange(len(array)), "value": array[:, 0], "score": scores,
-                         "threshold": bundle.threshold, "normalized_score": scores / bundle.threshold,
-                         "is_anomaly": pred, "scored": np.isfinite(scores)})
+                         "threshold": thr, "normalized_score": norm, "is_anomaly": pred, "scored": np.isfinite(scores),
+                         "threshold_mode": threshold_mode(bundle.method)})
 
 
 def read_telemetry_csv(source) -> pd.DataFrame:

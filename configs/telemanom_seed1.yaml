@@ -1,0 +1,5 @@
+# Seed-variance run of configs/telemanom.yaml (Telemanom-aligned forecaster only).
+inherit: telemanom.yaml
+run_name: telemanom_seed1
+seed: 1
+methods: [telemanom]

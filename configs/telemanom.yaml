@@ -1,0 +1,33 @@
+# Telemanom-aligned experiment (Hundman et al., KDD 2018; github.com/khundman/telemanom config.yaml).
+# Writes to reports/runs/telemanom and models/telemanom; the reference runs (full, full_seed1/2) are untouched.
+# baseline + isolation_forest are re-run as a reproducibility check of the reference run (identical settings).
+inherit: default.yaml
+run_name: telemanom
+methods: [baseline, isolation_forest, telemanom]
+
+telemanom:                  # paper / reference-code settings, fixed before any run; NOT tuned on test labels
+  raw_units: true           # train on the benchmark's own [-1, 1] values, as the reference code does
+  window: 250               # l_s
+  n_predictions: 10         # forecast horizon trained jointly; the 1-step forecast is scored
+  hidden_size: 80           # layers: [80, 80]
+  num_layers: 2
+  dropout: 0.3
+  batch_size: 64            # lstm_batch_size
+  epochs: 35
+  learning_rate: 1.0e-3     # Keras Adam default
+  patience: 10
+  min_delta: 3.0e-4
+  restore_best: false       # Keras EarlyStopping keeps the last epoch
+  max_train_windows: 0      # no cap: every training window is used
+  use_commands: true
+  smoothing_span: 105       # batch_size * window_size * smoothing_perc = 70 * 30 * 0.05
+  warmup_fill: 250          # first l_s smoothed errors := mean of the first 2 * l_s
+  device: cpu               # 'auto' picks CUDA when available (not verified on a GPU in this repo)
+
+dynamic_threshold:          # src/models/dynamic_threshold.py
+  batch_size: 70
+  window_size: 30
+  error_buffer: 100
+  p: 0.13
+  sd_lim: 12.0
+  l_s: 250

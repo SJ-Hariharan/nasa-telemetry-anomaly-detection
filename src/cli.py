@@ -7,7 +7,11 @@
     python -m src.cli evaluate --config configs/smoke.yaml
     python -m src.cli all      --config configs/default.yaml   # train + evaluate
     python -m src.cli predict  --run full --method lstm --channel P-1 --input my.csv
+    python -m src.cli all      --config configs/telemanom.yaml   # Telemanom-aligned forecaster + dynamic threshold
+    python -m src.cli derive   --config configs/lstm_dynamic.yaml # reference LSTM models + dynamic threshold (no training)
     python -m src.cli calibration --run full             # threshold uncertainty + leave-channels-out study
+    python -m src.cli compare                            # cross-run benchmark -> reports/benchmark/
+    python -m src.cli showcase                           # small committed app artifact -> reports/showcase/
     python -m src.cli seeds --runs full full_seed1 full_seed2   # mean/std over seed-variance runs
 """
 from __future__ import annotations
@@ -15,6 +19,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from pathlib import Path
 
 from src.utils.config import load_config, resolve_path
 from src.utils.reproducibility import get_logger
@@ -27,13 +32,17 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m src.cli", description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("command", choices=["download", "validate", "train", "evaluate", "all", "predict",
-                                                   "calibration", "seeds", "demo"])
+                                                   "calibration", "seeds", "demo", "derive", "compare",
+                                                   "showcase"])
     parser.add_argument("--config", default="configs/default.yaml")
     parser.add_argument("--force", action="store_true", help="re-download even if files verify")
+    parser.add_argument("--from-dir", help="[download] import an existing local copy (e.g. /kaggle/input) after "
+                                           "checking every file against the committed checksums")
     parser.add_argument("--methods", nargs="*", help="subset of methods to train")
     parser.add_argument("--resume", action="store_true", help="[train/all] skip channels finished by an interrupted run")
+    parser.add_argument("--shard", help="[train] I/N: only every N-th channel starting at I (parallel processes)")
     parser.add_argument("--run", help="[predict] run name under models/")
-    parser.add_argument("--method", help="[predict] baseline | isolation_forest | lstm")
+    parser.add_argument("--method", help="[predict] baseline | isolation_forest | lstm | telemanom")
     parser.add_argument("--channel", help="[predict] channel id, e.g. P-1")
     parser.add_argument("--input", help="[predict] CSV with a 'value' column (+ optional cmd_* columns)")
     parser.add_argument("--output", help="[predict] where to write the result CSV")
@@ -53,9 +62,16 @@ def main(argv: list[str] | None = None) -> int:
     raw_dir = resolve_path(cfg["data"]["raw_dir"])
 
     if args.command == "download":
-        from src.data.download import download_dataset
+        from src.data.download import download_dataset, find_dataset_dir, import_local_copy
 
-        download_dataset(raw_dir, force=args.force)
+        if args.from_dir:
+            src_dir = find_dataset_dir(Path(args.from_dir))
+            if src_dir is None:
+                print(f"error: no benchmark copy found under {args.from_dir}", file=sys.stderr)
+                return 2
+            import_local_copy(src_dir, raw_dir)
+        else:
+            download_dataset(raw_dir, force=args.force)
     elif args.command == "validate":
         from src.data.validation import validate_dataset
 
@@ -65,13 +81,33 @@ def main(argv: list[str] | None = None) -> int:
         out.write_text(json.dumps(report, indent=1))
         print(json.dumps({k: report[k] for k in ("ok", "errors", "warnings", "summary")}, indent=1))
         return 0 if report["ok"] else 1
+    elif args.command == "showcase":
+        from src.showcase import build_showcase
+
+        build_showcase(cfg)
+    elif args.command == "compare":
+        from src.evaluation.compare import DEFAULT_RUNS, write_benchmark
+
+        reports = resolve_path(cfg["output"]["reports_dir"])
+        write_benchmark(reports, reports.parent / "benchmark", args.runs or DEFAULT_RUNS)
+        print((reports.parent / "benchmark" / "benchmark.md").read_text())
+    elif args.command == "derive":
+        from src.evaluation.evaluate import evaluate_run
+        from src.pipeline import run_derived
+
+        metrics = evaluate_run(run_derived(cfg, resume=args.resume))
+        print(metrics["comparison_markdown"])
     elif args.command in ("train", "evaluate", "all"):
         from src.pipeline import run_paths
 
         if args.command in ("train", "all"):
             from src.pipeline import run_training
 
-            run_training(cfg, args.methods, resume=args.resume)
+            from src.pipeline import parse_shard
+
+            run_training(cfg, args.methods, resume=args.resume, shard=parse_shard(args.shard))
+            if args.shard:
+                return 0
         if args.command in ("evaluate", "all"):
             from src.evaluation.evaluate import evaluate_run
 
@@ -122,8 +158,10 @@ def main(argv: list[str] | None = None) -> int:
         if args.output:
             result.to_csv(args.output, index=False)
         n = int(result["is_anomaly"].sum())
-        print(f"{len(result)} rows scored, {n} flagged anomalous "
-              f"(threshold {result['threshold'].iloc[0]:.4g}).")
+        thr = result["threshold"]
+        rule = (f"dynamic threshold, median epsilon {thr.median():.4g}" if result["threshold_mode"].iloc[0] == "dynamic"
+                else f"threshold {thr.iloc[0]:.4g}")
+        print(f"{len(result)} rows scored, {n} flagged anomalous ({rule}).")
         if not args.output:
             print(result[result["is_anomaly"] == 1].head(20).to_string(index=False))
     return 0

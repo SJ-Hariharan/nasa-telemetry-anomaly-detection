@@ -1,106 +1,143 @@
-# NASA Spacecraft Telemetry Anomaly Detection Using Machine Learning and LSTM Networks
+# NASA SMAP/MSL Telemetry Anomaly Detection
 
-**Spacecraft Telemetry Anomaly Lab**: a reproducible comparison of three unsupervised anomaly detectors (rolling
-z-score, Isolation Forest and an LSTM forecaster) on the public **NASA SMAP & MSL telemetry benchmark**
-(Hundman et al., KDD 2018, "Telemanom"). It covers 81 expert-labelled channels from the SMAP satellite and the MSL
-Curiosity rover, evaluated with point- and event-level metrics, calibration studies and seed variance, plus an
-interactive dashboard and a verified download-and-reproduce workflow.
+This project runs unsupervised per-channel anomaly detectors on the public Telemanom benchmark: 81 labelled channels from the SMAP satellite and MSL Curiosity rover, with 104 labelled anomaly sequences after merging P-2's overlapping rows. It compares a rolling z-score, Isolation Forest, a reference LSTM forecaster with a validation-quantile threshold, the same saved LSTM models with Telemanom's dynamic threshold (`lstm_dynamic`, an ablation with no retraining), and a Telemanom-aligned LSTM with dynamic threshold (`telemanom`). Each method is scored with point and event metrics on the test split.
 
-> **Scope.** Historical, offline benchmark analysis. This is not a live NASA feed, NASA software, or a fault-diagnosis
-> system, and NASA does not endorse it. A flagged "anomaly" is a statistically unusual sample, not a confirmed fault.
-> The benchmark has no timestamps, units or subsystem names, so everything is indexed by sample number.
+Historical, anonymised data, not a live NASA feed. The project has no NASA affiliation, is not a fault-diagnosis system, and is not an exact reproduction of the paper.
 
-![Dashboard overview: committed NASA benchmark results](docs/images/overview.jpg)
+## Results
 
-## Quick start (about 3 minutes, no data download)
+All 81 channels; thresholds and settings fixed without test labels; mean ± std over 3 seeds; full table in `reports/benchmark/benchmark.md`.
 
-```bash
-git clone https://github.com/SJ-Hariharan/nasa-telemetry-anomaly-detection.git
-cd nasa-telemetry-anomaly-detection
-python3.11 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt        # CPU-only; works on Apple Silicon. requirements-lock.txt = exact versions used
-streamlit run app/dashboard.py         # opens http://localhost:8501
-```
+| Method | Event F1 | Events found (of 104) | False-alarm events | Event precision | Point F1 | Point recall | Median decision latency (samples) |
+|---|---|---|---|---|---|---|---|
+| Telemanom-aligned LSTM + dynamic threshold (`telemanom`) | 0.733 ± 0.022 | 70 ± 2 | 17 ± 3 | 0.805 ± 0.028 | 0.335 ± 0.019 | 0.234 ± 0.014 | 94 |
+| Reference LSTM models + dynamic threshold (ablation) (`lstm_dynamic`) | 0.716 ± 0.028 | 64 ± 2 | 11 ± 3 | 0.851 ± 0.039 | 0.322 ± 0.009 | 0.220 ± 0.007 | 121 |
+| Reference LSTM, static threshold (`lstm`) | 0.080 ± 0.018 | 97 ± 1 | 2314 ± 567 | 0.042 ± 0.010 | 0.390 ± 0.009 | 0.699 ± 0.009 | 19 |
+| Isolation Forest, static threshold (`isolation_forest`) | 0.062 ± 0.003 | 72 ± 1 | 2133 ± 94 | 0.033 ± 0.002 | 0.302 ± 0.021 | 0.325 ± 0.025 | 27 |
+| Rolling z-score, static threshold (`baseline`) | 0.056 ± 0.000 | 86 ± 0 | 2881 ± 0 | 0.029 ± 0.000 | 0.237 ± 0.000 | 0.195 ± 0.000 | 37 |
 
-The dashboard opens on the **real NASA benchmark results**, read from reports committed in this repository: the
-headline comparison, seed variability, calibration studies, per-channel and per-event analysis, and every caveat.
-Nothing is downloaded or trained when the page loads.
+**Best under the protocol: the Telemanom-aligned method** (event F1 0.733 ± 0.022). Its lead over the ablation `lstm_dynamic` (0.716 ± 0.028) is smaller than the seed spread, so the improvement comes from the **dynamic threshold**, not the new network: re-scoring the *same saved* reference LSTM models with it cuts false-alarm events from 2314 to 11 (mean over seeds). The trade-off is plain: the dynamic methods find 64-70 of 104 events instead of 97, have lower point recall and point F1, and alert later (median ~94-121 samples vs 19). If missing events is costlier than false alarms, the reference LSTM's recall is the better operating point; nothing here is evidence of operational fitness.
 
-| Page | Fresh clone (committed reports) | After `download` (~170 MB) | After a local training run |
-|---|---|---|---|
-| Overview | ✓ results, seed error bars, caveats | | |
-| Channel explorer | ✓ labelled-event timeline per channel | ✓ real train/test telemetry | ✓ model scores, thresholds and flags overlaid |
-| Events & errors | ✓ all 104 events, false alarms, latency | ✓ each event plotted in context | ✓ with scores |
-| Models & calibration | ✓ all vs calibratable, seeds, leave-channels-out, bootstrap | | |
-| Data & reproducibility | ✓ status, one-click download/validate/reproduce | | |
-| Inference | guidance only | | ✓ score a CSV or a test file with a saved model |
-
-## Explore the real NASA telemetry
-
-In the dashboard, open **Data & reproducibility** → *Download and verify NASA data*, or use the command line:
+## Quick start (no download, ~2 minutes)
 
 ```bash
-python -m src.cli download     # ~170 MB, 1-5 min; pinned mirror, SHA-256 verified per file; resumable
-python -m src.cli validate     # seconds; shapes, labels, ranges -> reports/data_validation.json
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt    # exact pins: requirements-lock.txt
+streamlit run app/dashboard.py
 ```
 
-Then click **Reload data**. The Channel explorer plots the real train/test values of any SMAP or MSL channel, with
-the historical expert-labelled anomaly intervals.
+The app works on a fresh clone from committed artifacts. It never trains or downloads anything. Saved model weights are not committed, so Inference needs a local run on a fresh clone.
 
-![Channel explorer: real telemetry, labelled events and LSTM scores](docs/images/channel_explorer.jpg)
+* `reports/benchmark/`: cross-run comparison.
+* `reports/showcase/`: telemetry, scores and predictions for 7 channels, picked by a fixed rule. Saved models for 2 channels are written locally by `showcase` (gitignored, not committed).
+* `reports/runs/<run>/`: metrics, events, false alarms and calibration for each run.
 
-## Reproduce the results on your machine (CPU)
+Dashboard pages: Overview, Compare methods, Channel timeline, Detections & errors, Historical replay, Inference and Reproduce.
 
-| Run | What | Time (Apple M1, CPU) | Disk | How |
-|---|---|---|---|---|
-| Quick check | 3 real channels, tiny model; proves the pipeline works here (metrics not meaningful) | ~30 s | small | dashboard button, or `python -m src.cli all --config configs/reproduce_smoke.yaml` |
-| Full benchmark | 81 channels, all three detectors, published settings (seed 42) | ~1–2 h | ~20 MB scores + ~190 MB models | dashboard button (needs a confirmation tick), or `python -m src.cli all --config configs/reproduce.yaml --resume` |
+* **Historical replay** is labelled "Historical replay — not live telemetry". It feeds archived samples in order; the dynamic threshold releases decisions per 70-sample batch.
+* **Inference** takes an uploaded CSV with a `value` column and optional `cmd_0..` 0/1 columns, or an archived segment.
 
-Dashboard-started runs continue in the background if you close the tab, and show live progress. `--resume` (or
-starting again) continues an interrupted run. They write to new run folders (`reproduce_smoke`, `reproduce`, both
-gitignored), so the committed reports are never overwritten. When a run finishes, click *Load results* on the
-Data page (or pick the run in the sidebar). Then:
+| Symptom | Fix |
+|---|---|
+| `streamlit: command not found` | Activate the venv (`source .venv/bin/activate`) or run `python -m streamlit run app/dashboard.py`. |
+| Port busy | `streamlit run app/dashboard.py --server.port 8502` |
 
-```bash
-python -m src.cli calibration --run reproduce                # threshold bootstrap + leave-channels-out (~15 s)
-python -m src.cli predict --run reproduce --method lstm --channel P-1 --input my.csv --output scored.csv
-```
+`python -m src.cli demo` runs the pipeline on synthetic data in ~30 s; it is labelled SIMULATED and not NASA results.
 
-`predict` reuses the saved scaler and threshold (never refits). Malformed input is rejected with a message and exit
-code 2. It warns when commands are missing, when values are out of range, or when the channel's threshold is not a
-real calibration. Saved Isolation Forest models are joblib (pickle) files: only load `models/` folders you produced.
+## Reproduce
 
-## Results (full run: 81 channels, thresholds calibrated without labels)
+1. **Get the data, then validate it.**
 
-| Method | Point precision | Point recall | Point F1 | Event recall | Event F1 | False-alarm events | ROC-AUC (macro) | PR-AUC (macro) |
-|---|---|---|---|---|---|---|---|---|
-| Rolling z-score | 0.301 | 0.195 | 0.237 | 0.827 (86/104) | 0.056 | 2,881 | 0.590 | 0.260 |
-| Isolation Forest | 0.268 | 0.299 | 0.283 | 0.692 (72/104) | 0.065 | 2,025 | 0.635 | 0.292 |
-| **LSTM forecaster** | 0.269 | **0.688** | **0.387** | **0.933 (97/104)** | **0.099** | **1,764** | **0.677** | **0.456** |
+   ```bash
+   python -m src.cli download                            # verified downloader, ~166 MB on disk, SHA-256 checked against a pinned mirror
+   python -m src.cli download --from-dir /path/to/copy   # or import an existing copy (e.g. an attached Kaggle dataset); each file is checked against src/data/checksums.json
+   python -m src.cli validate
+   ```
 
-The LSTM catches 97 of 104 labelled events (median latency 16 steps) and has the best PR-AUC. Its ROC-AUC lead
-over Isolation Forest is within the bootstrap intervals. Every method raises far too many alarms. 22 channels
-cannot be calibrated at all (constant training signal, threshold ≈ 0), and they account for 52% (baseline) and
-44% (LSTM) of the point false positives. On the 59 calibratable channels, LSTM point F1 is 0.425. Validation-to-test score shift (KS statistic)
-explains part of the rest. Details, both tables, error analysis and a post-hoc sensitivity study: [`EXPERIMENTS.md`](EXPERIMENTS.md).
-No hyper-parameter search. **Not a replication of the Telemanom paper.**
+2. **Run the tests.** About 5 minutes on CPU. The notebook test is opt-in.
 
-**Calibration studies** (on saved scores, no retraining; `reports/runs/full/calibration/`):
-* *Threshold uncertainty.* Every threshold comes from a small validation set (fewer than 5 expected exceedances
-  per channel). A block bootstrap of those sets moves the aggregate results by about 0.01–0.05 in F1 (LSTM F1
-  [0.375, 0.389]). That is real but small next to the precision gap. The ranges are lower bounds (see EXPERIMENTS).
-* *Leave-channels-out calibration.* A threshold rule chosen on other channels (5 folds, pre-specified rule
-  family and objective) and applied to held-out channels cuts LSTM false-alarm events from 1,764 to 332 and lifts
-  event F1 from 0.099 to 0.231 across all 81 channels. Event recall falls from 0.933 to 0.548. On the 59 calibratable
-  channels the gain is smaller (0.077 → 0.150), and the LSTM is not always the best method there. The chosen rule
-  sits at the edge of the grid. This is an estimate for new channels, not a re-tuned headline number.
+   ```bash
+   python -m pytest -q
+   RUN_NOTEBOOK=1 python -m pytest tests/test_notebook.py
+   ```
 
-**Seed variance** (seeds 42, 1, 2; `reports/seed_summary.json`). LSTM point F1 is 0.390 ± 0.009 and macro
-ROC-AUC 0.682 ± 0.007, so point-level results are stable. Event-level results are not: false-alarm events range
-1,764–2,897 and event F1 0.063–0.099. The seed-42 run in the table above is the most favourable of the three on
-event F1 and false alarms. The leave-channels-out improvement holds on every seed.
+3. **Smoke run.** 3 channels, tiny model, ~2 minutes. Metrics are not meaningful.
 
-![Events & errors: detection by class and false-alarm concentration](docs/images/events.jpg)
+   ```bash
+   python -m src.cli all --config configs/telemanom_smoke.yaml
+   ```
+
+4. **Reference run.** About 1 hour on CPU. Seeds: `configs/seed1.yaml`, `configs/seed2.yaml`.
+
+   ```bash
+   python -m src.cli all --config configs/default.yaml --resume
+   ```
+
+5. **Telemanom-aligned run.** This is the slowest step: several CPU-hours for 81 channels (measured: about 7 single-thread process-hours per seed, about 2 h wall-clock with 4 parallel shards on an 8-core Apple CPU). It can be split across processes, then collected and evaluated. Seeds: `configs/telemanom_seed1.yaml`, `configs/telemanom_seed2.yaml`.
+
+   ```bash
+   # optional: train 4 shards in parallel first (each skips channels already finished)
+   for i in 0 1 2 3; do python -m src.cli train --config configs/telemanom.yaml --shard $i/4 --resume & done; wait
+   # collect every channel (trains any that are missing) and evaluate
+   python -m src.cli all --config configs/telemanom.yaml --resume
+   ```
+
+6. **Ablation (no training).** Needs the saved models from the reference run. Also `lstm_dynamic_seed1.yaml` and `lstm_dynamic_seed2.yaml`.
+
+   ```bash
+   python -m src.cli derive --config configs/lstm_dynamic.yaml
+   ```
+
+7. **Calibration studies, comparison and showcase.** `compare` writes `reports/benchmark/`; `showcase` writes `reports/showcase/`.
+
+   ```bash
+   python -m src.cli calibration --run full        # also --run telemanom, --run lstm_dynamic
+   python -m src.cli compare
+   python -m src.cli showcase
+   ```
+
+8. **Inference from saved models.**
+
+   ```bash
+   python -m src.cli predict --run telemanom --method telemanom --channel P-1 --input my.csv
+   ```
+
+New experiments always use new run names. The committed reference runs (`full`, `full_seed1`, `full_seed2`) are never overwritten.
+
+## Colab / Kaggle
+
+`notebooks/run_pipeline.ipynb` runs the real CLI. It finds an attached Kaggle copy (checksum-verified) or uses the downloader. `SMOKE=True` is the default; set `SMOKE=False` for a resumable full run. Outputs are zipped to `/kaggle/working`, copied to Google Drive if it is mounted, or written to `outputs/`. The notebook has been executed locally in smoke mode only; it has NOT been run on Colab or Kaggle.
+
+## GPU
+
+Set `device: auto` (or `cuda`) under `telemanom:` or `lstm:` in a config. If CUDA is absent, the run falls back to CPU with a warning. Scoring always runs on CPU, so results do not depend on where training ran.
+
+GPU training has not been verified and no speed-up is claimed; the benchmark trains 81 small per-channel models, so a GPU may not help much.
+
+## How it works
+
+Per channel:
+
+1. The train file is split chronologically 80/20 into fit and validation parts. The scaler is fit on the fit part only.
+2. The detectors are trained on the fit part.
+3. Static thresholds are the 99.5% quantile of validation scores.
+4. The dynamic threshold is Telemanom's label-free nonparametric threshold with pruning (p = 0.13), computed on the series being judged.
+5. Test labels are joined only for evaluation.
+
+Metrics: micro point precision, recall and F1, plus event metrics. An event is found if any flagged point overlaps it. A false-alarm event is a flagged run that overlaps no label. No point-adjust is applied.
+
+See [`docs/methodology.md`](docs/methodology.md), [`docs/limitations.md`](docs/limitations.md), [`docs/dataset.md`](docs/dataset.md), [`docs/architecture.md`](docs/architecture.md) and [`EXPERIMENTS.md`](EXPERIMENTS.md).
+
+## Limitations
+
+* The dataset is min-max scaled by its authors using test-set statistics. All methods share this property.
+* Labels are approximate: they are historical expert annotations derived from incident reports.
+* Telemanom's constants were chosen by the paper's authors on this benchmark. They were not tuned here, but they may favour that method slightly.
+* The event metric counts any overlap as a hit, which is lenient. Long flagged segments score well under it, so point metrics are reported alongside.
+* The dynamic threshold needs up to 69 future samples (batch release) and about 2,100 samples before its first decision.
+* 22 channels (19 with a constant training signal) cannot get a calibrated static threshold.
+* These are offline benchmark results, not operational evidence.
 
 ## Data source, citation and licences
 
@@ -116,126 +153,25 @@ event F1 and false alarms. The leave-channels-out improvement holds on every see
   Using LSTMs and Nonparametric Dynamic Thresholding.* KDD 2018 ([arXiv:1802.04431](https://arxiv.org/abs/1802.04431)).
   Code: [github.com/khundman/telemanom](https://github.com/khundman/telemanom).
 * **Licences:** this project's code is MIT ([`LICENSE`](LICENSE)). The data is © Caltech under BSD-3-clause-style
-  terms and is downloaded separately, never committed.
-
-## Optional: synthetic demo (not NASA data)
-
-`python -m src.cli demo` runs the whole pipeline in about 30 seconds on 4 **synthetic** channels with hand-made
-anomalies, for trying the code with no download at all. It is hidden in the dashboard unless you enable *Show the
-synthetic demo run* in the sidebar, and every page then carries a red *SIMULATED DEMO — NOT NASA BENCHMARK
-RESULTS* banner. Its outputs go to `data/demo/`, `reports/runs/demo/` and `models/demo/` (gitignored), and it
-never touches NASA runs. It demonstrates the workflow only, never NASA performance.
-
-## Troubleshooting
-
-| Symptom | Fix |
-|---|---|
-| `streamlit: command not found` | Activate the venv (`source .venv/bin/activate`) or run `python -m streamlit run app/dashboard.py`. |
-| Dashboard looks unstyled / light | Start it from the repository root so `.streamlit/config.toml` is found. |
-| Download fails with `CERTIFICATE_VERIFY_FAILED` | Update to this version (it verifies with `certifi`), or `pip install -r requirements.txt`. On python.org macOS Python you can also run *Install Certificates.command*. |
-| Download fails or is slow | Re-run `python -m src.cli download`: it resumes and re-verifies. A proxy that truncates large files shows as a checksum error, which is a refusal, not corruption. |
-| Explorer says "Telemetry: not downloaded" after downloading | Click **Reload data** in the sidebar. |
-| Inference page shows guidance only | Saved models are generated locally: run the quick check or the full reproduction first. |
-| A run shows "stopped" | The machine slept or rebooted. Start it again: completed channels are skipped. |
-| Port 8501 busy | `streamlit run app/dashboard.py --server.port 8502` |
-
-## Deployment
-
-The project is built to run **locally** (`streamlit run app/dashboard.py`); no hosted instance is provided.
-A static host such as Streamlit Community Cloud could serve the committed-report views (Overview, Models &
-calibration, event tables) because they need no data. Downloading 170 MB and training for an hour are not
-suitable for free hosted tiers, and a public instance should disable those buttons. Anything hosted remains a
-historical benchmark viewer, not a monitoring service.
-
-## Development
-
-```bash
-pytest -q                               # ~1-2 min, offline; unit, integration, dashboard (AppTest), demo
-git config core.hooksPath .githooks     # pre-commit: whitespace/secrets/data/size/syntax; pre-push: test suite
-```
-
-## How it works
-
-```
-download → validate → EDA → chronological split of TRAIN (80% fit / 20% validation) → train-only scaling
-→ windows / features → {rolling z-score | Isolation Forest | LSTM forecaster} → anomaly scores
-→ per-channel threshold = 99.5% quantile of VALIDATION scores → predictions on TEST
-→ point + event metrics, error analysis → dashboard / saved models → inference
-```
-
-| Method | Score at timestep t |
-|---|---|
-| Rolling z-score | distance of x_t from the mean of the previous 100 points, in rolling standard deviations |
-| Isolation Forest | how easily random trees isolate the trailing-window feature vector at t |
-| LSTM | smoothed absolute error of a one-step-ahead forecast made from the previous 100 timesteps (value + commands) |
-
-Test labels are attached only after every model has predicted. A test changes the labels and checks that
-no threshold moves.
+  terms and is downloaded separately. The only data committed are the 7 test-file excerpts in `reports/showcase/` used by
+  the offline app.
 
 ## Repository layout
 
 ```
-src/data/            download (pinned + verified), loader, validation
-src/preprocessing/   chronological split, train-only scaler
-src/features/        causal windows and Isolation Forest features
-src/models/          detectors, LSTM, thresholds, persistence
-src/evaluation/      metrics (point/event/AUC), evaluation + error analysis + figures,
-                     calibration studies (threshold bootstrap, leave-channels-out, seed summary)
-src/inference/       input validation + scoring with saved models
-src/pipeline.py      per-channel training/scoring orchestration
-src/cli.py           command-line entry point
-src/demo.py          offline demo: synthetic telemetry generator + end-to-end run (SIMULATED, not NASA data)
-app/dashboard.py     Streamlit + Plotly dashboard ("Spacecraft Telemetry Anomaly Lab"); app/lab_theme.py visual system
-.streamlit/          dashboard theme
-src/jobs.py          background reproduction runs started from the dashboard (explicit click, lock, progress)
-configs/             default.yaml (full), smoke.yaml (quick), seed1.yaml / seed2.yaml (seed variance),
-                     reproduce*.yaml (local reproductions), demo.yaml (synthetic demo)
-notebooks/           exploratory_analysis.ipynb (executed)
-reports/             data_validation.json, figures/, runs/<run>/ (metrics, tables, figures)
-models/              saved per-channel detectors (generated)
-tests/               unit, integration, dashboard tests
-.githooks/           pre-commit (fast hygiene checks) and pre-push (test suite) hooks
-docs/                architecture, methodology, dataset, limitations, learning/ (9 teaching notes)
+app/                     Streamlit dashboard
+src/
+  cli.py                 command-line entry point
+  pipeline.py            per-channel training and scoring
+  replay.py              historical replay
+  showcase.py            showcase export
+  data/                  download, loader, validation
+  models/                detectors, lstm, dynamic_threshold, decision, thresholds, persistence
+  evaluation/            evaluate, metrics, calibration, compare
+  inference/             input validation and scoring with saved models
+configs/                 run configurations
+reports/                 benchmark/, showcase/, runs/<run>/
+notebooks/               exploratory_analysis.ipynb (EDA), run_pipeline.ipynb
+tests/                   unit, integration and dashboard tests
+docs/                    methodology, dataset, architecture, limitations
 ```
-
-## Status
-
-| Component | State |
-|---|---|
-| Download (pinned, SHA-256 verified), validation, EDA notebook | Implemented, run on real data |
-| Preprocessing, three detectors, thresholds, evaluation, error analysis | Implemented, full run on 81 channels |
-| Persistence + inference (`predict` CLI, dashboard upload) | Implemented, round-trip tested |
-| Dashboard: NASA-first, 6 pages, provenance labels, mission filter, one-click download/validate/reproduce | Implemented; AppTest for routes, data states and demo separation; checked in a browser at desktop and phone width |
-| Offline first-run demo on simulated data (`python -m src.cli demo`) | Implemented; tested offline in a clean copy (deterministic, labelled SIMULATED, real runs untouched) |
-| Resume after interruption (`--resume`) | Implemented, tested |
-| Tests | Unit + integration + dashboard (`pytest -q`) |
-| Calibration status, macro AUC with CIs, validation-vs-test shift (KS) | Implemented, tested (review fixes D1–D3, D6) |
-| Threshold-uncertainty bootstrap, leave-channels-out calibration | Implemented on saved scores, tested |
-| Seed variance (seeds 42, 1, 2) | Done: 3 complete 81-channel runs, `python -m src.cli seeds` |
-| Hyper-parameter search / cross-channel models | **Not done** |
-| Nonparametric dynamic thresholding (Telemanom) | **Not implemented** |
-| GPU training, real-time streaming ingestion | **Not implemented** (offline CPU only) |
-
-## Files to study first (suggested reading order)
-
-1. `docs/dataset.md`, then `notebooks/exploratory_analysis.ipynb`: what the data is and why it is tricky.
-2. `src/data/loader.py`: file format, inclusive label intervals, the P-2 merge.
-3. `src/preprocessing/scaling.py` and `src/features/windows.py`: leakage control and the alignment convention.
-4. `src/models/detectors.py`: the shared interface; the baseline and Isolation Forest.
-5. `src/models/lstm.py`: forecaster, training loop, early stopping, error → score.
-6. `src/models/thresholds.py`: from scores to decisions.
-7. `src/pipeline.py`: how the pieces are ordered (labels last).
-8. `src/evaluation/metrics.py`, then `evaluate.py`: point vs event metrics, error analysis.
-9. `src/models/persistence.py`, then `src/inference/predict.py`: saving, loading, safe inference.
-10. `app/dashboard.py`; then `tests/` to see each guarantee pinned down.
-
-Teaching notes: `docs/learning/` · decisions and mistakes: `LEARNING_LOG.md` · results: `EXPERIMENTS.md`.
-
-## References
-
-* K. Hundman et al. *Detecting Spacecraft Anomalies Using LSTMs and Nonparametric Dynamic Thresholding.* KDD 2018.
-* Telemanom: https://github.com/khundman/telemanom · Data mirror: https://huggingface.co/datasets/lxr11111/telemanom
-* F. T. Liu, K. M. Ting, Z.-H. Zhou. *Isolation Forest.* ICDM 2008.
-* S. Hochreiter, J. Schmidhuber. *Long Short-Term Memory.* Neural Computation 1997.
-
-Code: MIT (see `LICENSE`). Data: Caltech, BSD-3-clause-style terms, downloaded separately.

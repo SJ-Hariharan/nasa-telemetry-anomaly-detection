@@ -22,6 +22,8 @@ from scipy.stats import ks_2samp  # noqa: E402
 
 from src.evaluation.metrics import (event_counts, event_metrics, macro_auc, point_counts,  # noqa: E402
                                     point_metrics, threshold_free)
+from src.models.decision import DYNAMIC_METHODS, threshold_mode  # noqa: E402
+from src.models.dynamic_threshold import release_times  # noqa: E402
 from src.models.persistence import METHODS  # noqa: E402
 from src.models.thresholds import apply_threshold, runs  # noqa: E402
 from src.utils.reproducibility import get_logger  # noqa: E402
@@ -32,12 +34,15 @@ SENSITIVITY_MULTIPLIERS = [0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0]
 # Isolation Forest scores (-score_samples) live in a narrow band around 0.5, so x0.5 flags every
 # point and x1.5 flags none; its rows are kept in sensitivity.csv but marked and left off the plot.
 SENSITIVITY_NOT_COMPARABLE = {"isolation_forest"}
+# Dynamic-threshold methods have no single threshold to scale; their operating-point study is the pruning parameter
+# p (src.evaluation.calibration.dynamic_lco). They get no rows in sensitivity.csv.
 
 
 def _sum(dicts: list[dict], keys) -> dict:
     out = {k: sum(d[k] for d in dicts) for k in keys}
-    if "latencies" in dicts[0]:
-        out["latencies"] = [x for d in dicts for x in d["latencies"]]
+    for k in ("latencies", "decision_latencies"):
+        if k in dicts[0]:
+            out[k] = [x for d in dicts for x in d[k]]
     return out
 
 
@@ -46,6 +51,9 @@ def _aggregate(m: str, chans: list[str], per: dict) -> dict:
     P_KEYS, E_KEYS = ("tp", "fp", "tn", "fn"), ("event_tp", "event_fn", "event_fp")
     rows = [per[c][m] for c in chans]
     out = {**point_metrics(_sum([r["pc"] for r in rows], P_KEYS)), **event_metrics(_sum([r["ec"] for r in rows], E_KEYS))}
+    n_points = out["tp"] + out["fp"] + out["tn"] + out["fn"]
+    out["false_alarms_per_10k"] = 1e4 * out["event_fp"] / n_points if n_points else None
+    out["threshold_mode"] = threshold_mode(m)
     roc, pr = macro_auc([r["roc_auc"] for r in rows]), macro_auc([r["pr_auc"] for r in rows])
     out.update(roc_auc_macro=roc["mean"], roc_auc_macro_ci=[roc["ci_low"], roc["ci_high"]],
                pr_auc_macro=pr["mean"], pr_auc_macro_ci=[pr["ci_low"], pr["ci_high"]])
@@ -83,6 +91,7 @@ def evaluate_run(run_dir: Path) -> dict:
     per: dict[str, dict] = {}
     per_channel, event_rows, fa_rows = [], [], []
     sens = {m: {k: {"p": [], "e": []} for k in SENSITIVITY_MULTIPLIERS} for m in methods}
+    cfg_used = json.loads((run_dir / "config_used.json").read_text())
 
     for chan in common:
         t = pd.read_parquet(run_dir / "scores" / f"{chan}.parquet")
@@ -93,9 +102,13 @@ def evaluate_run(run_dir: Path) -> dict:
         for m in methods:
             thr = ch_info[chan]["methods"][m]["threshold"]
             scores, pred = t[f"{m}_score"].to_numpy(), t[f"{m}_pred"].to_numpy()
-            pc, ec = point_counts(y, pred), event_counts(seqs[chan], pred)
+            dynamic = m in DYNAMIC_METHODS
+            release = release_times(scores, cfg_used.get("dynamic_threshold")) if dynamic else None
+            pc, ec = point_counts(y, pred), event_counts(seqs[chan], pred, release)
             auc = threshold_free(y, scores)
-            norm = scores / thr
+            thr_t = t[f"{m}_threshold"].to_numpy() if f"{m}_threshold" in t else np.full(len(t), thr)
+            with np.errstate(divide="ignore", invalid="ignore"):
+                norm = scores / thr_t
             # Validation-vs-test score shift: KS distance between the finite validation scores (the data the
             # threshold was calibrated on) and the finite test scores. 0 = same distribution, 1 = disjoint.
             ks = None
@@ -111,7 +124,7 @@ def evaluate_run(run_dir: Path) -> dict:
                                 "val_len": ch_info[chan]["methods"][m].get("val_len"), "ks_val_test": ks,
                                 **point_metrics(pc), **event_metrics(ec), **auc})
             # Post-hoc diagnostic ONLY: how would results move if the calibrated threshold were scaled?
-            for k in SENSITIVITY_MULTIPLIERS:
+            for k in ([] if dynamic else SENSITIVITY_MULTIPLIERS):
                 p = apply_threshold(scores, thr * k)
                 sens[m][k]["p"].append(point_counts(y, p)); sens[m][k]["e"].append(event_counts(seqs[chan], p))
             # Error analysis rows
@@ -120,6 +133,8 @@ def evaluate_run(run_dir: Path) -> dict:
                 event_rows.append({"chan_id": chan, "spacecraft": sc, "method": m, "start": s, "end": e,
                                    "length": e - s + 1, "class": cls, "detected": bool(hits.size),
                                    "latency": int(hits[0]) if hits.size else None,
+                                   "decision_latency": (int(release[s + hits[0]] - s) if dynamic else int(hits[0]))
+                                   if hits.size else None,
                                    "peak_norm_score": float(np.nanmax(norm[s : e + 1])) if np.isfinite(norm[s : e + 1]).any() else None})
             for s, e in runs(pred):
                 if not y[s : e + 1].any():
@@ -139,7 +154,7 @@ def evaluate_run(run_dir: Path) -> dict:
                                 if x in ("precision", "recall", "f1", "fpr")},
                              **{x: v for x, v in event_metrics(_sum(sens[m][k]["e"], E_KEYS)).items()
                                 if x in ("event_precision", "event_recall", "event_f1")}}
-                            for k in SENSITIVITY_MULTIPLIERS]
+                            for k in SENSITIVITY_MULTIPLIERS if sens[m][k]["p"]]
         results[m] = r
 
     events = pd.DataFrame(event_rows)
@@ -163,7 +178,9 @@ def evaluate_run(run_dir: Path) -> dict:
     events.to_csv(run_dir / "events.csv", index=False)
     pd.DataFrame(fa_rows, columns=["chan_id", "spacecraft", "method", "start", "end", "length",
                                    "peak_norm_score"]).to_csv(run_dir / "false_alarms.csv", index=False)
-    pd.DataFrame([{"method": m, **row} for m in methods for row in results[m]["sensitivity"]]).to_csv(
+    pd.DataFrame([{"method": m, **row} for m in methods for row in results[m]["sensitivity"]],
+                 columns=["method", "multiplier", "scale_comparable", "point_precision", "point_recall", "point_f1",
+                          "point_fpr", "event_precision", "event_recall", "event_f1"]).to_csv(
         run_dir / "sensitivity.csv", index=False)
     (run_dir / "metrics.json").write_text(json.dumps(metrics, indent=1, default=float))
     _figures(run_dir, comp, results, methods, common)
@@ -174,7 +191,8 @@ def evaluate_run(run_dir: Path) -> dict:
 
 
 COMP_COLS = ("precision", "recall", "f1", "fpr", "fnr", "accuracy", "event_precision", "event_recall", "event_f1",
-             "event_tp", "event_fn", "event_fp", "roc_auc_macro", "pr_auc_macro", "roc_auc_pooled", "pr_auc_pooled",
+             "event_tp", "event_fn", "event_fp", "false_alarms_per_10k", "median_latency", "median_decision_latency",
+             "threshold_mode", "roc_auc_macro", "pr_auc_macro", "roc_auc_pooled", "pr_auc_pooled",
              "n_channels")
 
 
@@ -199,10 +217,13 @@ def _load_label_meta(run_dir: Path, chans: list[str]):
 
 def _markdown(comp: pd.DataFrame) -> str:
     cols = ["method", "precision", "recall", "f1", "fpr", "event_precision", "event_recall",
-            "event_f1", "event_tp", "event_fn", "event_fp", "roc_auc_macro", "pr_auc_macro", "roc_auc_pooled"]
+            "event_f1", "event_tp", "event_fn", "event_fp", "false_alarms_per_10k", "median_decision_latency",
+            "roc_auc_macro", "pr_auc_macro"]
     lines = ["| " + " | ".join(cols) + " |", "|" + "---|" * len(cols)]
     for _, r in comp.iterrows():
-        lines.append("| " + " | ".join(f"{r[c]:.3f}" if isinstance(r[c], float) else str(r[c]) for c in cols) + " |")
+        lines.append("| " + " | ".join(f"{r[c]:.3f}" if isinstance(r[c], float) and np.isfinite(r[c]) else
+                                       ("-" if r[c] is None or (isinstance(r[c], float) and not np.isfinite(r[c]))
+                                        else str(r[c])) for c in cols) + " |")
     return "\n".join(lines)
 
 
@@ -220,7 +241,7 @@ def _figures(run_dir: Path, comp: pd.DataFrame, results: dict, methods: list[str
     ax.legend(); fig.tight_layout(); fig.savefig(fig_dir / "metric_comparison.png", dpi=120); plt.close(fig)
     # 2. threshold sensitivity (post-hoc)
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.8))
-    for m in [m for m in methods if m not in SENSITIVITY_NOT_COMPARABLE]:
+    for m in [m for m in methods if m not in SENSITIVITY_NOT_COMPARABLE and results[m]["sensitivity"]]:
         s = pd.DataFrame(results[m]["sensitivity"])
         axes[0].plot(s["point_recall"], s["point_precision"], "o-", label=m)
         axes[1].plot(s["multiplier"], s["event_f1"], "o-", label=m)
@@ -230,7 +251,8 @@ def _figures(run_dir: Path, comp: pd.DataFrame, results: dict, methods: list[str
     fig.text(0.5, 0.01, "Isolation Forest omitted: its bounded score scale makes threshold multipliers meaningless",
              ha="center", fontsize=8)
     for a in axes:
-        a.legend()
+        if a.get_legend_handles_labels()[0]:
+            a.legend()
     fig.tight_layout(); fig.savefig(fig_dir / "threshold_sensitivity.png", dpi=120); plt.close(fig)
     # 3. timelines for up to 4 channels
     for chan in chans[:4]:
@@ -244,7 +266,10 @@ def _figures(run_dir: Path, comp: pd.DataFrame, results: dict, methods: list[str
         thr = {c["chan_id"]: c for c in info["channels"]}[chan]["methods"]
         for ax, m in zip(axes[1:], methods):
             ax.plot(t["timestep"], t[f"{m}_score"], lw=0.6)
-            ax.axhline(thr[m]["threshold"], color="orange", ls="--", lw=1)
+            if f"{m}_threshold" in t:
+                ax.plot(t["timestep"], t[f"{m}_threshold"], color="orange", ls="--", lw=1)
+            else:
+                ax.axhline(thr[m]["threshold"], color="orange", ls="--", lw=1)
             ax.fill_between(t["timestep"], 0, 1, where=t[f"{m}_pred"] == 1, transform=ax.get_xaxis_transform(),
                             color="blue", alpha=0.15)
             ax.set_ylabel(m, fontsize=8)

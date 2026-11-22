@@ -31,9 +31,11 @@
 * **Thresholds:** one fixed quantile (99.5%) for every channel and method. With very constant validation
   scores the threshold collapses towards zero, so any change is flagged. The LSTM validation split
   serves both early stopping and calibration (mild optimism).
-* **LSTM simplifications vs Telemanom:** window 100 (not 250), hidden 64 (not 80), 1-step (not 10-step)
-  forecasts, at most 4,000 training windows per channel, validation-quantile thresholds instead of
-  nonparametric dynamic thresholding with pruning. Our numbers are **not** a replication of the paper.
+* **LSTM simplifications vs Telemanom:** the reference `lstm` method keeps its simplifications (window 100, hidden 64, 1-step forecasts, at most 4,000 training windows, validation-quantile threshold). The separate `telemanom` method uses the paper's settings and dynamic threshold but is still **not** an exact reproduction (PyTorch not Keras; differences listed in `docs/methodology.md` §8).
+* **Dynamic-threshold constants were not re-tuned.** The constants (p = 0.13 etc.) were chosen by the paper's authors on this benchmark and were not re-tuned here. This may favour the dynamic methods slightly.
+* **Dynamic thresholds alert later.** The dynamic threshold decides once per 70-sample batch and needs about 2,100 scored samples before its first decision, so alerts arrive later (median decision latency about 90–120 samples vs about 19 for the static LSTM).
+* **Event metric favours long segments.** Flags are padded by 100 samples and the event metric counts any overlap, which favours long flagged segments. Point metrics are reported too: the dynamic methods have LOWER point F1 (about 0.33) than the reference LSTM (0.39).
+* **D-12 is too short for the telemanom method.** D-12 (312 training samples) is too short for a 250-sample input window. The telemanom method raises no alarm there, and its event counts as missed.
 * **Score smoothing differs:** only the LSTM's errors are EWMA-smoothed (as in Telemanom). The baseline and
   Isolation Forest scores are raw, which partly explains their more fragmented predictions.
 * **Event metric leniency:** a single predicted point inside a long labelled sequence counts as detecting it.
@@ -46,20 +48,22 @@
 
 ## Engineering
 
-* CPU-only training, sequential over channels (LSTM 3–160 s per channel, 45 s on average; 61.6 min for all 81).
+* CPU training. Reference LSTM: about 1 CPU-hour for 81 channels. Telemanom-aligned LSTM: about 7 single-thread process-hours per seed (about 2 h wall-clock with 4 parallel shards on an 8-core CPU). GPU training is supported by configuration but not verified.
 * Joblib files are pickles: load only model directories produced by this project. Channel ids and run names are
   validated (`^[A-Z]-\d{1,3}$`, no `..`) before they become paths, so a CLI argument cannot point the loader elsewhere.
   A tampered file *inside* `models/` would still execute on load.
-* Per-channel score tables and saved models are generated, not version-controlled (~18 MB + ~186 MB per full run).
-  A fresh clone shows the committed NASA results and label timelines; plotting raw telemetry needs the ~170 MB
-  download, and score overlays and inference need a local training run (~1–2 h CPU for all channels). The optional
-  synthetic demo changes none of the scientific limitations above.
+* Per-channel score tables and saved models are generated, not version-controlled; a fresh clone works offline from
+  `reports/benchmark/` and `reports/showcase/` (7 channels' test excerpts are committed); saved models are not committed,
+  so Inference needs a local run; full timelines for all channels need a local run. The optional synthetic demo changes none of the
+  scientific limitations above.
 * Inference warns when a saved model's threshold is not a calibration (constant training channel). It does not
   refuse to score.
 * Inference assumes input in the benchmark's scaled units with the same command columns as the
   channel's training data. Missing command columns are filled with 0, with a warning.
 
-## What the full run showed (see `EXPERIMENTS.md`)
+## What the reference runs showed
+
+* **The dynamic threshold removes most false alarms.** Re-scoring the same saved LSTM models with Telemanom's dynamic threshold (`lstm_dynamic`) reduces false-alarm events from 1,764 to 12 (seed 42) while finding 63 of 104 events instead of 97; see EXPERIMENTS.md.
 
 * **22 channels cannot be calibrated.** 19 have a constant training signal, and 3 more have a constant validation segment
   for the baseline. For them the 99.5% validation quantile is ~0, so any test deviation is flagged. They produce 52% of the

@@ -21,7 +21,14 @@ reports/runs/*/scores/
 data/demo/
 reports/runs/demo/
 
-# Local reproductions started from the dashboard / configs/reproduce*.yaml (generated, never committed)
+# Local reproductions (configs/reproduce*.yaml, *_smoke.yaml): generated, never committed
 reports/runs/reproduce*/
-reports/runs/*/.job.json
-reports/runs/*/job.log
+reports/runs/telemanom_smoke/
+
+# Notebook outputs (notebooks/run_pipeline.ipynb)
+outputs/
+configs/telemanom_nb_*.yaml
+reports/runs/telemanom_nb_*/
+
+# Saved weights are never committed (pre-commit hook); the showcase builder writes them locally
+reports/showcase/models/

@@ -1,0 +1,233 @@
+{
+ "note": "Channels chosen by a fixed rule to illustrate outcomes; NOT a representative sample.",
+ "sources": {
+  "baseline": "full",
+  "isolation_forest": "full",
+  "lstm": "full",
+  "lstm_dynamic": "lstm_dynamic",
+  "telemanom": "telemanom"
+ },
+ "channels": [
+  {
+   "chan_id": "G-7",
+   "reason": "telemanom: detected, no false alarm (SMAP)",
+   "spacecraft": "SMAP",
+   "n": 8029,
+   "n_commands": 24
+  },
+  {
+   "chan_id": "F-7",
+   "reason": "telemanom: detected, no false alarm (MSL)",
+   "spacecraft": "MSL",
+   "n": 5054,
+   "n_commands": 54
+  },
+  {
+   "chan_id": "P-1",
+   "reason": "telemanom: missed event(s)",
+   "spacecraft": "SMAP",
+   "n": 8505,
+   "n_commands": 24
+  },
+  {
+   "chan_id": "C-2",
+   "reason": "telemanom: missed event(s)",
+   "spacecraft": "MSL",
+   "n": 2051,
+   "n_commands": 54
+  },
+  {
+   "chan_id": "E-1",
+   "reason": "telemanom: false alarm(s)",
+   "spacecraft": "SMAP",
+   "n": 8516,
+   "n_commands": 24
+  },
+  {
+   "chan_id": "F-1",
+   "reason": "reference lstm: most false alarms",
+   "spacecraft": "SMAP",
+   "n": 8584,
+   "n_commands": 24
+  },
+  {
+   "chan_id": "E-9",
+   "reason": "reference lstm: most false alarms",
+   "spacecraft": "SMAP",
+   "n": 8302,
+   "n_commands": 24
+  }
+ ],
+ "thresholds": {
+  "G-7": {
+   "baseline": {
+    "threshold": 7.000000000000001,
+    "calibratable": true
+   },
+   "isolation_forest": {
+    "threshold": 0.6808102631537566,
+    "calibratable": true
+   },
+   "lstm": {
+    "threshold": 1.0671911860554577,
+    "calibratable": true
+   },
+   "lstm_dynamic": {
+    "threshold": 0.13895749940170968,
+    "calibratable": true
+   },
+   "telemanom": {
+    "threshold": 0.18650624004146876,
+    "calibratable": true
+   }
+  },
+  "F-7": {
+   "baseline": {
+    "threshold": 2.93908315829988,
+    "calibratable": true
+   },
+   "isolation_forest": {
+    "threshold": 0.6347855607718145,
+    "calibratable": true
+   },
+   "lstm": {
+    "threshold": 0.9125103865466934,
+    "calibratable": true
+   },
+   "lstm_dynamic": {
+    "threshold": 0.5051576067523856,
+    "calibratable": true
+   },
+   "telemanom": {
+    "threshold": 0.6097202655037246,
+    "calibratable": true
+   }
+  },
+  "P-1": {
+   "baseline": {
+    "threshold": 3.174912030654851,
+    "calibratable": true
+   },
+   "isolation_forest": {
+    "threshold": 0.6764797722556649,
+    "calibratable": true
+   },
+   "lstm": {
+    "threshold": 0.37821535726557937,
+    "calibratable": true
+   },
+   "lstm_dynamic": {
+    "threshold": 0.13714878852945728,
+    "calibratable": true
+   },
+   "telemanom": {
+    "threshold": 0.22139512111015724,
+    "calibratable": true
+   }
+  },
+  "C-2": {
+   "baseline": {
+    "threshold": 1.1920928955078125e-07,
+    "calibratable": false
+   },
+   "isolation_forest": {
+    "threshold": 0.7674420025121399,
+    "calibratable": true
+   },
+   "lstm": {
+    "threshold": 0.0017543412928160208,
+    "calibratable": true
+   },
+   "lstm_dynamic": {
+    "threshold": 1.103385482228143,
+    "calibratable": false
+   },
+   "telemanom": {
+    "threshold": 3.1042456007444357,
+    "calibratable": true
+   }
+  },
+  "E-1": {
+   "baseline": {
+    "threshold": 5.850460615192661,
+    "calibratable": true
+   },
+   "isolation_forest": {
+    "threshold": 0.6832803072719714,
+    "calibratable": true
+   },
+   "lstm": {
+    "threshold": 0.07396740769087448,
+    "calibratable": true
+   },
+   "lstm_dynamic": {
+    "threshold": 0.03997914804745177,
+    "calibratable": true
+   },
+   "telemanom": {
+    "threshold": 0.14506364138597,
+    "calibratable": true
+   }
+  },
+  "F-1": {
+   "baseline": {
+    "threshold": 3.867378343579008,
+    "calibratable": true
+   },
+   "isolation_forest": {
+    "threshold": 0.5890231743532517,
+    "calibratable": true
+   },
+   "lstm": {
+    "threshold": 0.5803742219130947,
+    "calibratable": true
+   },
+   "lstm_dynamic": {
+    "threshold": 0.2021878227233628,
+    "calibratable": true
+   },
+   "telemanom": {
+    "threshold": 0.35984171097859724,
+    "calibratable": true
+   }
+  },
+  "E-9": {
+   "baseline": {
+    "threshold": 4.735911490817771,
+    "calibratable": true
+   },
+   "isolation_forest": {
+    "threshold": 0.6332311770493565,
+    "calibratable": true
+   },
+   "lstm": {
+    "threshold": 0.15286830009871744,
+    "calibratable": true
+   },
+   "lstm_dynamic": {
+    "threshold": 0.12139862170554278,
+    "calibratable": true
+   },
+   "telemanom": {
+    "threshold": 0.380406042556269,
+    "calibratable": true
+   }
+  }
+ },
+ "dynamic_threshold": {
+  "batch_size": 70,
+  "window_size": 30,
+  "error_buffer": 100,
+  "p": 0.13,
+  "sd_lim": 12.0,
+  "l_s": 250
+ },
+ "model_channels": [
+  "G-7",
+  "F-7"
+ ],
+ "model_runs": {
+  "telemanom": "telemanom",
+  "lstm": "full"
+ }
+}

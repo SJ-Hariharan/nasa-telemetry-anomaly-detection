@@ -16,12 +16,15 @@ ACCENT = "#4FC3E8"
 LABEL = "#FF6B6B"          # expert-labelled anomaly intervals
 THRESH = "#FFB547"         # thresholds
 TRACE, TRACE_TRAIN = "#D6E2F5", "#7F8DA6"
-METHOD_COLORS = {"baseline": "#A0AEC4", "isolation_forest": "#2EC4B6", "lstm": "#B794FF"}
-METHOD_LABELS = {"baseline": "Rolling z-score", "isolation_forest": "Isolation Forest", "lstm": "LSTM forecaster"}
+METHOD_COLORS = {"baseline": "#A0AEC4", "isolation_forest": "#2EC4B6", "lstm": "#B794FF", "lstm_dynamic": "#F28DD3",
+                 "telemanom": "#6BD98A"}
+METHOD_LABELS = {"baseline": "Rolling z-score", "isolation_forest": "Isolation Forest", "lstm": "LSTM (reference)",
+                 "lstm_dynamic": "LSTM + dynamic threshold", "telemanom": "Telemanom-aligned"}
 MISSION_COLORS = {"SMAP": "#4FC3E8", "MSL": "#F59E7B"}
 # Redundant (non-colour) encodings so methods stay distinguishable for colour-blind readers and in greyscale.
-METHOD_PATTERNS = {"baseline": "", "isolation_forest": "/", "lstm": "x"}
-METHOD_SYMBOLS = {"baseline": "circle", "isolation_forest": "diamond", "lstm": "square"}
+METHOD_PATTERNS = {"baseline": "", "isolation_forest": "/", "lstm": "x", "lstm_dynamic": "\\", "telemanom": "."}
+METHOD_SYMBOLS = {"baseline": "circle", "isolation_forest": "diamond", "lstm": "square", "lstm_dynamic": "triangle-up",
+                  "telemanom": "star"}
 PLOT_CONFIG = {"displaylogo": False, "displayModeBar": "hover"}
 
 pio.templates["lab"] = go.layout.Template(layout=go.Layout(
@@ -70,6 +73,8 @@ div[data-testid="stMetricLabel"] p {{ color: {MUTED} !important; font-size: .82r
 section[data-testid="stSidebar"] {{ border-right: 1px solid {BORDER}; }}
 section[data-testid="stSidebar"] .lab-brand {{ font-weight: 700; font-size: 1.05rem; color: {TEXT}; }}
 section[data-testid="stSidebar"] .lab-brand span {{ color: {ACCENT}; }}
+.replay-banner {{ border: 2px solid {THRESH}; background: rgba(255,181,71,.12); color: #FFE2B3; border-radius: 10px;
+  padding: .6rem 1rem; font-weight: 700; margin-bottom: .8rem; letter-spacing: .02em; }}
 .sim-banner {{ border: 2px solid {LABEL}; background: rgba(255,107,107,.14); color: #FFD6D6; border-radius: 10px;
   padding: .7rem 1rem; font-weight: 600; margin-bottom: .9rem; }}
 @media (max-width: 640px) {{

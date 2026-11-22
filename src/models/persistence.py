@@ -19,10 +19,11 @@ import joblib
 import torch
 
 from src.models.detectors import IsolationForestDetector, RollingZScoreDetector
-from src.models.lstm import LSTMDetector, LSTMForecaster
+from src.models.lstm import LSTMDetector, LSTMForecaster, TelemanomDetector
 from src.preprocessing.scaling import ValueScaler
 
-METHODS = ("baseline", "isolation_forest", "lstm")
+METHODS = ("baseline", "isolation_forest", "lstm", "telemanom", "lstm_dynamic")
+TRAINABLE = ("baseline", "isolation_forest", "lstm", "telemanom")   # lstm_dynamic is derived from a saved lstm run
 CHANNEL_ID = re.compile(r"^[A-Z]-\d{1,3}$")      # benchmark channel ids: P-1, M-6, T-13 ...
 RUN_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$")
 
@@ -47,6 +48,7 @@ class DetectorBundle:
     n_features: int
     postprocess: dict
     calibratable: bool | None = None     # False: constant training signal / no-spread validation scores; None: unknown
+    dynamic: dict | None = None          # dynamic-threshold settings (telemanom); None = static threshold
 
     def calibration_warning(self) -> str | None:
         if self.calibratable is False:
@@ -63,8 +65,8 @@ class DetectorBundle:
         meta = {"method": self.method, "chan_id": self.chan_id, "scaler": self.scaler.to_dict(),
                 "threshold": self.threshold, "n_features": self.n_features,
                 "params": self.detector.get_params(), "postprocess": self.postprocess,
-                "calibratable": self.calibratable}
-        if self.method == "lstm":
+                "calibratable": self.calibratable, "dynamic": self.dynamic}
+        if self.method in ("lstm", "telemanom"):
             torch.save(self.detector.model.state_dict(), out / "model.pt")
             meta["best_epoch"] = self.detector.best_epoch
             meta["history"] = self.detector.history
@@ -75,7 +77,7 @@ class DetectorBundle:
 
 
 def load_bundle(models_dir: Path, method: str, chan_id: str) -> DetectorBundle:
-    if method not in METHODS:
+    if method not in TRAINABLE:
         raise ValueError(f"Unknown method {method!r}")
     check_name(chan_id, CHANNEL_ID, "channel id")
     path = Path(models_dir) / method / chan_id
@@ -91,11 +93,11 @@ def load_bundle(models_dir: Path, method: str, chan_id: str) -> DetectorBundle:
         det.model = joblib.load(path / "model.joblib")
         det.feature_names = params["feature_names"]
     else:
-        det = LSTMDetector(**params)
+        det = (TelemanomDetector if method == "telemanom" else LSTMDetector)(**params)
         n_in = meta["n_features"] if det.use_commands else 1
-        det.model = LSTMForecaster(n_in, det.hidden_size, det.num_layers, det.dropout)
+        det.model = LSTMForecaster(n_in, det.hidden_size, det.num_layers, det.dropout, det.n_predictions)
         det.model.load_state_dict(torch.load(path / "model.pt", map_location="cpu", weights_only=True))
         det.model.eval()
     return DetectorBundle(method, chan_id, det, ValueScaler.from_dict(meta["scaler"]),
                           float(meta["threshold"]), int(meta["n_features"]), meta.get("postprocess", {}),
-                          meta.get("calibratable"))
+                          meta.get("calibratable"), meta.get("dynamic"))

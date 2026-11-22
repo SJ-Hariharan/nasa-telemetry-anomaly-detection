@@ -199,7 +199,7 @@ These numbers come from easy, hand-made synthetic anomalies. They demonstrate th
 evidence about NASA benchmark performance (see EXPERIMENTS.md for the real results).
 
 Next steps:
-  streamlit run app/dashboard.py      # pick the run 'demo (SIMULATED)' in the sidebar, then try every page
+  streamlit run app/dashboard.py      # the app shows the committed NASA results (offline, no download)
   python -m src.cli predict --run demo --method lstm --channel Z-1 --input {display_path(reports_dir / 'sample_input.csv')}
 Real benchmark (needs ~170 MB download and ~1 h CPU): see README, Quick start step 3 ("Reproduce the NASA benchmark").
 """)
